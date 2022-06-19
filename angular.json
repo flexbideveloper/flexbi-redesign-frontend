@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "33fec511-89c7-4b0a-922b-0f2752b299e2"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -8,6 +11,9 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
         }
       },
       "root": "",
@@ -17,28 +23,51 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": ["chart.js"],
             "outputPath": "dist/xero-frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
+              "src/assets/css/icons.css",
+              "node_modules/angular-calendar/css/angular-calendar.css",
+              "node_modules/flatpickr/dist/flatpickr.min.css",
+              "src/assets/plugins/datatable/css/dataTables.bootstrap5.min.css",
+              "src/assets/sass/app.scss",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/chart.js/dist/Chart.min.js",
+              "node_modules/apexcharts/dist/apexcharts.min.js",
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/@popperjs/core/dist/umd/popper.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "src/assets/plugins/jvector-map/jquery-jvectormap-2.0.2.min.js",
+              "src/assets/plugins/jvector-map/jquery-jvectormap-world-mill-en.js",
+              "src/assets/plugins/datatable/js/jquery.dataTables.min.js",
+              "src/assets/plugins/datatable/js/dataTables.bootstrap5.min.js",
+              "src/assets/plugins/sparkline-charts/jquery.sparkline.min.js",
+              "src/assets/plugins/morris/js/morris.js",
+              "src/assets/plugins/raphael/raphael-min.js",
+              "src/assets/plugins/chartjs/js/Chart.extension.js",
+              "src/assets/vendor/pace/pace.min.js",
+              "src/assets/plugins/jquery.easy-pie-chart/jquery.easypiechart.min.js",
+              "src/assets/plugins/sparkline-charts/jquery.sparkline.min.js",
+              "src/assets/plugins/jquery-knob/excanvas.js",
+              "src/assets/plugins/jquery-knob/jquery.knob.js",
+              "src/assets/plugins/datatable/js/jquery.dataTables.min.js"
+            ]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "8mb",
+                  "maximumError": "8mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -91,17 +120,13 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.scss"],
             "scripts": []
           }
         }
       }
     }
-  }
+  },
+  "defaultProject": "xero-frontend"
 }
