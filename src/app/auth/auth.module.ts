@@ -6,24 +6,16 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { LockScreenComponent } from './lock-screen/lock-screen.component';
-import { SigninWithHeaderFooterComponent } from './signin-with-header-footer/signin-with-header-footer.component';
-import { SignupWithHeaderFooterComponent } from './signup-with-header-footer/signup-with-header-footer.component';
 
-
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    SignInComponent, 
+    SignInComponent,
     SignUpComponent,
-    ForgotPasswordComponent, 
-    ResetPasswordComponent, 
-    LockScreenComponent, 
-    SigninWithHeaderFooterComponent,
-    SignupWithHeaderFooterComponent],
-  imports: [
-    CommonModule,
-    AuthRoutingModule
-  ]
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
+  ],
+  imports: [CommonModule, AuthRoutingModule, ReactiveFormsModule],
 })
-export class AuthModule { }
+export class AuthModule {}

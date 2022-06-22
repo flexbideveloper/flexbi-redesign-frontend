@@ -7,24 +7,26 @@
       <div class="container-fluid">
         <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
           <div class="col mx-auto">
-            <!-- <div class="mb-4 text-center">
-							<img src="assets/images/logo-img.png" width="180" alt="" />
-						</div> -->
+            <div class="mb-4 text-center">
+              <img
+                src="assets/images/icons/flex-bi-logo.png"
+                width="180"
+                alt=""
+              />
+            </div>
             <div class="card">
               <div class="card-body">
                 <div class="border p-4 rounded">
                   <div class="text-center">
-                    <h3 class="">Sign in</h3>
+                    <h3 class="">Sign In</h3>
                     <p>
-                      Don't have an account yet?
-                      <a href="JavaScript:;" (click)="onSignup()"
-                        >Sign up here</a
-                      >
+                      Don't have an account ?
+                      <a href="JavaScript:;" (click)="onSignup()">Sign up</a>
                     </p>
                   </div>
 
                   <div class="form-body">
-                    <form class="row g-3">
+                    <form class="row g-3" [formGroup]="form">
                       <div class="col-12">
                         <label for="inputEmailAddress" class="form-label"
                           >Email Address</label
@@ -32,8 +34,7 @@
                         <input
                           type="email"
                           class="form-control"
-                          id="inputEmailAddress"
-                          placeholder="Email Address"
+                          formControlName="email"
                         />
                       </div>
                       <div class="col-12">
@@ -42,43 +43,29 @@
                         >
                         <div class="input-group" id="show_hide_password">
                           <input
-                            type="password"
+                            [type]="show ? 'password' : 'text'"
                             class="form-control border-end-0"
-                            id="inputChoosePassword"
-                            value="12345678"
-                            placeholder="Enter Password"
+                            formControlName="password"
                           />
                           <a
-                            href="#"
-                            (click)="$event.preventDefault()"
+                            (click)="$event.preventDefault(); show = !show"
                             class="input-group-text bg-transparent"
                             ><i class="bx bx-hide"></i
                           ></a>
                         </div>
                       </div>
-                      <div class="col-md-6">
-                        <div class="form-check form-switch">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            id="flexSwitchCheckChecked"
-                            checked
-                          />
-                          <label
-                            class="form-check-label"
-                            for="flexSwitchCheckChecked"
-                            >Remember Me</label
-                          >
-                        </div>
-                      </div>
-                      <div class="col-md-6 text-end">
+                      <div class="col-md-12 text-end float-right">
                         <a href="JavaScript:;" (click)="onForgotpassword()"
                           >Forgot Password ?</a
                         >
                       </div>
                       <div class="col-12">
                         <div class="d-grid">
-                          <button type="submit" class="btn btn-primary">
+                          <button
+                            type="submit"
+                            class="btn btn-primary"
+                            (click)="onLogin()"
+                          >
                             <i class="bx bxs-lock-open"></i>Sign in
                           </button>
                         </div>
@@ -110,8 +97,17 @@
                     <a
                       href="#"
                       (click)="$event.preventDefault()"
-                      class="btn btn-facebook"
-                      ><i class="bx bxl-facebook"></i>Sign in with Facebook</a
+                      class="btn btn-white shadow-sm"
+                    >
+                      <span>
+                        <img
+                          class="me-2"
+                          src="assets/images/icons/microsoft.png"
+                          width="16"
+                          alt="Image Description"
+                        />
+                      </span>
+                      Sign in with Microsoft</a
                     >
                   </div>
                 </div>
