@@ -28,6 +28,8 @@ import { effects, reducers } from 'src/app/store';
 import * as $ from 'jquery';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [AppComponent, FullLayoutComponent, ContentLayoutComponent],
@@ -44,7 +46,17 @@ import { EffectsModule } from '@ngrx/effects';
     }),
     PerfectScrollbarModule,
     StoreModule.forRoot(reducers),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
+
     EffectsModule.forRoot(effects),
+
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
   ],
   providers: [
     {
