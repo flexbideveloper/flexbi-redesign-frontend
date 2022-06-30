@@ -9,13 +9,23 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { NgxCaptchaModule } from 'ngx-captcha';
+import { SharedModule } from '../shared/shared.module';
+import { PasswordControlPipe } from './sign-up/password-control.pipe';
 @NgModule({
   declarations: [
     SignInComponent,
     SignUpComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    PasswordControlPipe,
   ],
-  imports: [CommonModule, AuthRoutingModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    AuthRoutingModule,
+    ReactiveFormsModule,
+    NgxCaptchaModule,
+    SharedModule,
+  ],
 })
 export class AuthModule {}

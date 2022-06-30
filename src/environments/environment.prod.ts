@@ -10,5 +10,6 @@ export const environment = {
     clientId: 'b0f88104-4f4b-4a83-acea-7e2d1df5bb42',
     redirectURL: 'https://flexbireport.com.au/',
   },
+  captchaKey: '6LcGq6AcAAAAAErv-GdWHCKmMIvyxtt1oCnQYMTc',
   isValidateCaptch: true,
 };

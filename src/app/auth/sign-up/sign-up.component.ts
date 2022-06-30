@@ -1,6 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { environment } from 'src/environments/environment';
+import { Store } from '@ngrx/store';
+import * as fromStore from 'src/app/store';
+import * as a from 'src/app/store/actions/app.action';
 
 @Component({
   selector: 'app-sign-up',
@@ -8,19 +17,23 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./sign-up.component.scss'],
 })
 export class SignUpComponent implements OnInit {
-  signUpForm: UntypedFormGroup;
+  signUpForm: FormGroup;
   show: boolean = true;
   cShow: boolean = true;
-
+  captchaSiteKey = environment.captchaKey;
+  aFormGroup = this.fb.group({
+    recaptcha: ['', Validators.required],
+  });
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private fb: UntypedFormBuilder
+    private fb: FormBuilder,
+    private appStore: Store<fromStore.AppState>
   ) {}
 
   // On Signup link click
   onSignIn() {
-    this.router.navigate(['sign-in'], { relativeTo: this.route.parent });
+    this.router.navigate(['sign-in/user'], { relativeTo: this.route.parent });
   }
 
   ngOnInit(): void {
@@ -30,8 +43,8 @@ export class SignUpComponent implements OnInit {
         lastName: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         companyName: ['', Validators.required],
-        password: [''],
-        cPassword: [''],
+        password: ['', [Validators.required]],
+        cPassword: ['', [Validators.required]],
       },
       {
         validator: ConfirmedValidator('password', 'cPassword'),
@@ -40,9 +53,22 @@ export class SignUpComponent implements OnInit {
   }
 
   onSignUp() {
-    this.router.navigate(['../dashboard/default'], {
-      relativeTo: this.route.parent,
-    });
+    if (!this.signUpForm.valid) {
+      return;
+    }
+    this.appStore.dispatch(new a.OnLogin(this.signUpForm.value));
+  }
+
+  handleSuccess($event): void {
+    if ($event && $event !== null) {
+      // this.store
+    }
+  }
+  validatorRepassword(form: FormControl): { [key: string]: boolean } | null {
+    if (form.value.password === form.value.cPassword) {
+      return null;
+    }
+    return { errorRepeatPassword: true };
   }
 }
 
@@ -50,20 +76,20 @@ export function ConfirmedValidator(
   controlName: string,
   matchingControlName: string
 ) {
-  return (formGroup: UntypedFormGroup) => {
+  return (formGroup: FormGroup) => {
     const control = formGroup.controls[controlName];
 
     const matchingControl = formGroup.controls[matchingControlName];
 
     if (
       matchingControl.errors &&
-      !matchingControl.errors['confirmedValidator']
+      !matchingControl.errors['errorRepeatPassword']
     ) {
       return;
     }
 
     if (control.value !== matchingControl.value) {
-      matchingControl.setErrors({ confirmedValidator: true });
+      matchingControl.setErrors({ errorRepeatPassword: true });
     } else {
       matchingControl.setErrors(null);
     }

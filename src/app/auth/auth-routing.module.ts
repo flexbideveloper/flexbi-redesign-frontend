@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { NotAuthGuard } from '../gaurd/not-auth.gaurd';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { SignInComponent } from './sign-in/sign-in.component';
@@ -8,12 +9,22 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 const routes: Routes = [
   {
     path: '',
+    canActivate: [NotAuthGuard],
     children: [
       {
-        path: 'sign-in',
+        path: 'sign-in/user',
         component: SignInComponent,
         data: {
           title: 'Sign In',
+          value: 'user',
+        },
+      },
+      {
+        path: 'sign-in/admin',
+        component: SignInComponent,
+        data: {
+          title: 'Sign In',
+          value: 'admin',
         },
       },
       {

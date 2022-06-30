@@ -18,7 +18,7 @@
               <div class="card-body">
                 <div class="border p-4 rounded">
                   <div class="text-center">
-                    <h3 class="">Sign In</h3>
+                    <h3 class="" [title]="loginType">Sign In</h3>
                     <p>
                       Don't have an account ?
                       <a href="JavaScript:;" (click)="onSignup()">Sign up</a>
@@ -34,7 +34,7 @@
                         <input
                           type="email"
                           class="form-control"
-                          formControlName="email"
+                          formControlName="UserName"
                         />
                       </div>
                       <div class="col-12">
@@ -45,7 +45,7 @@
                           <input
                             [type]="show ? 'password' : 'text'"
                             class="form-control border-end-0"
-                            formControlName="password"
+                            formControlName="PassWord"
                           />
                           <a
                             (click)="$event.preventDefault(); show = !show"

@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -18,7 +22,7 @@ export class ResetPasswordComponent implements OnInit {
 
   // On Login link click
   onLogin() {
-    this.router.navigate(['sign-in'], { relativeTo: this.route.parent });
+    this.router.navigate(['sign-in/user'], { relativeTo: this.route.parent });
   }
 
   ngOnInit(): void {

@@ -34,6 +34,17 @@
                           class="form-control"
                           formControlName="firstName"
                         />
+                        <div class="invalid">
+                          {{
+                            signUpForm.get("firstName")?.touched
+                              ? signUpForm.get("firstName")?.errors?.required
+                                ? "First Name Required"
+                                : signUpForm.get("firstName")?.errors?.pattern
+                                ? "Invalid First Name"
+                                : ""
+                              : ""
+                          }}
+                        </div>
                       </div>
                       <div class="col-sm-6">
                         <label class="form-label">Last Name</label>
@@ -42,6 +53,17 @@
                           class="form-control"
                           formControlName="lastName"
                         />
+                        <div class="invalid">
+                          {{
+                            signUpForm.get("lastName")?.touched
+                              ? signUpForm.get("lastName")?.errors?.required
+                                ? "Last Name required."
+                                : signUpForm.get("lastName")?.errors?.pattern
+                                ? "Last Name Required"
+                                : ""
+                              : ""
+                          }}
+                        </div>
                       </div>
                       <div class="col-12">
                         <label class="form-label">Company Name</label>
@@ -50,6 +72,17 @@
                           class="form-control"
                           formControlName="companyName"
                         />
+                        <div class="invalid">
+                          {{
+                            signUpForm.get("companyName")?.touched
+                              ? signUpForm.get("companyName")?.errors?.required
+                                ? "Company Name required."
+                                : signUpForm.get("companyName")?.errors?.pattern
+                                ? "Invalid Company Name"
+                                : ""
+                              : ""
+                          }}
+                        </div>
                       </div>
                       <div class="col-12">
                         <label class="form-label">Email Address</label>
@@ -58,6 +91,17 @@
                           class="form-control"
                           formControlName="email"
                         />
+                        <div class="invalid">
+                          {{
+                            signUpForm.get("email")?.touched
+                              ? signUpForm.get("email")?.errors?.required
+                                ? "Email is required."
+                                : signUpForm.get("email")?.invalid
+                                ? "Invalid Email."
+                                : ""
+                              : ""
+                          }}
+                        </div>
                       </div>
                       <div class="col-12">
                         <label class="form-label">Password</label>
@@ -70,11 +114,21 @@
                           />
                           <a
                             href="javascript:;"
-                            href="javascript:;"
                             (click)="$event.preventDefault(); show = !show"
                             class="input-group-text bg-transparent"
                             ><i class="bx bx-hide"></i
                           ></a>
+                        </div>
+                        <div class="invalid">
+                          {{
+                            signUpForm.get("password")?.touched
+                              ? signUpForm.get("password")?.errors?.required
+                                ? "Password is required."
+                                : signUpForm.get("password")?.errors?.pattern
+                                ? "Invalid Password."
+                                : ""
+                              : ""
+                          }}
                         </div>
                       </div>
                       <div class="col-12">
@@ -93,6 +147,29 @@
                             ><i class="bx bx-hide"></i
                           ></a>
                         </div>
+                        <div class="invalid">
+                          {{
+                            signUpForm.get("cPassword")?.touched
+                              ? signUpForm.get("cPassword")?.errors?.required
+                                ? "Confirm Password is required."
+                                : signUpForm.get("cPassword")?.errors
+                                    ?.errorRepeatPassword
+                                ? "Password & Confirm password not match.."
+                                : ""
+                              : ""
+                          }}
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <form [formGroup]="aFormGroup">
+                          <ngx-recaptcha2
+                            [siteKey]="captchaSiteKey"
+                            (success)="handleSuccess($event)"
+                            formControlName="recaptcha"
+                          >
+                          </ngx-recaptcha2>
+                        </form>
                       </div>
                       <div class="col-12">
                         <div class="d-grid">

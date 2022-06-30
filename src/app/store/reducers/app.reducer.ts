@@ -10,8 +10,7 @@ export interface AppState {
 export const initialState: AppState = {
   user: null,
   accessToken: '',
-  // refreshToken: '',
-  userDetail: null,
+  userDetail: JSON.parse(sessionStorage.getItem('identity')) || null,
 };
 
 export function reducer(
@@ -22,7 +21,7 @@ export function reducer(
     case fromApp.ON_LOGIN: {
       return {
         ...state,
-        accessToken: action.payload.AuthToken,
+        userDetail: action.payload,
       };
     }
     case fromApp.LOGOUT: {
@@ -31,5 +30,9 @@ export function reducer(
       };
     }
   }
+
   return state;
 }
+export const getAccessToken = (state: AppState): string => state.accessToken;
+export const getUserDetails = (state: AppState): UserDetail =>
+  state?.userDetail;

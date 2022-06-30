@@ -1,40 +1,54 @@
-import { Component , OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { SidebarService } from '../sidebar/sidebar.service';
-
+import * as fromStore from 'src/app/store';
 
 @Component({
-    selector: 'app-navbar',
-    templateUrl: './navbar.component.html',
-    styleUrls: ['./navbar.component.scss']
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
+export class NavbarComponent implements OnInit {
+  userDetails$ = this.appStore.select(fromStore.getUserDetails);
 
-export class NavbarComponent implements OnInit{
+  constructor(
+    public sidebarservice: SidebarService,
+    private appStore: Store<fromStore.AppState>
+  ) {}
 
-    constructor(public sidebarservice: SidebarService) { }
-        
-    toggleSidebar() {
-        this.sidebarservice.setSidebarState(!this.sidebarservice.getSidebarState());
-    }
-    
-    getSideBarState() {
-        return this.sidebarservice.getSidebarState();
-    }
+  toggleSidebar() {
+    this.sidebarservice.setSidebarState(!this.sidebarservice.getSidebarState());
+  }
 
-    hideSidebar() {
-        this.sidebarservice.setSidebarState(true);
-    }
+  getSideBarState() {
+    return this.sidebarservice.getSidebarState();
+  }
 
-    ngOnInit() {
+  hideSidebar() {
+    this.sidebarservice.setSidebarState(true);
+  }
 
-        /* Search Bar */
-        $(document).ready(function () {
-            $(".mobile-search-icon").on("click", function () {
-                $(".search-bar").addClass("full-search-bar")
-            }), 
-            $(".search-close").on("click", function () {
-                $(".search-bar").removeClass("full-search-bar")
-            })
+  ngOnInit() {
+    /* Search Bar */
+    $(document).ready(function () {
+      $('.mobile-search-icon').on('click', function () {
+        $('.search-bar').addClass('full-search-bar');
+      }),
+        $('.search-close').on('click', function () {
+          $('.search-bar').removeClass('full-search-bar');
         });
+    });
+  }
 
-    }
+  logout(): void {
+    this.appStore.dispatch(new fromStore.Logout());
+    // this.setConfigurationService
+    //   .checkSetConfigurationPageForLeaving()
+    //   .pipe(take(1))
+    //   .subscribe(canLeave => {
+    //     if (!canLeave) return;
+    //     this.appStore.dispatch(new fromStore.Logout());
+    //   });
+  }
 }

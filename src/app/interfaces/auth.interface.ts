@@ -1,4 +1,4 @@
-export interface LoginPayload {
+export interface SignInRequest {
   PassWord: string;
   UserName: string;
   gcmTonken: string;
@@ -29,6 +29,28 @@ export interface UserDetail {
   UserName: string;
   gcmToken: string;
   id: string;
+}
+
+export interface AdminLoginResponse {
+  data: AdminUser[];
+  email: string;
+  UserId: string;
+  userName: string;
+  token: string;
+  message?: string;
+}
+
+export interface AdminUser {
+  ChildModule: string;
+  DisplayName: string;
+  DisplayOrder: number;
+  MainModuleDN: string;
+  MainModuleDO: number;
+  ModuleName: string;
+  Operation: string;
+  Permission: number;
+  UserRole: string;
+  UserRoleId: number;
 }
 
 export interface UserPlanData {
