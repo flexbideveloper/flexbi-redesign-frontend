@@ -10,6 +10,7 @@ import {
   throwError,
 } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { NotificationService } from 'src/app/services/notification.service';
 import { environment } from 'src/environments/environment';
 
 export enum LoginTypeEnum {
@@ -25,24 +26,24 @@ export class SignInComponent implements OnInit, OnDestroy {
   form: FormGroup;
   show: boolean = true;
   isLoggingIn: boolean;
+  captchaSiteKey = environment.captchaKey;
+  isCaptchaValidate: boolean = false;
+  isNoRobotClick: boolean = false;
 
   appState$: Subscription;
 
   loginType: LoginTypeEnum;
-
+  aFormGroup = this.fb.group({
+    recaptcha: ['', Validators.required],
+  });
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private authService: AuthService
-  ) {
-    this.route.data.subscribe((data) => {
-      this.loginType =
-        data['value'] === LoginTypeEnum.User
-          ? LoginTypeEnum.User
-          : LoginTypeEnum.Admin;
-    });
-  }
+    private authService: AuthService,
+    // private socialAuthService: SocialAuthService,
+    private notification: NotificationService
+  ) {}
 
   // On Forgotpassword link click
   onForgotpassword() {
@@ -57,12 +58,12 @@ export class SignInComponent implements OnInit, OnDestroy {
   }
 
   onLogin(): void {
-    if (!this.form.valid) {
-      return;
-    }
-
-    this.isLoggingIn = true;
-    if (this.loginType == LoginTypeEnum.User) {
+    if (
+      this.form.valid &&
+      this.aFormGroup.valid &&
+      this.isNoRobotClick &&
+      this.isCaptchaValidate
+    ) {
       this.onLoginHandler().subscribe(
         (_) => {
           /* do nothing */
@@ -72,14 +73,10 @@ export class SignInComponent implements OnInit, OnDestroy {
         }
       );
     } else {
-      this.onLoginHandlerAdmin().subscribe(
-        (_) => {
-          /* do nothing */
-        },
-        ({ status, error }) => {
-          this.isLoggingIn = false;
-        }
-      );
+      !this.isCaptchaValidate
+        ? this.notification.error('Not Valid captcha.')
+        : null;
+      return;
     }
   }
 
@@ -91,30 +88,11 @@ export class SignInComponent implements OnInit, OnDestroy {
       catchError((err) => {
         // this.error = true;
         if (err.status === 403) {
-          // this.errorMessage = 'Sorry! Cannot Login.';
+          this.notification.error('Sorry! Cannot Login.');
         } else if (err.status === 401) {
-          // this.errorMessage = err.error[0];
+          this.notification.error(err.error[0]);
         } else if (err.status === 404) {
-          console.log(err.message);
-        }
-        return throwError(err);
-      })
-    );
-  }
-
-  onLoginHandlerAdmin(): Observable<any> {
-    return this.authService.adminLogin(this.form.value).pipe(
-      mergeMap((data) => {
-        return of(data);
-      }),
-      catchError((err) => {
-        // this.error = true;
-        if (err.status === 403) {
-          // this.errorMessage = 'Sorry! Cannot Login.';
-        } else if (err.status === 401) {
-          // this.errorMessage = err.error[0];
-        } else if (err.status === 404) {
-          console.log(err.message);
+          this.notification.error(err.message);
         }
         return throwError(err);
       })
@@ -123,10 +101,36 @@ export class SignInComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      UserName: ['', [Validators.required]],
+      UserName: ['', [Validators.required, Validators.email]],
       PassWord: ['', Validators.required],
       gcmTonken: [environment.gcmToken],
     });
+  }
+
+  handleSuccess($event): void {
+    if ($event && $event !== null) {
+      this.authService.captchValidate($event).subscribe(
+        (res: any) => {
+          if (res && res.status === 200) {
+            this.isNoRobotClick = true;
+            this.isCaptchaValidate = true;
+          } else {
+            this.isNoRobotClick = false;
+            this.isCaptchaValidate = false;
+            this.notification.error('Not Valid captcha.');
+          }
+        },
+        (err: any) => {
+          this.isNoRobotClick = false;
+          this.isCaptchaValidate = false;
+          this.notification.error('Not Valid captcha.');
+        }
+      );
+    }
+  }
+
+  loginWithGoogle(): void {
+    // this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
 
   ngOnDestroy(): void {

@@ -83,3 +83,37 @@ export interface SubscriptionPlan {
 export interface RequestForgetPassword {
   emailId: string;
 }
+
+export interface CheckPasswordRequest {
+  UniqueID: string;
+}
+
+export interface ChangePassword {
+  password: string;
+  passCode: string;
+}
+export interface CheckPasswordResponse {
+  message: string;
+  status: number;
+  token?: string;
+}
+
+export interface CapchaVerified {
+  message: string;
+  status: number;
+}
+
+export interface SignUpRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  companyName: string;
+  password: string;
+  Provider: string;
+  cPassword: string;
+}
+
+export interface SignUpResponse {
+  message: string;
+  status: number;
+}

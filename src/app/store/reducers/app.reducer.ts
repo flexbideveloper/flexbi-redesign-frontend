@@ -5,12 +5,16 @@ export interface AppState {
   accessToken: LoginResponse['token'];
   // refreshToken?: LoginResponse['refresh_token'];
   userDetail?: UserDetail;
+  isCaptchSignIn: boolean;
+  isCaptchSignUp: boolean;
 }
 
 export const initialState: AppState = {
   user: null,
   accessToken: '',
   userDetail: JSON.parse(sessionStorage.getItem('identity')) || null,
+  isCaptchSignIn: false,
+  isCaptchSignUp: false,
 };
 
 export function reducer(

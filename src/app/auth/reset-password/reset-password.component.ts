@@ -22,7 +22,7 @@ export class ResetPasswordComponent implements OnInit {
 
   // On Login link click
   onLogin() {
-    this.router.navigate(['sign-in/user'], { relativeTo: this.route.parent });
+    this.router.navigate(['auth/sign-in'], { relativeTo: this.route.parent });
   }
 
   ngOnInit(): void {

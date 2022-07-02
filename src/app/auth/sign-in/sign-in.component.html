@@ -36,6 +36,17 @@
                           class="form-control"
                           formControlName="UserName"
                         />
+                        <div class="invalid">
+                          {{
+                            form.get("UserName")?.touched
+                              ? form.get("UserName")?.errors?.required
+                                ? "Email is required."
+                                : form.get("UserName")?.invalid
+                                ? "Invalid Email."
+                                : ""
+                              : ""
+                          }}
+                        </div>
                       </div>
                       <div class="col-12">
                         <label for="inputChoosePassword" class="form-label"
@@ -53,11 +64,32 @@
                             ><i class="bx bx-hide"></i
                           ></a>
                         </div>
+                        <div class="invalid">
+                          {{
+                            form.get("PassWord")?.touched
+                              ? form.get("PassWord")?.errors?.required
+                                ? "Password is required."
+                                : form.get("PassWord")?.errors?.pattern
+                                ? "Invalid Password."
+                                : ""
+                              : ""
+                          }}
+                        </div>
                       </div>
                       <div class="col-md-12 text-end float-right">
                         <a href="JavaScript:;" (click)="onForgotpassword()"
                           >Forgot Password ?</a
                         >
+                      </div>
+                      <div class="col-12">
+                        <form [formGroup]="aFormGroup">
+                          <ngx-recaptcha2
+                            [siteKey]="captchaSiteKey"
+                            (success)="handleSuccess($event)"
+                            formControlName="recaptcha"
+                          >
+                          </ngx-recaptcha2>
+                        </form>
                       </div>
                       <div class="col-12">
                         <div class="d-grid">

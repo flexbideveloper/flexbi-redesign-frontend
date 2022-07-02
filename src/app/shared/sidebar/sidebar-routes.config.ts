@@ -539,7 +539,7 @@ export const ROUTES: RouteInfo[] = [
     isExternalLink: false,
     submenu: [
       {
-        path: '/auth/sign-in/user',
+        path: '/auth/auth/sign-in',
         title: 'Sign In',
         icon: 'bx bx-right-arrow-alt',
         class: '',

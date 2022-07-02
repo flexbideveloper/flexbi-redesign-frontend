@@ -12,7 +12,7 @@ import { AuthGuard } from './gaurd/auth.gaurd';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'auth/sign-in/user',
+    redirectTo: 'auth/sign-in',
     pathMatch: 'full',
   },
   {
@@ -28,7 +28,7 @@ const routes: Routes = [
     data: { title: 'content Views' },
     children: CONTENT_ROUTES,
   },
-  { path: '**', redirectTo: 'auth/sign-in/user' },
+  { path: '**', redirectTo: 'auth/sign-in' },
 ];
 
 @NgModule({

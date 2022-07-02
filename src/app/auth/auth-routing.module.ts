@@ -12,19 +12,11 @@ const routes: Routes = [
     canActivate: [NotAuthGuard],
     children: [
       {
-        path: 'sign-in/user',
+        path: 'sign-in',
         component: SignInComponent,
         data: {
           title: 'Sign In',
           value: 'user',
-        },
-      },
-      {
-        path: 'sign-in/admin',
-        component: SignInComponent,
-        data: {
-          title: 'Sign In',
-          value: 'admin',
         },
       },
       {
