@@ -1,6 +1,8 @@
+import { SocialAuthService } from '@abacritt/angularx-social-login';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { map, of, switchMap, tap } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
@@ -95,7 +97,8 @@ export class AppEffects {
               } else {
                 this.notification.error(response.message);
               }
-              return new a.SetSocialUser(response.data);
+              sessionStorage.setItem('identity', JSON.stringify(response.data));
+              return this.store.dispatch(new a.OnLogin(response.data));
             })
           );
         })
@@ -108,6 +111,7 @@ export class AppEffects {
     private actions$: Actions,
     private router: Router,
     private notification: NotificationService,
-    private authService: AuthService
+    private authService: AuthService,
+    private store: Store
   ) {}
 }

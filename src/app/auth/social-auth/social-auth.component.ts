@@ -4,6 +4,7 @@ import { MsalService } from '@azure/msal-angular';
 import { AuthenticationResult } from '@azure/msal-browser';
 import { Store } from '@ngrx/store';
 import { AppSocialUser } from 'src/app/interfaces/auth.interface';
+import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import * as fromStore from 'src/app/store';
 import { RegisterSocialUser } from 'src/app/store';
@@ -20,11 +21,20 @@ export class SocialAuthComponent implements OnInit {
     private socialAuthService: SocialAuthService,
     private notification: NotificationService,
     private microsoftService: MsalService,
-    private appStore: Store<fromStore.AppState>
+    private appStore: Store<fromStore.AppState>,
+    private authService: AuthService
   ) {
     this.socialAuthService.authState.subscribe((user) => {
       this.user = user;
       this.registerWebDonuser(user, 'GOOGLE');
+    });
+    this.socialAuthService.signOut().then((data) => {
+      console.log('Logout google successfully');
+    });
+    this.authService.isLoggedIn$.subscribe((val) => {
+      if (val) {
+        this.socialAuthService.signOut();
+      }
     });
   }
 

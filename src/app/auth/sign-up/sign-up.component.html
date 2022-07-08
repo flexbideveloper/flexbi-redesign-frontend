@@ -125,7 +125,7 @@
                               ? signUpForm.get("password")?.errors?.required
                                 ? "Password is required."
                                 : signUpForm.get("password")?.errors?.pattern
-                                ? "Invalid Password."
+                                ? "Password must be minimum of 8 characters should contain lowercase letter, capital letter and numbers."
                                 : ""
                               : ""
                           }}
@@ -152,9 +152,19 @@
                             signUpForm.get("cPassword")?.touched
                               ? signUpForm.get("cPassword")?.errors?.required
                                 ? "Confirm Password is required."
+                                : signUpForm.get("cPassword")?.errors?.pattern
+                                ? "Confirm Password must be minimum of 8 characters should contain lowercase letter, capital letter and numbers."
+                                : ""
+                              : ""
+                          }}
+
+                          {{
+                            signUpForm.get("cPassword")?.touched
+                              ? signUpForm.get("cPassword")?.errors?.required
+                                ? "Confirm Password is required."
                                 : signUpForm.get("cPassword")?.errors
                                     ?.errorRepeatPassword
-                                ? "Password & Confirm password not match.."
+                                ? "Password & Confirm password not match."
                                 : ""
                               : ""
                           }}

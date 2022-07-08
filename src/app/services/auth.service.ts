@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
+  BehaviorSubject,
   catchError,
   combineLatest,
   distinctUntilChanged,
@@ -34,6 +35,7 @@ import { NotificationService } from './notification.service';
   providedIn: 'root',
 })
 export class AuthService {
+  socialLogin = new BehaviorSubject(false);
   constructor(
     private http: HttpClient,
     protected store: Store,
@@ -54,6 +56,9 @@ export class AuthService {
     shareReplay(1)
   );
 
+  setLogin(v: boolean) {
+    this.socialLogin.next(v);
+  }
   getAccessToken(): Observable<string> {
     return of(sessionStorage.getItem('authToken'));
   }

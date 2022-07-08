@@ -51,8 +51,25 @@ export class SignUpComponent implements OnInit {
         lastName: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         companyName: ['', Validators.required],
-        password: ['', [Validators.required]],
-        cPassword: ['', [Validators.required]],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,}'
+            ),
+          ],
+        ],
+
+        cPassword: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,}'
+            ),
+          ],
+        ],
         Provider: [],
       },
       {
