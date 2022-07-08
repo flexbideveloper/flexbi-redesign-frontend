@@ -117,3 +117,19 @@ export interface SignUpResponse {
   message: string;
   status: number;
 }
+
+export interface AppSocialUser {
+  UserName: string;
+  Email: string;
+  CompanyName: string;
+  Provider: string;
+  UniqueID: string;
+  AuthToken: string;
+}
+
+export interface AppSocialUserResponse {
+  status: number;
+  token?: string;
+  message?: string;
+  data: UserDetail;
+}

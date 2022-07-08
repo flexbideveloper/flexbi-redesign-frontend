@@ -19,8 +19,11 @@ import {
 import {
   GoogleLoginProvider,
   SocialAuthServiceConfig,
+  SocialLoginModule,
 } from '@abacritt/angularx-social-login';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { SocialAuthComponent } from './social-auth/social-auth.component';
+// import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 
 // dev
 // export function MSALInstanceFactory(): IPublicClientApplication {
@@ -49,7 +52,10 @@ import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 // client prod
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
-    auth: getClientIdRedirectURL(),
+    auth: {
+      clientId: 'b0f88104-4f4b-4a83-acea-7e2d1df5bb42',
+      redirectUri: 'https://flexbireport.com.au/',
+    },
   });
 }
 
@@ -90,6 +96,7 @@ function getGoogleProvider() {
     ForgotPasswordComponent,
     ResetPasswordComponent,
     PasswordControlPipe,
+    SocialAuthComponent,
   ],
   imports: [
     CommonModule,
@@ -97,25 +104,28 @@ function getGoogleProvider() {
     ReactiveFormsModule,
     NgxCaptchaModule,
     SharedModule,
+    SocialLoginModule,
   ],
-  // providers: [
-  //   {
-  //     provide: 'SocialAuthServiceConfig',
-  //     useValue: {
-  //       autoLogin: false,
-  //       providers: [
-  //         {
-  //           id: GoogleLoginProvider.PROVIDER_ID,
-  //           provider: getGoogleProvider(),
-  //         },
-  //       ],
-  //     } as SocialAuthServiceConfig,
-  //   },
-  //   {
-  //     provide: MSAL_INSTANCE,
-  //     useFactory: MSALInstanceFactory,
-  //   },
-  //   MsalService,
-  // ],
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '919671716592-ube4p7h32n1idc13sri4ki3susugq4a3.apps.googleusercontent.com'
+            ),
+          },
+        ],
+      } as SocialAuthServiceConfig,
+    },
+    {
+      provide: MSAL_INSTANCE,
+      useFactory: MSALInstanceFactory,
+    },
+    MsalService,
+  ],
 })
 export class AuthModule {}

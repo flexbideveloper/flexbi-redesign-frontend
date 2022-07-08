@@ -1,7 +1,6 @@
 import { Action } from '@ngrx/store';
 import {
-  AdminLoginResponse,
-  AdminUser,
+  AppSocialUser,
   ChangePassword,
   LoginResponse,
   SignUpRequest,
@@ -21,6 +20,9 @@ export const LOGOUT = '[App] On Logout';
 
 export const REQUEST_PASSWORRD = '[App] On Request Password';
 export const REQUEST_PASSWORRD_SUCCESS = '[App] On Request Password Success';
+
+export const REGISTER_SOCIAL_USER = '[Auth] Social Login';
+export const SET_SOCIAL_USER = '[Auth] Set Social Login';
 
 export class onSignUp implements Action {
   readonly type = SIGN_UP_REQUEST;
@@ -66,10 +68,24 @@ export class RequestPasswordSuccess implements Action {
   constructor(public payload: { obj: ChangePassword }) {}
 }
 
+export class RegisterSocialUser implements Action {
+  readonly type = REGISTER_SOCIAL_USER;
+
+  constructor(public payload: { user: AppSocialUser }) {}
+}
+
+export class SetSocialUser implements Action {
+  readonly type = SET_SOCIAL_USER;
+
+  constructor(public payload: UserDetail) {}
+}
+
 // action types
 export type AppAction =
   | OnLogin
   | OnLoginSuccess
   | Logout
   | onSignUp
+  | RegisterSocialUser
+  | SetSocialUser
   | SignUpSuccess;

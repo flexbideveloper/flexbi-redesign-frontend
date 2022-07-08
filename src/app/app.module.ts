@@ -59,7 +59,7 @@ import { TokenInterceptor } from './token.interceptor';
     }),
 
     EffectsModule.forRoot(effects),
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({ timeOut: 7000 }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,

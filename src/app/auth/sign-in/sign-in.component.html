@@ -108,40 +108,7 @@
                     <span>OR SIGN IN WITH EMAIL</span>
                     <hr />
                   </div>
-                  <div class="d-grid">
-                    <a
-                      class="btn my-4 shadow-sm btn-white"
-                      href="#"
-                      (click)="$event.preventDefault()"
-                    >
-                      <span
-                        class="d-flex justify-content-center align-items-center"
-                      >
-                        <img
-                          class="me-2"
-                          src="assets/images/icons/search.svg"
-                          width="16"
-                          alt="Image Description"
-                        />
-                        <span>Sign in with Google</span>
-                      </span>
-                    </a>
-                    <a
-                      href="#"
-                      (click)="$event.preventDefault()"
-                      class="btn btn-white shadow-sm"
-                    >
-                      <span>
-                        <img
-                          class="me-2"
-                          src="assets/images/icons/microsoft.png"
-                          width="16"
-                          alt="Image Description"
-                        />
-                      </span>
-                      Sign in with Microsoft</a
-                    >
-                  </div>
+                  <app-social-auth></app-social-auth>
                 </div>
               </div>
             </div>

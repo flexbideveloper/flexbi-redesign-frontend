@@ -28,6 +28,12 @@ export function reducer(
         userDetail: action.payload,
       };
     }
+    case fromApp.SET_SOCIAL_USER: {
+      return {
+        ...state,
+        userDetail: action.payload,
+      };
+    }
     case fromApp.LOGOUT: {
       return {
         ...initialState,

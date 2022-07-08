@@ -16,6 +16,7 @@ import { environment } from 'src/environments/environment';
 import { REQUEST_ROUTES } from '../constants/request-routes.constant';
 import {
   AdminLoginResponse,
+  AppSocialUserResponse,
   CapchaVerified,
   ChangePassword,
   CheckPasswordRequest,
@@ -128,9 +129,10 @@ export class AuthService {
     return this.http.post<CheckPasswordResponse>(url, { obj });
   }
 
-  registerUserByThirdParty(data) {
+  registerUserByThirdParty(data): Observable<AppSocialUserResponse> {
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.CLIENT_PROFILE}`;
-
-    return this.http.post(url, data, { params: { skipAuthorization: 'true' } });
+    return this.http.post<AppSocialUserResponse>(url, data, {
+      params: { skipAuthorization: 'true' },
+    });
   }
 }

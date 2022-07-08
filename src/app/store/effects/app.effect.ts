@@ -81,6 +81,29 @@ export class AppEffects {
     { dispatch: false }
   );
 
+  registerSocialUser$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType<a.RegisterSocialUser>(a.REGISTER_SOCIAL_USER),
+        map((action) => action.payload),
+
+        switchMap(({ user }) => {
+          return this.authService.registerUserByThirdParty(user).pipe(
+            map((response) => {
+              if (response.status === 200) {
+                this.notification.success(response.message);
+              } else {
+                this.notification.error(response.message);
+              }
+              return new a.SetSocialUser(response.data);
+            })
+          );
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
   constructor(
     private actions$: Actions,
     private router: Router,

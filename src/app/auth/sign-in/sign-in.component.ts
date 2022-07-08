@@ -1,6 +1,13 @@
+import {
+  GoogleLoginProvider,
+  SocialAuthService,
+  SocialUser,
+} from '@abacritt/angularx-social-login';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MsalService } from '@azure/msal-angular';
+import { Store } from '@ngrx/store';
 import {
   catchError,
   mergeMap,
@@ -12,6 +19,7 @@ import {
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { environment } from 'src/environments/environment';
+import * as fromStore from 'src/app/store';
 
 export enum LoginTypeEnum {
   Admin = 'admin',
@@ -29,6 +37,7 @@ export class SignInComponent implements OnInit, OnDestroy {
   captchaSiteKey = environment.captchaKey;
   isCaptchaValidate: boolean = false;
   isNoRobotClick: boolean = false;
+  user: SocialUser;
 
   appState$: Subscription;
 
@@ -41,7 +50,7 @@ export class SignInComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private authService: AuthService,
-    // private socialAuthService: SocialAuthService,
+    private socialAuthService: SocialAuthService,
     private notification: NotificationService
   ) {}
 
@@ -130,7 +139,7 @@ export class SignInComponent implements OnInit, OnDestroy {
   }
 
   loginWithGoogle(): void {
-    // this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
 
   ngOnDestroy(): void {
