@@ -17,8 +17,8 @@ export class ForgotPasswordComponent implements OnInit {
   form: FormGroup;
   resetForm: FormGroup;
   step: number = 0;
-  show = false;
-  cShow = false;
+  show = true;
+  cShow = true;
   uniqueId: string;
   constructor(
     private router: Router,
@@ -119,8 +119,24 @@ export class ForgotPasswordComponent implements OnInit {
 
     this.resetForm = this.fb.group(
       {
-        password: ['', Validators.required],
-        cPassword: ['', Validators.required],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,}'
+            ),
+          ],
+        ],
+        cPassword: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,}'
+            ),
+          ],
+        ],
         passCode: ['', Validators.required],
       },
       {

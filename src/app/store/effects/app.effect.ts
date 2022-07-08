@@ -7,6 +7,7 @@ import { map, of, switchMap, tap } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import * as a from '../actions/app.action';
+import * as fromStore from 'src/app/store';
 
 @Injectable()
 export class AppEffects {
@@ -22,6 +23,18 @@ export class AppEffects {
     { dispatch: false }
   );
 
+  setUser$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType<a.SetSocialUser>(a.SET_SOCIAL_USER),
+        tap((action) => {
+          this.router.navigateByUrl('dashboard/default');
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
   logout$ = createEffect(
     () => {
       return this.actions$.pipe(
@@ -29,7 +42,7 @@ export class AppEffects {
         tap((action) => {
           if (action.payload.isRedirect) {
             sessionStorage.removeItem('identity');
-            this.router.navigateByUrl('auth/auth/sign-in');
+            this.router.navigateByUrl('/auth/sign');
           }
         })
       );
@@ -98,7 +111,7 @@ export class AppEffects {
                 this.notification.error(response.message);
               }
               sessionStorage.setItem('identity', JSON.stringify(response.data));
-              return this.store.dispatch(new a.OnLogin(response.data));
+              return this.store.dispatch(new a.SetSocialUser(response.data));
             })
           );
         })

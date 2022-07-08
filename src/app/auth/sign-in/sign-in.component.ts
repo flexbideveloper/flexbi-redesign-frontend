@@ -6,8 +6,7 @@ import {
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MsalService } from '@azure/msal-angular';
-import { Store } from '@ngrx/store';
+
 import {
   catchError,
   mergeMap,
@@ -19,7 +18,6 @@ import {
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { environment } from 'src/environments/environment';
-import * as fromStore from 'src/app/store';
 
 export enum LoginTypeEnum {
   Admin = 'admin',
@@ -111,7 +109,15 @@ export class SignInComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.form = this.fb.group({
       UserName: ['', [Validators.required, Validators.email]],
-      PassWord: ['', Validators.required],
+      PassWord: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(
+            '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,}'
+          ),
+        ],
+      ],
       gcmTonken: [environment.gcmToken],
     });
   }

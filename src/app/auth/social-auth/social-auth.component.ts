@@ -19,14 +19,15 @@ export class SocialAuthComponent implements OnInit {
 
   constructor(
     private socialAuthService: SocialAuthService,
-    private notification: NotificationService,
     private microsoftService: MsalService,
     private appStore: Store<fromStore.AppState>,
     private authService: AuthService
   ) {
     this.socialAuthService.authState.subscribe((user) => {
       this.user = user;
-      this.registerWebDonuser(user, 'GOOGLE');
+      if (user && user != null) {
+        this.registerWebDonuser(user, 'GOOGLE');
+      }
     });
     this.socialAuthService.signOut().then((data) => {
       console.log('Logout google successfully');

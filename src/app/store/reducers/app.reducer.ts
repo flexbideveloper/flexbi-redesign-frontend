@@ -34,6 +34,11 @@ export function reducer(
         userDetail: action.payload,
       };
     }
+    case fromApp.REMOVE_USER: {
+      return {
+        ...initialState,
+      };
+    }
     case fromApp.LOGOUT: {
       return {
         ...initialState,

@@ -24,6 +24,8 @@ export const REQUEST_PASSWORRD_SUCCESS = '[App] On Request Password Success';
 export const REGISTER_SOCIAL_USER = '[Auth] Social Login';
 export const SET_SOCIAL_USER = '[Auth] Set Social Login';
 
+export const REMOVE_USER = '[Auth] Remove User';
+
 export class onSignUp implements Action {
   readonly type = SIGN_UP_REQUEST;
 
@@ -80,6 +82,10 @@ export class SetSocialUser implements Action {
   constructor(public payload: UserDetail) {}
 }
 
+export class RemoveUser implements Action {
+  readonly type = REMOVE_USER;
+}
+
 // action types
 export type AppAction =
   | OnLogin
@@ -88,4 +94,5 @@ export type AppAction =
   | onSignUp
   | RegisterSocialUser
   | SetSocialUser
+  | RemoveUser
   | SignUpSuccess;

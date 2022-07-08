@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { SidebarService } from '../sidebar/sidebar.service';
 import * as fromStore from 'src/app/store';
 import { AuthService } from 'src/app/services/auth.service';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
 
 @Component({
   selector: 'app-navbar',
@@ -16,7 +17,7 @@ export class NavbarComponent implements OnInit {
   constructor(
     public sidebarservice: SidebarService,
     private appStore: Store<fromStore.AppState>,
-    private authService: AuthService
+    private socialAuthService: SocialAuthService
   ) {}
 
   toggleSidebar() {
@@ -44,8 +45,9 @@ export class NavbarComponent implements OnInit {
   }
 
   logout(): void {
-    this.authService.setLogin(true);
     this.appStore.dispatch(new fromStore.Logout());
+    location.href = '';
+    // this.socialAuthService.signOut();
     // this.setConfigurationService
     //   .checkSetConfigurationPageForLeaving()
     //   .pipe(take(1))
