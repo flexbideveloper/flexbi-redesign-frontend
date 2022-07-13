@@ -12,7 +12,10 @@ export interface AppState {
 export const initialState: AppState = {
   user: null,
   accessToken: '',
-  userDetail: JSON.parse(sessionStorage.getItem('identity')) || null,
+  userDetail:
+    sessionStorage.getItem('identity') ||
+    JSON.parse(sessionStorage.getItem('identity')) ||
+    null,
   isCaptchSignIn: false,
   isCaptchSignUp: false,
 };

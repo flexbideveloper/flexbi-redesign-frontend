@@ -8,6 +8,7 @@ import { Full_ROUTES } from './shared/routes/full-layout.routes';
 import { CONTENT_ROUTES } from './shared/routes/content-layout.routes';
 import { RedirectToDashboardCanActivate } from './gaurd/redirect-to-dashboard-guard';
 import { AuthGuard } from './gaurd/auth.gaurd';
+import { FLEX_BI_ROUTES } from './shared/routes/flexbi-layout.routes';
 
 const routes: Routes = [
   {
@@ -20,7 +21,7 @@ const routes: Routes = [
     component: FullLayoutComponent,
     data: { title: 'full Views' },
     canActivate: [AuthGuard],
-    children: Full_ROUTES,
+    children: FLEX_BI_ROUTES,
   },
   {
     path: '',
@@ -33,7 +34,10 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
+    RouterModule.forRoot(routes, {
+      preloadingStrategy: PreloadAllModules,
+      useHash: true,
+    }),
   ],
   exports: [RouterModule],
 })

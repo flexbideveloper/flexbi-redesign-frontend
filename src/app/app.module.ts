@@ -77,10 +77,7 @@ import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 // client prod
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
-    auth: {
-      clientId: 'b0f88104-4f4b-4a83-acea-7e2d1df5bb42',
-      redirectUri: 'http://localhost:4200/auth/login',
-    },
+    auth: getClientIdRedirectURL(),
   });
 }
 
@@ -91,9 +88,9 @@ function getClientIdRedirectURL() {
       redirectUri: JSON.parse(sessionStorage.getItem('MICRO')).RedirectURL,
     };
   } else {
-    // setTimeout(() => {
-    //   window.location.reload();
-    // }, 2000);
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
     return {
       clientId: '',
       redirectUri: '',
@@ -107,9 +104,10 @@ function getGoogleProvider() {
       JSON.parse(sessionStorage.getItem('GOOGLE')).ClientId
     );
   } else {
-    // setTimeout(() => {
-    //   window.location.reload();
-    // }, 2000);
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
+
     return '';
   }
 }
@@ -161,9 +159,7 @@ function getGoogleProvider() {
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              '919671716592-ube4p7h32n1idc13sri4ki3susugq4a3.apps.googleusercontent.com'
-            ),
+            provider: getGoogleProvider(),
           },
         ],
       } as SocialAuthServiceConfig,

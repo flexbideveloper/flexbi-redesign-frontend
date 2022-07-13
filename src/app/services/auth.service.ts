@@ -11,6 +11,7 @@ import {
   Observable,
   of,
   shareReplay,
+  tap,
   throwError,
 } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -139,5 +140,55 @@ export class AuthService {
     return this.http.post<AppSocialUserResponse>(url, data, {
       params: { skipAuthorization: 'true' },
     });
+  }
+
+  allSettings(): Observable<any> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.ALL_SETTING}`;
+    return this.http
+      .get<any>(url, {
+        params: { skipAuthorization: 'true' },
+      })
+      .pipe(
+        tap((data) => {
+          this.setSettingInSession(data);
+        })
+      );
+  }
+
+  setSettingInSession(data: []) {
+    data.map((d: any) => {
+      if (d.AuthenticationFor.toUpperCase() === 'GOOGLE') {
+        sessionStorage.setItem(
+          'GOOGLE',
+          JSON.stringify({
+            ClientId: d.ClientId,
+          })
+        );
+      }
+      if (d.AuthenticationFor.toUpperCase() === 'MICRO') {
+        sessionStorage.setItem(
+          'MICRO',
+          JSON.stringify({
+            ClientId: d.ClientId,
+            RedirectURL: d.RedirectURL,
+          })
+        );
+      }
+      if (d.AuthenticationFor.toUpperCase() === 'CAPTCHAKEY') {
+        sessionStorage.setItem(
+          'CAPTCHAKEY',
+          JSON.stringify({
+            CaptchaKey: d.ClientId,
+          })
+        );
+      }
+    });
+  }
+
+  getLoggedInUserDetails() {
+    if (localStorage.getItem('identity') != null) {
+      return JSON.parse(localStorage.getItem('identity'));
+    }
+    return null;
   }
 }

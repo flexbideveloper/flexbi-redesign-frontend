@@ -1,0 +1,169 @@
+<!--breadcrumb-->
+<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+  <div class="breadcrumb-title pe-3">Subscription Plans</div>
+</div>
+
+<div class="pricing-table">
+  <div class="row row-cols-1 row-cols-lg-3">
+    <!-- Free Tier -->
+    <div class="col" *ngFor="let plan of getPlan('TRIAL')">
+      <div class="card mb-5 mb-lg-0">
+        <div class="card-header bg-flexbi py-3">
+          <h5 class="card-title text-white text-uppercase text-center">
+            {{ plan.PlanName }}
+          </h5>
+          <h6 class="card-price text-white text-center">
+            $ {{ plan.Amount }} <span class="term"></span>
+          </h6>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <i class="bx bx-check me-2 font-18"></i>Free Trial for
+              {{ plan.Days }} Days
+            </li>
+            <li class="list-group-item">&nbsp;</li>
+            <li class="list-group-item">&nbsp;</li>
+          </ul>
+          <div class="d-grid">
+            <a
+              (click)="activateFreeTrail()"
+              class="btn btn-flexbi my-2 radius-30"
+              >Activate</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col" *ngFor="let plan of getPlan('PREMIUM')">
+      <div class="card mb-5 mb-lg-0">
+        <div class="card-header bg-flexbi py-3">
+          <h5 class="card-title text-white text-uppercase text-center">
+            {{ plan.PlanName }}
+          </h5>
+          <h6 class="card-price text-white text-center">
+            $ {{ plan.Amount }} <span class="term"></span>
+          </h6>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <i class="bx bx-check me-2 font-18"></i>Free Trial for
+              {{ plan.Days }} Days
+            </li>
+            <li class="list-group-item">
+              <i class="bx bx-check me-2 font-18"></i> Xero Data Integration
+            </li>
+            <li class="list-group-item">
+              <i class="bx bx-check me-2 font-18"></i>Power BI Reports
+            </li>
+          </ul>
+          <div class="d-grid">
+            <a
+              (click)="activateFreeTrail()"
+              class="btn btn-flexbi my-2 radius-30"
+              >Activate</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Section: Pricing table -->
+
+<!-- Plus Tier -->
+<!-- <div class="col">
+    <div class="card mb-5 mb-lg-0">
+      <div class="card-header bg-primary py-3">
+        <h5 class="card-title text-white text-uppercase text-center">Plus</h5>
+        <h6 class="card-price text-white text-center">
+          $9<span class="term">/month</span>
+        </h6>
+      </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <i class="bx bx-check me-2 font-18"></i>Single User
+          </li>
+          <li class="list-group-item">
+            <i class="bx bx-check me-2 font-18"></i>5GB Storage
+          </li>
+          <li class="list-group-item">
+            <i class="bx bx-check me-2 font-18"></i>Unlimited Public Projects
+          </li>
+          <li class="list-group-item">
+            <i class="bx bx-check me-2 font-18"></i>Community Access
+          </li>
+          <li class="list-group-item">
+            <i class="bx bx-check me-2 font-18"></i>Unlimited Private Projects
+          </li>
+          <li class="list-group-item">
+            <i class="bx bx-check me-2 font-18"></i>Dedicated Phone Support
+          </li>
+          <li class="list-group-item">
+            <i class="bx bx-check me-2 font-18"></i>Free Subdomain
+          </li>
+          <li class="list-group-item text-secondary">
+            <i class="bx bx-x me-2 font-18"></i>Monthly Status Reports
+          </li>
+        </ul>
+        <div class="d-grid">
+          <a
+            href="#"
+            (click)="$event.preventDefault()"
+            class="btn btn-primary my-2 radius-30"
+            >Order Now</a
+          >
+        </div>
+      </div>
+    </div>
+  </div> -->
+<!-- Pro Tier -->
+<!-- <div class="col">
+    <div class="card">
+      <div class="card-header bg-warning py-3">
+        <h5 class="card-title text-dark text-uppercase text-center">Pro</h5>
+        <h6 class="card-price text-center">
+          $49<span class="term">/month</span>
+        </h6>
+      </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <i class="bx bx-check me-2 font-18"></i>Single User
+          </li>
+          <li class="list-group-item">
+            <i class="bx bx-check me-2 font-18"></i>5GB Storage
+          </li>
+          <li class="list-group-item">
+            <i class="bx bx-check me-2 font-18"></i>Unlimited Public Projects
+          </li>
+          <li class="list-group-item">
+            <i class="bx bx-check me-2 font-18"></i>Community Access
+          </li>
+          <li class="list-group-item">
+            <i class="bx bx-check me-2 font-18"></i>Unlimited Private Projects
+          </li>
+          <li class="list-group-item">
+            <i class="bx bx-check me-2 font-18"></i>Dedicated Phone Support
+          </li>
+          <li class="list-group-item">
+            <i class="bx bx-check me-2 font-18"></i>Free Subdomain
+          </li>
+          <li class="list-group-item">
+            <i class="bx bx-check me-2 font-18"></i>Monthly Status Reports
+          </li>
+        </ul>
+        <div class="d-grid">
+          <a
+            href="#"
+            (click)="$event.preventDefault()"
+            class="btn btn-warning my-2 radius-30"
+            >Order Now</a
+          >
+        </div>
+      </div>
+    </div>
+  </div> -->

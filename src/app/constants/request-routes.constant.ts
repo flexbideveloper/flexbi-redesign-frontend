@@ -8,4 +8,8 @@ export const REQUEST_ROUTES = {
   CHANGE_PASSWORD: 'clientProfiles/changePass',
   CHECK_RESET_LINK: 'clientProfiles/checkResetPassLink',
   CLIENT_PROFILE: 'clientProfiles/',
+  ALL_SETTING: 'googleMicroAuthSettings/allSettings',
+  SUBSCRIPTION_LIST: 'subscriptionsplans',
+
+  SUBSCRIPTION_ACTIVE_FREE: 'subscriptionsallocation/activateTrail/',
 };

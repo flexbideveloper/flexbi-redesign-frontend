@@ -68,7 +68,7 @@ export class SocialAuthComponent implements OnInit {
       };
     } else {
       obj = {
-        UserName: user.account.name,
+        UserName: user.account.username || user.account.name,
         Email: user.account.username,
         CompanyName: '',
         Provider: 'MICROSOFT',

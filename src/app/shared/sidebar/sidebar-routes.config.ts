@@ -856,3 +856,37 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
   },
 ];
+
+export const FLEXBI_ROUTES: RouteInfo[] = [
+  {
+    path: '',
+    title: 'Dashboard',
+    icon: 'bx bx-home-circle',
+    class: 'sub',
+    badge: '',
+    badgeClass: '',
+    isExternalLink: false,
+    submenu: [
+      {
+        path: '/dashboard/default',
+        title: 'Default',
+        icon: 'bx bx-right-arrow-alt',
+        class: '',
+        badge: '',
+        badgeClass: '',
+        isExternalLink: false,
+        submenu: [],
+      },
+    ],
+  },
+  {
+    path: '/subscriptions',
+    title: 'Subscriptions',
+    icon: 'bx bx-diamond',
+    class: '',
+    badge: '',
+    badgeClass: '',
+    isExternalLink: false,
+    submenu: [],
+  },
+];

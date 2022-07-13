@@ -22,7 +22,9 @@ export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
   show: boolean = true;
   cShow: boolean = true;
-  captchaSiteKey = environment.captchaKey;
+  captchaSiteKey =
+    sessionStorage.getItem('CAPTCHAKEY') ||
+    JSON.parse(sessionStorage.getItem('CAPTCHAKEY')).CaptchaKey;
 
   aFormGroup = this.fb.group({
     recaptcha: ['', Validators.required],

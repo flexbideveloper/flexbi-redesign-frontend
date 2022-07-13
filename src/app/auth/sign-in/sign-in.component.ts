@@ -32,7 +32,9 @@ export class SignInComponent implements OnInit, OnDestroy {
   form: FormGroup;
   show: boolean = true;
   isLoggingIn: boolean;
-  captchaSiteKey = environment.captchaKey;
+  captchaSiteKey =
+    sessionStorage.getItem('CAPTCHAKEY') ||
+    JSON.parse(sessionStorage.getItem('CAPTCHAKEY')).CaptchaKey;
   isCaptchaValidate: boolean = false;
   isNoRobotClick: boolean = false;
   user: SocialUser;
@@ -118,7 +120,10 @@ export class SignInComponent implements OnInit, OnDestroy {
           ),
         ],
       ],
-      gcmTonken: [environment.gcmToken],
+      gcmTonken: [
+        sessionStorage.getItem('CAPTCHAKEY') ||
+          JSON.parse(sessionStorage.getItem('CAPTCHAKEY')).CaptchaKey,
+      ],
     });
   }
 
@@ -150,5 +155,21 @@ export class SignInComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     // this.appState$.unsubscribe();
+  }
+}
+
+@Component({
+  selector: 'app-auth',
+  template: `<router-outlet></router-outlet>`,
+})
+export class AuthComponent implements OnInit, OnDestroy {
+  subscription = new Subscription();
+  constructor(private authService: AuthService) {}
+  ngOnInit(): void {
+    this.subscription = this.authService.allSettings().subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
