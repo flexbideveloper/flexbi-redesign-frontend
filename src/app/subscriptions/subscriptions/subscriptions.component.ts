@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/services/auth.service';
+import { NotificationService } from 'src/app/services/notification.service';
 import { SubcriptionsService } from 'src/app/services/subscription.service';
+import { AcceptPaymentPromptComponent } from '../accept-payment-prompt/accept-payment-prompt.component';
 import { CompanyNameComponent } from '../company-name/company-name.component';
 
 export interface SubscriptionPlan {
@@ -27,13 +30,54 @@ export class SubscriptionsComponent implements OnInit {
 
   freePlan: SubscriptionPlan[];
   premiumPlans: SubscriptionPlan[];
+
+  public isTranComplete: any = null;
+  public AccessCode: any = null;
+  public tranObj: any = {};
+
+  public subDetails: any = null;
+  public isPlanActivated: any = false;
+  public isTrialActivated: any = false;
   constructor(
     private subscriptionService: SubcriptionsService,
     private authService: AuthService,
-    private modalService: NgbModal
-  ) {}
+    private modalService: NgbModal,
+    private activeRoute: ActivatedRoute,
+    private notification: NotificationService
+  ) {
+    if (
+      this.activeRoute.snapshot.queryParamMap.get('isTranComplete') !== null &&
+      this.activeRoute.snapshot.queryParamMap.get('AccessCode') !== null
+    ) {
+      this.AccessCode =
+        this.activeRoute.snapshot.queryParamMap.get('AccessCode');
+      this.isTranComplete =
+        this.activeRoute.snapshot.queryParamMap.get('isTranComplete');
+      const planId = this.activeRoute.snapshot.queryParamMap.get('planId');
+      this.getTheTransactionStatus(
+        this.isTranComplete,
+        this.AccessCode,
+        this.authService.getLoggedInUserDetails().UserId,
+        planId
+      );
+    } else {
+      this.getSubscriptionsPlans();
+    }
+  }
 
   ngOnInit(): void {
+    if (this.authService.getLoggedInUserDetails().UserRole === 'USER') {
+      this.subDetails = JSON.parse(sessionStorage.getItem('subDetails')) || [];
+      if (this.subDetails.length > 0) {
+        if (this.subDetails.pop().IsActive) {
+          this.isPlanActivated = true;
+          if (this.subDetails.pop().id_FkSubscriptionPlan === 1) {
+            this.isTrialActivated = true;
+          }
+        }
+      }
+    }
+
     this.getSubscriptionsPlans();
   }
 
@@ -70,12 +114,31 @@ export class SubscriptionsComponent implements OnInit {
     this.subscriptionService.activateFreeTrail(userId).subscribe((res: any) => {
       if (res && res.status === 200) {
         sessionStorage.setItem('subDetails', JSON.stringify(res.planData));
-        setTimeout(() => {
-          // this._router.navigate(['pages/userreports']);
-          window.location.reload();
-        }, 500);
       }
     });
+  }
+
+  activatePlan(plan) {
+    const userId = this.authService.getLoggedInUserDetails().UserId;
+    const CompanyName = this.authService.getLoggedInUserDetails().CompanyName;
+    // check for company name
+    // show company name accept dialog
+    const modal = this.modalService.open(AcceptPaymentPromptComponent, {
+      centered: true,
+    });
+
+    modal.componentInstance.planRequest = {
+      userId,
+      CompanyName,
+      PlanName: plan.PlanName,
+      PlanAmount: plan.Amount,
+      PlanId: plan.id,
+    };
+    // .onClose.subscribe((param: any) => {
+    //   if (param.status && param.status === 200) {
+    //     sessionStorage.setItem('subDetails', JSON.stringify(param.planData));
+    //   }
+    // });
   }
 
   getPlan(type) {
@@ -94,5 +157,53 @@ export class SubscriptionsComponent implements OnInit {
       });
     }
     return plans;
+  }
+
+  getTheTransactionStatus(isTranComplete, AccessCode, userId, planId) {
+    this.subscriptionService
+      .getTheTransactionStatus({
+        isTranComplete,
+        AccessCode,
+        userId,
+        planId,
+      })
+      .subscribe(
+        (res: any) => {
+          if (res.status === 200) {
+            this.tranObj = {
+              isTranVerified: res.isTranVerified,
+              tranId: res.tranId,
+              planData: res.planData,
+            };
+            // tslint:disable-next-line:max-line-length
+            sessionStorage.setItem('subDetails', JSON.stringify(res.planData));
+            setTimeout(() => {
+              // this._router.navigate(['pages/userreports']);
+              const url = window.location.href.split('?')[0];
+              window.location.replace(url);
+              // this.showToast(this.status, this.title, this.content);
+            }, 500);
+          } else {
+            this.tranObj = {
+              isTranVerified: false,
+              tranId: null,
+              planData: null,
+            };
+            // this.showToast('danger', this.title, res.message);
+            const url = window.location.href.split('?')[0];
+            window.location.replace(url);
+            this.getSubscriptionsPlans();
+          }
+          // this.loading = false;
+        },
+        (res: any) => {
+          // this.loading = false;
+          // this.messageStatus = 'danger';
+          // this.showStatus = true;
+          this.notification.success(
+            'Failed to get transaction details. Try again...'
+          );
+        }
+      );
   }
 }

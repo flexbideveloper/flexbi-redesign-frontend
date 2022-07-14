@@ -880,6 +880,16 @@ export const FLEXBI_ROUTES: RouteInfo[] = [
     ],
   },
   {
+    path: '/data-accounts',
+    title: 'XERO Integration',
+    icon: 'bx bx-diamond',
+    class: '',
+    badge: '',
+    badgeClass: '',
+    isExternalLink: false,
+    submenu: [],
+  },
+  {
     path: '/subscriptions',
     title: 'Subscriptions',
     icon: 'bx bx-diamond',

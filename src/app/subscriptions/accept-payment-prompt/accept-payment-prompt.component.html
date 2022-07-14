@@ -1,0 +1,9 @@
+<div class="box">
+  <h6>Redirecting to payment gateway, please wait...</h6>
+  <iframe
+    style="width: 5px; height: 5px; visibility: hidden"
+    *ngIf="paymentObj.isRedirectToPayment"
+    [src]="paymentObj.RedirectURL"
+    target="_self"
+  ></iframe>
+</div>

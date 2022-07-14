@@ -26,11 +26,13 @@
             <li class="list-group-item">&nbsp;</li>
           </ul>
           <div class="d-grid">
-            <a
+            <button
+              [disabled]="isTrialActivated"
               (click)="activateFreeTrail()"
-              class="btn btn-flexbi my-2 radius-30"
-              >Activate</a
+              class="btn btn-flexbi my-2 radius-30 text-weight-bold"
             >
+              {{ isTrialActivated ? "Current Plan" : "Activate" }}
+            </button>
           </div>
         </div>
       </div>
@@ -63,8 +65,8 @@
           </ul>
           <div class="d-grid">
             <a
-              (click)="activateFreeTrail()"
-              class="btn btn-flexbi my-2 radius-30"
+              (click)="activatePlan(plan)"
+              class="btn btn-flexbi my-2 radius-30 text-weight-bold"
               >Activate</a
             >
           </div>

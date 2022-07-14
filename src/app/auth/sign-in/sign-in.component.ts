@@ -33,7 +33,7 @@ export class SignInComponent implements OnInit, OnDestroy {
   show: boolean = true;
   isLoggingIn: boolean;
   captchaSiteKey =
-    sessionStorage.getItem('CAPTCHAKEY') ||
+    sessionStorage.getItem('CAPTCHAKEY') &&
     JSON.parse(sessionStorage.getItem('CAPTCHAKEY')).CaptchaKey;
   isCaptchaValidate: boolean = false;
   isNoRobotClick: boolean = false;

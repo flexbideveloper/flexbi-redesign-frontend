@@ -23,7 +23,7 @@ export class SignUpComponent implements OnInit {
   show: boolean = true;
   cShow: boolean = true;
   captchaSiteKey =
-    sessionStorage.getItem('CAPTCHAKEY') ||
+    sessionStorage.getItem('CAPTCHAKEY') &&
     JSON.parse(sessionStorage.getItem('CAPTCHAKEY')).CaptchaKey;
 
   aFormGroup = this.fb.group({

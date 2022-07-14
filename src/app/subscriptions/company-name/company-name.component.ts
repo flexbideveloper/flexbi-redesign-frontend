@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/services/auth.service';
+import { NotificationService } from 'src/app/services/notification.service';
 import { SubcriptionsService } from 'src/app/services/subscription.service';
 
 export interface ConfirmAction {
@@ -25,7 +26,8 @@ export class CompanyNameComponent implements OnInit {
     public modal: NgbActiveModal,
     private fb: FormBuilder,
     private subscription: SubcriptionsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private notification: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -41,11 +43,14 @@ export class CompanyNameComponent implements OnInit {
     }
     this.subscription.addCompanyName(this.form.value).subscribe(
       (data: any) => {
-        const userDetails = this.authService.getLoggedInUserDetails();
-        userDetails.CompanyName = this.form.value.CompanyName;
-        this.authService.setLoggedInUserDetails(userDetails);
+        if (data.status === 200) {
+          const userDetails = this.authService.getLoggedInUserDetails();
+          userDetails.CompanyName = this.form.value.CompanyName;
+          this.authService.setLoggedInUserDetails(userDetails);
+        }
       },
       (res: any) => {
+        this.notification.error(res.message);
         this.modelClose();
       }
     );

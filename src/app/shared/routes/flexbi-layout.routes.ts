@@ -9,6 +9,13 @@ export const FLEX_BI_ROUTES: Routes = [
       import('../../dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
   {
+    path: 'data-accounts',
+    loadChildren: () =>
+      import('../../xero-integration/xero-integration.module').then(
+        (m) => m.XeroIntegrationModule
+      ),
+  },
+  {
     path: 'subscriptions',
     loadChildren: () =>
       import('../../subscriptions/subscriptions.module').then(

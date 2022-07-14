@@ -8,9 +8,10 @@ import { SubscriptionsRoutingModule } from './subscriptions-routing.module';
 import { ModalModule } from 'ngb-modal';
 import { CompanyNameComponent } from './company-name/company-name.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AcceptPaymentPromptComponent } from './accept-payment-prompt/accept-payment-prompt.component';
 
 @NgModule({
-  declarations: [SubscriptionsComponent, CompanyNameComponent],
+  declarations: [SubscriptionsComponent, CompanyNameComponent, AcceptPaymentPromptComponent],
   imports: [
     CommonModule,
     SubscriptionsRoutingModule,
