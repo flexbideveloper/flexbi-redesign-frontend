@@ -6,7 +6,7 @@
 <div class="pricing-table">
   <div class="row row-cols-1 row-cols-lg-3">
     <!-- Free Tier -->
-    <div class="col" *ngFor="let plan of getPlan('TRIAL')">
+    <div class="col" *ngFor="let plan of freePlan">
       <div class="card mb-5 mb-lg-0">
         <div class="card-header bg-flexbi py-3">
           <h5 class="card-title text-white text-uppercase text-center">
@@ -36,8 +36,10 @@
       </div>
     </div>
 
-    <div class="col" *ngFor="let plan of getPlan('PREMIUM')">
+    <div class="col relative" *ngFor="let plan of premiumPlans; let i = index">
       <div class="card mb-5 mb-lg-0">
+        <span class="most-popular-label" *ngIf="i === 0">Most Popular</span>
+
         <div class="card-header bg-flexbi py-3">
           <h5 class="card-title text-white text-uppercase text-center">
             {{ plan.PlanName }}
@@ -53,7 +55,7 @@
               {{ plan.Days }} Days
             </li>
             <li class="list-group-item">
-              <i class="bx bx-check me-2 font-18"></i> Xero Data Integration
+              <i class="bx bx-check me-2 font-18"></i>Xero Data Integration
             </li>
             <li class="list-group-item">
               <i class="bx bx-check me-2 font-18"></i>Power BI Reports

@@ -110,6 +110,14 @@ export class AppEffects {
               } else {
                 this.notification.error(response.message);
               }
+              this.authService.setLoggedInUserDetails({
+                UserId: response.data.id,
+                UserName: response.data.UserName,
+                CompanyName: response.data.CompanyName,
+                Email: response.data.Email,
+                UserRole: 'USER',
+                UserRoleId: 100,
+              });
               sessionStorage.setItem('identity', JSON.stringify(response.data));
               return this.store.dispatch(new a.SetSocialUser(response.data));
             })

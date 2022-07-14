@@ -1,0 +1,58 @@
+<!-- <nb-card>
+    <nb-card-header>Company Name</nb-card-header>
+    <nb-card-body>
+      <label>Please enter your company name below to activate your plan.</label>
+      <div class="form-group">
+        <label style="visibility: hidden;">Company Name</label>
+        <input type="text" [(ngModel)]="CompanyName" nbInput fullWidth placeholder="Company Name">
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button class="cancel" nbButton status="danger" (click)="cancel()">Cancel</button>
+      <button nbButton status="success" [disabled]="CompanyName.length == 0" (click)="submit()">Submit</button>
+    </nb-card-footer>
+  </nb-card> -->
+
+<div class="modal-header">
+  Company Name
+  <span
+    class="close-icon absolute-btn"
+    aria-label="Close"
+    (click)="modelClose()"
+  ></span>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="form">
+    <div class="row">
+      <div class="col-sm-12">
+        <label class="form-label">Company Name</label>
+        <input
+          type="email"
+          class="form-control"
+          formControlName="CompanyName"
+        />
+        <div class="invalid">
+          {{
+            form.get("CompanyName")?.touched
+              ? form.get("CompanyName")?.errors?.required
+                ? "Company Name required."
+                : form.get("CompanyName")?.errors?.pattern
+                ? "Company Name Required"
+                : ""
+              : ""
+          }}
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <div class="dialog-footer-btn-wrapper two-buttons">
+    <button class="btn btn-danger discard-btn" (click)="modelClose()">
+      Close
+    </button>
+    <button class="btn btn-primary" (click)="submit()">Submit</button>
+  </div>
+</div>

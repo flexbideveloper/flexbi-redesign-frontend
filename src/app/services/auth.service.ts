@@ -76,6 +76,14 @@ export class AuthService {
         mergeMap((response) => {
           if (response && response.status === 200) {
             sessionStorage.setItem('identity', JSON.stringify(response.data));
+            this.setLoggedInUserDetails({
+              UserId: response.data.id,
+              UserName: response.data.UserName,
+              CompanyName: response.data.CompanyName,
+              Email: response.data.Email,
+              UserRole: 'USER',
+              UserRoleId: 100,
+            });
             this.store.dispatch(new a.OnLogin(response.data));
             return of(response);
           } else {
@@ -87,6 +95,10 @@ export class AuthService {
           return throwError(err);
         })
       );
+  }
+
+  setLoggedInUserDetails(userDetails: any) {
+    localStorage.setItem('loggedInUserDetails', JSON.stringify(userDetails));
   }
 
   captchValidate(token: string): Observable<CapchaVerified> {
@@ -186,8 +198,8 @@ export class AuthService {
   }
 
   getLoggedInUserDetails() {
-    if (localStorage.getItem('identity') != null) {
-      return JSON.parse(localStorage.getItem('identity'));
+    if (localStorage.getItem('loggedInUserDetails') != null) {
+      return JSON.parse(localStorage.getItem('loggedInUserDetails'));
     }
     return null;
   }

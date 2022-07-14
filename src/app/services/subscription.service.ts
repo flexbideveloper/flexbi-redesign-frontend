@@ -33,4 +33,12 @@ export class SubcriptionsService {
 
     return this.http.get<any>(url);
   }
+
+  addCompanyName(data: {
+    CompanyName: string;
+    UserId: string;
+  }): Observable<any> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.CLIENT_PROFILE_COMPANY_NAME}`;
+    return this.http.post<any>(url, data);
+  }
 }

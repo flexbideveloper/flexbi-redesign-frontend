@@ -13,8 +13,8 @@ export const initialState: AppState = {
   user: null,
   accessToken: '',
   userDetail:
-    sessionStorage.getItem('identity') ||
-    JSON.parse(sessionStorage.getItem('identity')) ||
+    (sessionStorage.getItem('identity') &&
+      JSON.parse(sessionStorage.getItem('identity'))) ||
     null,
   isCaptchSignIn: false,
   isCaptchSignUp: false,

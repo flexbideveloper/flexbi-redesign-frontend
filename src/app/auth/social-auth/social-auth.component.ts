@@ -125,7 +125,6 @@ export class SocialAuthComponent implements OnInit {
     //       //   UserRole: "USER",
     //       //   UserRoleId: 100,
     //       // });
-    //       debugger;
     //       // this.dataService.setLoggedInUserPermissions(userdata.data);
     //       // $("nb-sidebar").show();
     //     }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/services/auth.service';
 import { SubcriptionsService } from 'src/app/services/subscription.service';
+import { CompanyNameComponent } from '../company-name/company-name.component';
 
 export interface SubscriptionPlan {
   PlanName: string;
@@ -22,9 +24,13 @@ export interface SubscriptionPlan {
 export class SubscriptionsComponent implements OnInit {
   subscriptionPlans: SubscriptionPlan[];
   dumysubPlanList: SubscriptionPlan[];
+
+  freePlan: SubscriptionPlan[];
+  premiumPlans: SubscriptionPlan[];
   constructor(
     private subscriptionService: SubcriptionsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -35,6 +41,10 @@ export class SubscriptionsComponent implements OnInit {
     this.subscriptionService.getSubscriptions().subscribe((data) => {
       this.subscriptionPlans = data.filter((el) => el.IsActive);
       this.dumysubPlanList = data;
+      this.freePlan = data.filter((el) => el.id === 1);
+      this.premiumPlans = data.filter(
+        (el) => el.id !== 1 && el.IsActive === true
+      );
     });
   }
 
@@ -42,24 +52,16 @@ export class SubscriptionsComponent implements OnInit {
     const userId = this.authService.getLoggedInUserDetails().UserId;
     const CompanyName = this.authService.getLoggedInUserDetails().CompanyName;
     // check for company name
+
     if (CompanyName && CompanyName.length > 0) {
       this.activateFreeTrialPlanMethod(userId);
     } else {
       // show company name accept dialog
-      // this.dialogService
-      //   .open(DialogAcceptInputPromptComponent, {
-      //     hasBackdrop: true,
-      //     closeOnBackdropClick: false,
-      //     closeOnEsc: false,
-      //     context: {
-      //       userId,
-      //     },
-      //   })
-      //   .onClose.subscribe((param: any) => {
-      //     if (param === 'SUCCESS') {
-      //       this.activateFreeTrialPlanMethod(userId);
-      //     }
-      //   });
+      const modal = this.modalService.open(CompanyNameComponent, {
+        centered: true,
+      });
+
+      modal.componentInstance.user_id = userId;
     }
   }
 
