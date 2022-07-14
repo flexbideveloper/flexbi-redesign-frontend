@@ -33,7 +33,7 @@ export class CompanyNameComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       CompanyName: ['', Validators.required],
-      UserId: [this.user_id],
+      userId: [this.user_id],
     });
   }
 

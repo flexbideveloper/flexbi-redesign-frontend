@@ -42,12 +42,6 @@ export class AcceptPaymentPromptComponent implements OnInit {
       .subscribe(
         (data: any) => {
           if (data.status === 500) {
-            // this.loading = false;
-            // this.messageStatus = 'danger';
-            // this.showStatus = true;
-            // this.alertMessage = data.message + ' (' + data.errorMessage + ')';
-            // this.paymentObj.RedirectURL = '';
-            // this.paymentObj.isRedirectToPayment = false;
             this.notifcation.error(
               data.message + ' (' + data.errorMessage + ')'
             );
@@ -55,16 +49,9 @@ export class AcceptPaymentPromptComponent implements OnInit {
             this.paymentObj.RedirectURL =
               this.sanitizer.bypassSecurityTrustResourceUrl(data.redirectURL);
             this.paymentObj.isRedirectToPayment = true;
-            // window.open(data.redirectURL, '_blank', 'toolbar=0,location=0,menubar=0');
           }
         },
         (res: any) => {
-          // this.loading = false;
-          // this.messageStatus = 'danger';
-          // this.showStatus = true;
-          // this.alertMessage = 'Payment Failure...';
-          // this.paymentObj.RedirectURL = '';
-          // this.paymentObj.isRedirectToPayment = false;
           this.model.close();
           this.notifcation.error('Payment Failure...');
         }

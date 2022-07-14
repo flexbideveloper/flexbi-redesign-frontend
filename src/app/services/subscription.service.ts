@@ -5,9 +5,10 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { REQUEST_ROUTES } from '../constants/request-routes.constant';
 import { AppSocialUserResponse } from '../interfaces/auth.interface';
-import { SubscriptionPlan } from '../subscriptions/subscriptions/subscriptions.component';
-
-import { NotificationService } from './notification.service';
+import {
+  SubscriptionPlan,
+  SubscriptionResponse,
+} from '../subscriptions/subscriptions/subscription.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -28,15 +29,19 @@ export class SubcriptionsService {
     return this.http.get<SubscriptionPlan[]>(url);
   }
 
+  getActivePlan(userId: string): Observable<SubscriptionResponse> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.SUBSCRIPTION_ACTIVE_GET}${userId}`;
+    return this.http.get<SubscriptionResponse>(url);
+  }
+
   activateFreeTrail(userId: string): Observable<any> {
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.SUBSCRIPTION_ACTIVE_FREE}${userId}`;
-
     return this.http.get<any>(url);
   }
 
   addCompanyName(data: {
     CompanyName: string;
-    UserId: string;
+    userId: string;
   }): Observable<any> {
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.CLIENT_PROFILE_COMPANY_NAME}`;
     return this.http.post<any>(url, data);

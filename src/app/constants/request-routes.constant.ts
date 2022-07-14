@@ -16,4 +16,5 @@ export const REQUEST_ROUTES = {
   SUBSCRIPTION_ACTIVE_FREE: 'subscriptionsallocation/activateTrail/',
   SUBSCRIPTION_PAYMENT_URL: 'subscriptionsallocation/getPaymentUrl',
   SUBSCRIPTION_STATUS: 'subscriptionsallocation/verifyTransaction',
+  SUBSCRIPTION_ACTIVE_GET: 'subscriptionsallocation/getActivePlan/',
 };

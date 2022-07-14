@@ -27,7 +27,9 @@
           </ul>
           <div class="d-grid">
             <button
-              [disabled]="isTrialActivated"
+              [disabled]="
+                activePlanDetail?.planId === plan.id || isTrialActivated
+              "
               (click)="activateFreeTrail()"
               class="btn btn-flexbi my-2 radius-30 text-weight-bold"
             >
@@ -64,11 +66,13 @@
             </li>
           </ul>
           <div class="d-grid">
-            <a
+            <button
+              [disabled]="activePlanDetail?.planId === plan.id"
               (click)="activatePlan(plan)"
               class="btn btn-flexbi my-2 radius-30 text-weight-bold"
-              >Activate</a
             >
+              Activate
+            </button>
           </div>
         </div>
       </div>

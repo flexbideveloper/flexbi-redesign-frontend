@@ -6,19 +6,8 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { SubcriptionsService } from 'src/app/services/subscription.service';
 import { AcceptPaymentPromptComponent } from '../accept-payment-prompt/accept-payment-prompt.component';
 import { CompanyNameComponent } from '../company-name/company-name.component';
+import { SubscriptionPlan } from './subscription.interface';
 
-export interface SubscriptionPlan {
-  PlanName: string;
-  id: number;
-  PlanDetails: string;
-  Amount: number;
-  Days: number;
-  IsActive: boolean;
-  CreatedDate: string;
-  CreatedBy: number;
-  UpdatedDate: string;
-  UpdatedBy: string;
-}
 @Component({
   selector: 'app-subscriptions',
   templateUrl: './subscriptions.component.html',
@@ -27,6 +16,7 @@ export interface SubscriptionPlan {
 export class SubscriptionsComponent implements OnInit {
   subscriptionPlans: SubscriptionPlan[];
   dumysubPlanList: SubscriptionPlan[];
+  activePlanDetail: SubscriptionPlan;
 
   freePlan: SubscriptionPlan[];
   premiumPlans: SubscriptionPlan[];
@@ -63,23 +53,10 @@ export class SubscriptionsComponent implements OnInit {
     } else {
       this.getSubscriptionsPlans();
     }
+    this.getActivePlan();
   }
 
-  ngOnInit(): void {
-    if (this.authService.getLoggedInUserDetails().UserRole === 'USER') {
-      this.subDetails = JSON.parse(sessionStorage.getItem('subDetails')) || [];
-      if (this.subDetails.length > 0) {
-        if (this.subDetails.pop().IsActive) {
-          this.isPlanActivated = true;
-          if (this.subDetails.pop().id_FkSubscriptionPlan === 1) {
-            this.isTrialActivated = true;
-          }
-        }
-      }
-    }
-
-    this.getSubscriptionsPlans();
-  }
+  ngOnInit(): void {}
 
   getSubscriptionsPlans() {
     this.subscriptionService.getSubscriptions().subscribe((data) => {
@@ -89,6 +66,16 @@ export class SubscriptionsComponent implements OnInit {
       this.premiumPlans = data.filter(
         (el) => el.id !== 1 && el.IsActive === true
       );
+    });
+  }
+
+  getActivePlan() {
+    let userId = this.authService.getLoggedInUserDetails().UserId;
+    this.subscriptionService.getActivePlan(userId).subscribe((data) => {
+      this.activePlanDetail = data.data[0];
+      if (this.activePlanDetail.id_FkSubscriptionPlan === 1) {
+        this.isTrialActivated = true;
+      }
     });
   }
 
@@ -113,7 +100,8 @@ export class SubscriptionsComponent implements OnInit {
     // activate free trial plan
     this.subscriptionService.activateFreeTrail(userId).subscribe((res: any) => {
       if (res && res.status === 200) {
-        sessionStorage.setItem('subDetails', JSON.stringify(res.planData));
+        // sessionStorage.setItem('subDetails', JSON.stringify(res.planData));
+        this.getActivePlan();
       }
     });
   }
@@ -175,31 +163,20 @@ export class SubscriptionsComponent implements OnInit {
               tranId: res.tranId,
               planData: res.planData,
             };
-            // tslint:disable-next-line:max-line-length
-            sessionStorage.setItem('subDetails', JSON.stringify(res.planData));
-            setTimeout(() => {
-              // this._router.navigate(['pages/userreports']);
-              const url = window.location.href.split('?')[0];
-              window.location.replace(url);
-              // this.showToast(this.status, this.title, this.content);
-            }, 500);
+            this.getActivePlan();
+            this.getSubscriptionsPlans();
           } else {
             this.tranObj = {
               isTranVerified: false,
               tranId: null,
               planData: null,
             };
-            // this.showToast('danger', this.title, res.message);
-            const url = window.location.href.split('?')[0];
-            window.location.replace(url);
+            this.getActivePlan();
             this.getSubscriptionsPlans();
           }
           // this.loading = false;
         },
         (res: any) => {
-          // this.loading = false;
-          // this.messageStatus = 'danger';
-          // this.showStatus = true;
           this.notification.success(
             'Failed to get transaction details. Try again...'
           );
