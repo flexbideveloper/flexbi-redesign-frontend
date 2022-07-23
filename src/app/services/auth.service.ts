@@ -17,7 +17,6 @@ import {
 import { environment } from 'src/environments/environment';
 import { REQUEST_ROUTES } from '../constants/request-routes.constant';
 import {
-  AdminLoginResponse,
   AppSocialUserResponse,
   CapchaVerified,
   ChangePassword,
@@ -61,7 +60,7 @@ export class AuthService {
     this.socialLogin.next(v);
   }
   getAccessToken(): Observable<string> {
-    return of(sessionStorage.getItem('authToken'));
+    return of(JSON.parse(sessionStorage.getItem('identity'))?.AuthToken);
   }
 
   clientLogin(paylod: SignInRequest): Observable<any> {
@@ -103,7 +102,13 @@ export class AuthService {
 
   captchValidate(token: string): Observable<CapchaVerified> {
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.CAPTCHA_VALIDATE}`;
-    return this.http.post<CapchaVerified>(url, { token });
+    return this.http.post<CapchaVerified>(
+      url,
+      { token },
+      {
+        params: { skipAuthorization: 'true' },
+      }
+    );
   }
 
   signUp(form: SignUpRequest): Observable<SignUpResponse> {

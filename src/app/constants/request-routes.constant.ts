@@ -17,4 +17,6 @@ export const REQUEST_ROUTES = {
   SUBSCRIPTION_PAYMENT_URL: 'subscriptionsallocation/getPaymentUrl',
   SUBSCRIPTION_STATUS: 'subscriptionsallocation/verifyTransaction',
   SUBSCRIPTION_ACTIVE_GET: 'subscriptionsallocation/getActivePlan/',
+
+  GET_REPORT: 'clientReportAllocation/getEmbedReport',
 };

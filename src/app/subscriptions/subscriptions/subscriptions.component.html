@@ -71,7 +71,11 @@
               (click)="activatePlan(plan)"
               class="btn btn-flexbi my-2 radius-30 text-weight-bold"
             >
-              Activate
+              {{
+                activePlanDetail?.planId === plan.id
+                  ? "Current Plan"
+                  : "Activate"
+              }}
             </button>
           </div>
         </div>

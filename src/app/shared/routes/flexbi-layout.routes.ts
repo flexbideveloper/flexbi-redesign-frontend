@@ -22,4 +22,11 @@ export const FLEX_BI_ROUTES: Routes = [
         (m) => m.SubscriptionsModule
       ),
   },
+  {
+    path: 'report',
+    loadChildren: () =>
+      import('../../report-display/report-display.module').then(
+        (m) => m.ReportDisplayModule
+      ),
+  },
 ];
