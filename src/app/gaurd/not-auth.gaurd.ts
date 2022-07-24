@@ -31,7 +31,7 @@ export class NotAuthGuard implements CanActivate {
           return true;
         }
 
-        this.router.navigate(['/dashboard/default']);
+        this.router.navigate(['/subscriptions']);
 
         return false;
       })

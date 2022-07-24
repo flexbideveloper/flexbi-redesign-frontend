@@ -16,7 +16,7 @@ export class AppEffects {
       return this.actions$.pipe(
         ofType<a.OnLogin>(a.ON_LOGIN),
         tap((action) => {
-          this.router.navigateByUrl('dashboard/default');
+          this.router.navigateByUrl('subscriptions');
         })
       );
     },
@@ -28,7 +28,7 @@ export class AppEffects {
       return this.actions$.pipe(
         ofType<a.SetSocialUser>(a.SET_SOCIAL_USER),
         tap((action) => {
-          this.router.navigateByUrl('dashboard/default');
+          this.router.navigateByUrl('subscriptions');
         })
       );
     },

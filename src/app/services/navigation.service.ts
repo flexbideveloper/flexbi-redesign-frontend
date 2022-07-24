@@ -36,7 +36,7 @@ export class NavigationService {
       return '';
     }
 
-    let redirectTo = 'dashboard/default';
+    let redirectTo = 'subscriptions';
 
     if (withRedirect) {
       this.router.navigateByUrl(redirectTo);

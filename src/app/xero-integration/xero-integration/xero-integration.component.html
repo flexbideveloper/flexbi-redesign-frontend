@@ -8,7 +8,7 @@
     <div class="title">Please wait to complete below all the steps</div>
 
     <div class="step-holder">
-      <div class="step done">
+      <div class="step" [ngClass]="getMyStatusClass(1)">
         <div class="label">
           <img
             src="../../../assets/data-load/1.png"
@@ -20,13 +20,18 @@
         <div class="scale">
           <span> 1 </span>
         </div>
-
         <div class="action-btn">
-          <button class="btn btn-flexbi">Authenticate to Xero</button>
+          <button
+            class="btn btn-flexbi"
+            (click)="getXeroBtnLink()"
+            [attr.disabled]="isTokenPrsent && stepperIndex === 0"
+          >
+            Authenticate to Xero
+          </button>
         </div>
       </div>
 
-      <div class="step done">
+      <div class="step" [ngClass]="getMyStatusClass(2)">
         <div class="label">
           <img src="../../../assets/data-load/2.png" alt="XERO Data Load" />
           <span> XERO Data Load </span>
@@ -36,7 +41,7 @@
         </div>
       </div>
 
-      <div class="step done">
+      <div class="step" [ngClass]="getMyStatusClass(3)">
         <div class="label">
           <img src="../../../assets/data-load/3.png" alt="Dashbaord Creation" />
           <span> Dashbaord Creation </span>
@@ -47,7 +52,7 @@
         </div>
       </div>
 
-      <div class="step done">
+      <div class="step" [ngClass]="getMyStatusClass(4)">
         <div class="label">
           <img src="../../../assets/data-load/4.png" alt=" Dataset Refresh " />
           <span> Dataset Refresh </span>
@@ -58,7 +63,7 @@
         </div>
       </div>
 
-      <div class="step active">
+      <div class="step" [ngClass]="getMyStatusClass(5)">
         <div class="label">
           <img src="../../../assets/data-load/5.png" alt="Process Completed" />
           <span> Process Completed </span>
@@ -68,7 +73,13 @@
         </div>
 
         <div class="action-btn">
-          <button class="btn btn-flexbi">Show Report</button>
+          <button
+            routerLink="report"
+            [attr.disabled]="!showReportActive && stepperIndex >= 5"
+            class="btn btn-flexbi"
+          >
+            Show Report
+          </button>
         </div>
       </div>
     </div>

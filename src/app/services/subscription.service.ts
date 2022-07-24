@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { REQUEST_ROUTES } from '../constants/request-routes.constant';
 import { AppSocialUserResponse } from '../interfaces/auth.interface';
 import {
+  DataLoadProcess,
   SubscriptionPlan,
   SubscriptionResponse,
 } from '../subscriptions/subscriptions/subscription.interface';
@@ -14,6 +15,7 @@ import {
   providedIn: 'root',
 })
 export class SubcriptionsService {
+  ifHaveActivePlan = new BehaviorSubject(false);
   socialLogin = new BehaviorSubject(false);
   constructor(private http: HttpClient, protected store: Store) {}
 
@@ -32,6 +34,21 @@ export class SubcriptionsService {
   getActivePlan(userId: string): Observable<SubscriptionResponse> {
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.SUBSCRIPTION_ACTIVE_GET}${userId}`;
     return this.http.get<SubscriptionResponse>(url);
+  }
+
+  checkDataLoadProcess(userId: string): Observable<DataLoadProcess> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.DATA_LOAD_PROCESS}${userId}`;
+    return this.http.get<DataLoadProcess>(url);
+  }
+
+  getXeroAccessTokenDetails(userId: string): Observable<any> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.ACCESS_TOKEN}${userId}`;
+    return this.http.get<any>(url);
+  }
+
+  getDataLoadSteps(userId: string): Observable<any> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.GET_LOGS_STATUS}${userId}`;
+    return this.http.get<any>(url);
   }
 
   activateFreeTrail(userId: string): Observable<any> {

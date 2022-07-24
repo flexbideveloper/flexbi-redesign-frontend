@@ -18,5 +18,14 @@ export const REQUEST_ROUTES = {
   SUBSCRIPTION_STATUS: 'subscriptionsallocation/verifyTransaction',
   SUBSCRIPTION_ACTIVE_GET: 'subscriptionsallocation/getActivePlan/',
 
+  DATA_LOAD_PROCESS: 'subscriptionsallocation/checkDataLoadProcess/',
+
+  ACCESS_TOKEN: 'xerotokenaccess/',
+
+  XERO_AUTH_URL_GET: 'xerotokenaccess/authLink/',
+
+  REPORT_ALLOCATION_LIST: 'clientReportAllocation/reportList',
+
   GET_REPORT: 'clientReportAllocation/getEmbedReport',
+  GET_LOGS_STATUS: 'subscriptionsallocation/getJobsDetails/',
 };

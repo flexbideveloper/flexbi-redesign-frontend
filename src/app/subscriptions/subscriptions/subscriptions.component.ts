@@ -73,6 +73,9 @@ export class SubscriptionsComponent implements OnInit {
     let userId = this.authService.getLoggedInUserDetails().UserId;
     this.subscriptionService.getActivePlan(userId).subscribe((data) => {
       this.activePlanDetail = data.data[0];
+      if (this.activePlanDetail) {
+        this.subscriptionService.ifHaveActivePlan.next(true);
+      }
       if (this.activePlanDetail.id_FkSubscriptionPlan === 1) {
         this.isTrialActivated = true;
       }

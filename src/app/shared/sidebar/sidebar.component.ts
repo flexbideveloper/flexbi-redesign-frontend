@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FLEXBI_ROUTES, ROUTES } from './sidebar-routes.config';
+import { FLEXBI_ROUTES } from './sidebar-routes.config';
 import {
   Router,
   Event,
@@ -10,15 +10,29 @@ import {
 import { SidebarService } from './sidebar.service';
 
 import * as $ from 'jquery';
+import { SubcriptionsService } from 'src/app/services/subscription.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { SubscriptionPlan } from 'src/app/subscriptions/subscriptions/subscription.interface';
+import { ReportService } from 'src/app/services/report.service';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
 })
 export class SidebarComponent implements OnInit {
-  public menuItems: any[];
+  menuItems: any[] = [];
+  activatedPlan: boolean = false;
+  activePlanDetail: SubscriptionPlan;
+  public isTrialActivated: any = false;
 
-  constructor(public sidebarservice: SidebarService, private router: Router) {
+  constructor(
+    public sidebarservice: SidebarService,
+    private router: Router,
+    public subscription: SubcriptionsService,
+    private authService: AuthService,
+    private subscriptionService: SubcriptionsService,
+    private reportService: ReportService
+  ) {
     router.events.subscribe((event: Event) => {
       if (event instanceof NavigationStart) {
         // Show loading indicator
@@ -39,6 +53,9 @@ export class SidebarComponent implements OnInit {
         // Present error to user
         console.log(event.error);
       }
+    });
+    this.subscription.ifHaveActivePlan.subscribe((plan) => {
+      this.activatedPlan = plan;
     });
   }
 
@@ -71,7 +88,168 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.menuItems = FLEXBI_ROUTES.filter((menuItem) => menuItem);
-    $.getScript('./assets/js/app-sidebar.js');
+    // this.menuItems = FLEXBI_ROUTES.filter((menuItem) => menuItem);
+
+    if (
+      localStorage.getItem('identity') == null ||
+      localStorage.getItem('identity') == 'false'
+    ) {
+      this.router.navigate(['/pages/login']);
+    } else {
+      let user =
+        this.authService.getLoggedInUserDetails &&
+        this.authService.getLoggedInUserDetails();
+      if (user.UserRole && user.UserRole === 'USER') {
+        // get the report list...
+        let userId = this.authService.getLoggedInUserDetails().UserId;
+        this.subscriptionService.getActivePlan(userId).subscribe((data) => {
+          this.activePlanDetail = data.data[0];
+          if (this.activePlanDetail) {
+            this.subscriptionService.ifHaveActivePlan.next(true);
+          }
+          if (this.activePlanDetail.id_FkSubscriptionPlan === 1) {
+            this.isTrialActivated = true;
+          }
+          if (this.activePlanDetail) {
+            // check for plan expiry..
+            if (this.getRemainingDays() === 'Plan is Expired.') {
+              this.router.navigate(['pages/subscriptions']);
+            } else {
+              let reportsList = [];
+              // tslint:disable-next-line:max-line-length
+              this.reportService
+                .getAllReportsListByCustomerAndWorkspace(
+                  this.authService.getLoggedInUserDetails().UserId
+                )
+                .subscribe(
+                  (res: any) => {
+                    reportsList = res.data || [];
+                    if (reportsList.length > 0) {
+                      let child = [];
+                      reportsList.map((r: any) => {
+                        child.push({
+                          path:
+                            '/pages/userreports/' +
+                            r.RptID +
+                            '/' +
+                            r.WorkspID +
+                            '/' +
+                            (r.xeroReport && r.xeroReport === true
+                              ? true
+                              : false),
+
+                          title: r.ReportName,
+                          icon: 'bx bx-file-circle',
+                          class: 'sub',
+                          badge: '',
+                          badgeClass: '',
+                          isExternalpath: false,
+                          submenu: [],
+                        });
+                      });
+                      this.menuItems.push({
+                        submenu: child,
+                        path: 'report',
+                        title: 'Reports',
+                        icon: 'bx bx-home-circle',
+                        class: 'sub',
+                        badge: '',
+                        badgeClass: '',
+                        isExternalpath: false,
+                      });
+                      // temporaray code for adding menu
+                      // this.menuItems.push({
+                      //   title: 'Xero Integration',
+                      //   icon: 'folder-add',
+                      //   path: '/pages/data-accounts',
+                      // });
+                      this.menuItems.push({
+                        title: 'Subscription Plans',
+                        icon: 'bx bx-home-circle',
+                        path: '/pages/subscriptions',
+
+                        class: '',
+                        badge: '',
+                        badgeClass: '',
+                        isExternalLink: false,
+                      });
+                      if (window.location.pathname === '/pages/userreports') {
+                        this.router.navigate([
+                          this.menuItems[0].submenu[0].path,
+                        ]);
+                      }
+                    } else {
+                      // this.menuItems.push({
+                      //   icon: 'home-outline',
+                      //   path: '/pages/userreports',
+                      //   title: 'Reports'
+                      // });
+                      // temporaray code for adding menu
+
+                      this.menuItems.push({
+                        title: 'Xero Integration',
+                        icon: 'bx bx-home-circle',
+                        path: 'data-accounts',
+                        class: '',
+                        badge: '',
+                        badgeClass: '',
+                        isExternalpath: false,
+                        submenu: [],
+                      });
+                      this.menuItems.push({
+                        title: 'Subscription Plans',
+                        icon: 'bx bx-home-circle',
+                        path: 'subscriptions',
+                        class: '',
+                        badge: '',
+                        badgeClass: '',
+                        isExternalpath: false,
+
+                        submenu: [],
+                      });
+                      if (window.location.pathname === 'userreports') {
+                        this.router.navigate([this.menuItems[0].path]);
+                      }
+                    }
+                  },
+                  (res: any) => {
+                    this.menuItems.push({
+                      path: 'report',
+                      title: 'Reports',
+                      icon: 'bx bx-home-circle',
+                      class: 'sub',
+                      badge: '',
+                      badgeClass: '',
+                      isExternalpath: false,
+                      submenu: [],
+                    });
+                    this.router.navigate([this.menuItems[0].path]);
+                  }
+                );
+            }
+          } else {
+            this.router.navigate(['pages/subscriptions']);
+          }
+        });
+      }
+    }
+  }
+
+  getRemainingDays() {
+    if (this.activePlanDetail) {
+      let diffDays = 0;
+      diffDays =
+        new Date(this.activePlanDetail.EndDate).getTime() -
+        new Date().getTime();
+      diffDays = diffDays / (1000 * 3600 * 24);
+      diffDays = Number(diffDays);
+      diffDays = Math.ceil(diffDays);
+      if (diffDays > 0) {
+        return diffDays + ' days left';
+      } else {
+        return 'Plan is Expired.';
+      }
+    }
+    return '';
   }
 }
