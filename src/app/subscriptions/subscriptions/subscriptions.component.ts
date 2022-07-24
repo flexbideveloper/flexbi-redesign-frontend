@@ -103,6 +103,7 @@ export class SubscriptionsComponent implements OnInit {
     // activate free trial plan
     this.subscriptionService.activateFreeTrail(userId).subscribe((res: any) => {
       if (res && res.status === 200) {
+        // window.location.reload();
         // sessionStorage.setItem('subDetails', JSON.stringify(res.planData));
         this.getActivePlan();
       }

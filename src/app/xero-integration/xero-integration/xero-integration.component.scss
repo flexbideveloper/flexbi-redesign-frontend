@@ -73,8 +73,18 @@
         background: #21cead;
         span {
           background-color: #21cead;
-          -webkit-animation: name 2s infinite;
           border-color: #fff;
+        }
+      }
+    }
+
+    &.running {
+      .scale {
+        background: #21cead;
+        span {
+          background-color: #21cead;
+          border-color: #fff;
+          -webkit-animation: name 2s infinite;
         }
       }
     }

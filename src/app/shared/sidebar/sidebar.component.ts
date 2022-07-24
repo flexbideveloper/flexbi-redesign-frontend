@@ -129,7 +129,7 @@ export class SidebarComponent implements OnInit {
                       reportsList.map((r: any) => {
                         child.push({
                           path:
-                            '/pages/userreports/' +
+                            'reports/' +
                             r.RptID +
                             '/' +
                             r.WorkspID +
@@ -137,42 +137,58 @@ export class SidebarComponent implements OnInit {
                             (r.xeroReport && r.xeroReport === true
                               ? true
                               : false),
-
                           title: r.ReportName,
-                          icon: 'bx bx-file-circle',
-                          class: 'sub',
+                          icon: 'bx bx-right-arrow-alt',
+                          class: '',
                           badge: '',
                           badgeClass: '',
-                          isExternalpath: false,
+                          isExternalLink: false,
                           submenu: [],
                         });
                       });
+
                       this.menuItems.push({
-                        submenu: child,
-                        path: 'report',
-                        title: 'Reports',
+                        path: '',
+                        title: 'Dashboard',
                         icon: 'bx bx-home-circle',
                         class: 'sub',
                         badge: '',
                         badgeClass: '',
-                        isExternalpath: false,
+                        isExternalLink: false,
+                        submenu: child,
                       });
-                      // temporaray code for adding menu
-                      // this.menuItems.push({
-                      //   title: 'Xero Integration',
-                      //   icon: 'folder-add',
-                      //   path: '/pages/data-accounts',
-                      // });
                       this.menuItems.push({
                         title: 'Subscription Plans',
-                        icon: 'bx bx-home-circle',
-                        path: '/pages/subscriptions',
-
+                        icon: 'bx bx-diamond',
+                        path: 'subscriptions',
                         class: '',
                         badge: '',
                         badgeClass: '',
-                        isExternalLink: false,
+                        isExternalpath: false,
+                        submenu: [],
                       });
+
+                      // let child = [];
+
+                      // this.menuItems.push({
+                      //   path: '',
+                      //   title: 'Dashboard',
+                      //   icon: 'bx bx-home-circle',
+                      //   class: 'sub',
+                      //   badge: '',
+                      //   badgeClass: '',
+                      //   isExternalLink: false,
+                      // });
+
+                      // this.menuItems.push({
+                      //   title: 'Subscription Plans',
+                      //   icon: 'bx bx-home-circle',
+                      //   path: 'subscriptions',
+                      //   class: 'sub',
+                      //   badge: '',
+                      //   badgeClass: '',
+                      //   isExternalLink: false,
+                      // });
                       if (window.location.pathname === '/pages/userreports') {
                         this.router.navigate([
                           this.menuItems[0].submenu[0].path,
@@ -188,7 +204,7 @@ export class SidebarComponent implements OnInit {
 
                       this.menuItems.push({
                         title: 'Xero Integration',
-                        icon: 'bx bx-home-circle',
+                        icon: 'bx bx-repeat',
                         path: 'data-accounts',
                         class: '',
                         badge: '',
@@ -198,13 +214,12 @@ export class SidebarComponent implements OnInit {
                       });
                       this.menuItems.push({
                         title: 'Subscription Plans',
-                        icon: 'bx bx-home-circle',
+                        icon: 'bx bx-diamond',
                         path: 'subscriptions',
                         class: '',
                         badge: '',
                         badgeClass: '',
                         isExternalpath: false,
-
                         submenu: [],
                       });
                       if (window.location.pathname === 'userreports') {
@@ -216,7 +231,7 @@ export class SidebarComponent implements OnInit {
                     this.menuItems.push({
                       path: 'report',
                       title: 'Reports',
-                      icon: 'bx bx-home-circle',
+                      icon: 'bx bx-fle-circle',
                       class: 'sub',
                       badge: '',
                       badgeClass: '',

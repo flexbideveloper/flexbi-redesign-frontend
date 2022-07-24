@@ -8,7 +8,11 @@
     <div class="title">Please wait to complete below all the steps</div>
 
     <div class="step-holder">
-      <div class="step" [ngClass]="getMyStatusClass(1)">
+      <div
+        class="step"
+        class="{{ getMyStatusClass(2) }}"
+        [class.running]="stepperIndex + 1 === 2"
+      >
         <div class="label">
           <img
             src="../../../assets/data-load/1.png"
@@ -20,18 +24,23 @@
         <div class="scale">
           <span> 1 </span>
         </div>
+
         <div class="action-btn">
           <button
             class="btn btn-flexbi"
+            [disabled]="isTokenPrsent && stepperIndex === 1"
             (click)="getXeroBtnLink()"
-            [attr.disabled]="isTokenPrsent && stepperIndex === 0"
           >
             Authenticate to Xero
           </button>
         </div>
       </div>
 
-      <div class="step" [ngClass]="getMyStatusClass(2)">
+      <div
+        class="step"
+        class="{{ getMyStatusClass(3) }}"
+        [class.running]="stepperIndex + 1 === 3"
+      >
         <div class="label">
           <img src="../../../assets/data-load/2.png" alt="XERO Data Load" />
           <span> XERO Data Load </span>
@@ -41,7 +50,11 @@
         </div>
       </div>
 
-      <div class="step" [ngClass]="getMyStatusClass(3)">
+      <div
+        class="step"
+        class="{{ getMyStatusClass(4) }}"
+        [class.running]="stepperIndex + 1 === 4"
+      >
         <div class="label">
           <img src="../../../assets/data-load/3.png" alt="Dashbaord Creation" />
           <span> Dashbaord Creation </span>
@@ -52,7 +65,11 @@
         </div>
       </div>
 
-      <div class="step" [ngClass]="getMyStatusClass(4)">
+      <div
+        class="step"
+        class="{{ getMyStatusClass(5) }}"
+        [class.running]="stepperIndex + 1 === 5"
+      >
         <div class="label">
           <img src="../../../assets/data-load/4.png" alt=" Dataset Refresh " />
           <span> Dataset Refresh </span>
@@ -63,7 +80,11 @@
         </div>
       </div>
 
-      <div class="step" [ngClass]="getMyStatusClass(5)">
+      <div
+        class="step"
+        class="{{ getMyStatusClass(6) }} "
+        [class.running]="stepperIndex + 1 === 6"
+      >
         <div class="label">
           <img src="../../../assets/data-load/5.png" alt="Process Completed" />
           <span> Process Completed </span>

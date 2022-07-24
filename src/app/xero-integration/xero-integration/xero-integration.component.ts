@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ReportService } from 'src/app/services/report.service';
 import { SubcriptionsService } from 'src/app/services/subscription.service';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-xero-integration',
@@ -36,7 +36,7 @@ export class XeroIntegrationComponent implements OnInit {
   isTokenPrsent: boolean = false;
   authLink: string = '';
 
-  stepperIndex: number = 0;
+  stepperIndex: number = 1;
 
   showXeroDataLoadProcess: any = false;
   xeroDataLoadCompleted: any = false;
@@ -51,6 +51,9 @@ export class XeroIntegrationComponent implements OnInit {
   dataLoadingSteps: any = null;
 
   showError: boolean = false;
+  active: string = 'auth';
+
+  sub: Subscription;
 
   constructor(
     private xeroAppService: ReportService,
@@ -59,55 +62,30 @@ export class XeroIntegrationComponent implements OnInit {
     public subscription: SubcriptionsService,
     public router: Router
   ) {
-    // this.getSubscriptionDetails();
-    this.checkStepsAndPassStepper({
-      'XERO-AUTH': {
-        isCompleted: true,
-        isError: false,
-        error: '',
-      },
-      'XERO-DATA-LOAD': {
-        isCompleted: true,
-        isError: false,
-        error: '',
-      },
-      'DASHBOARD-CREATION': {
-        isCompleted: false,
-        isError: false,
-        error: '',
-      },
-      'DATASET-REFRESH': {
-        isCompleted: false,
-        isError: false,
-        error: '',
-      },
-      'INITIAL-LOAD-COMPLETE': {
-        isCompleted: false,
-        isError: false,
-        error: '',
-      },
-    });
+    this.getSubscriptionDetails();
+
+    const source = interval(4000);
+    this.sub = source.subscribe((val) => this.refreshStepper());
   }
 
   ngOnInit(): void {}
 
   getXeroBtnLink() {
-    if (this.stepperIndex !== 0) {
-      return;
+    if (this.stepperIndex === 1 && !this.isTokenPrsent) {
+      this.xeroAppService.getXeroAuthLink().subscribe(
+        (res: any) => {
+          window.open(res.url, 'xeroauth');
+          // this.showXeroDataLoadProcess = true;
+          this.loading = false;
+        },
+        (res: any) => {
+          this.loading = false;
+          this.notification.error(
+            'Failed to get list of Customers. Try again...'
+          );
+        }
+      );
     }
-    this.xeroAppService.getXeroAuthLink().subscribe(
-      (res: any) => {
-        window.open(res.url, 'xeroauth');
-        // this.showXeroDataLoadProcess = true;
-        this.loading = false;
-      },
-      (res: any) => {
-        this.loading = false;
-        this.notification.error(
-          'Failed to get list of Customers. Try again...'
-        );
-      }
-    );
   }
 
   getSubscriptionDetails() {
@@ -164,7 +142,6 @@ export class XeroIntegrationComponent implements OnInit {
   getXeroAccessTokenDetails() {
     this.loading = true;
     const userId = this.authService.getLoggedInUserDetails().UserId;
-
     this.isTokenPrsent = false;
     this.subscription.getXeroAccessTokenDetails(userId).subscribe(
       (res: any) => {
@@ -196,6 +173,7 @@ export class XeroIntegrationComponent implements OnInit {
       (res: any) => {
         if (res && res.status === 200) {
           this.dataLoadingSteps = res.data ? res.data : null;
+          this.checkStepsAndPassStepper(this.dataLoadingSteps);
         } else {
           this.loading = false;
           this.dataLoadingSteps = null;
@@ -216,14 +194,16 @@ export class XeroIntegrationComponent implements OnInit {
         this.stepperIndex++;
       } else if (dataStatus['XERO-AUTH'].isError) {
         this.showError = true;
+        this.active == 'load';
       }
     }
 
-    if (dataStatus['isCompleted']) {
-      if (dataStatus['isCompleted'].isCompleted) {
+    if (dataStatus['XERO-DATA-LOAD']) {
+      if (dataStatus['XERO-DATA-LOAD'].isCompleted) {
         this.stepperIndex++;
-      } else if (dataStatus['isCompleted'].isError) {
+      } else if (dataStatus['XERO-DATA-LOAD'].isError) {
         this.showError = true;
+        this.active == 'creation';
       }
     }
 
@@ -232,6 +212,7 @@ export class XeroIntegrationComponent implements OnInit {
         this.stepperIndex++;
       } else if (dataStatus['DASHBOARD-CREATION'].isError) {
         this.showError = true;
+        this.active == 'refresh';
       }
     }
 
@@ -240,6 +221,7 @@ export class XeroIntegrationComponent implements OnInit {
         this.stepperIndex++;
       } else if (dataStatus['DATASET-REFRESH'].isError) {
         this.showError = true;
+        this.active == 'complete';
       }
     }
 
@@ -249,6 +231,13 @@ export class XeroIntegrationComponent implements OnInit {
         this.showReportActive = true;
       } else if (dataStatus['INITIAL-LOAD-COMPLETE'].isError) {
         this.showError = true;
+        this.active == 'final';
+
+        this.showReportActive = true;
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       }
     }
   }
@@ -257,16 +246,25 @@ export class XeroIntegrationComponent implements OnInit {
     if (pos === this.stepperIndex) {
       return 'active';
     }
+
     if (pos > this.stepperIndex) {
       return '';
     }
+
     if (pos < this.stepperIndex) {
       return 'done';
     }
+
+    if (pos < this.stepperIndex) {
+      return 'done';
+    }
+
     return '';
   }
 
   refreshStepper() {
+    if (this.isTokenPrsent) {
+    }
     this.getDataLoadSteps();
   }
 
