@@ -5,7 +5,7 @@
       <div class="mobile-toggle-menu">
         <i (click)="toggleSidebar()" class="bx bx-menu"></i>
       </div>
-      <div class="search-bar flex-grow-1">
+      <!-- <div class="search-bar flex-grow-1">
         <div class="position-relative search-bar-box">
           <input
             type="text"
@@ -19,14 +19,14 @@
             ><i class="bx bx-x"></i
           ></span>
         </div>
-      </div>
+      </div> -->
       <div class="top-menu ms-auto">
-        <ul class="navbar-nav align-items-center">
-          <li class="nav-item mobile-search-icon">
+        <ul class="navbar-nav align-items-center" *ngIf="false">
+          <!-- <li class="nav-item mobile-search-icon">
             <a class="nav-link" href="#" (click)="$event.preventDefault()">
               <i class="bx bx-search"></i>
             </a>
-          </li>
+          </li> -->
           <li class="nav-item dropdown dropdown-large">
             <a
               class="nav-link dropdown-toggle dropdown-toggle-nocaret"
@@ -551,11 +551,11 @@
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          <img
+          <!-- <img
             src="assets/images/avatars/avatar-2.png"
             class="user-img"
             alt="user avatar"
-          />
+          /> -->
           <div class="user-info ps-3">
             <p class="user-name mb-0">
               {{ d.userDetails?.UserName || "-" }}
@@ -567,29 +567,24 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
           <li>
-            <a class="dropdown-item" routerLink="/user-profile"
-              ><i class="bx bx-user"></i><span>Profile</span></a
-            >
+            <a class="dropdown-item">
+              Company Name<span> {{ d.userDetails?.CompanyName || "-" }} </span>
+            </a>
           </li>
-          <li>
-            <a class="dropdown-item" routerLink="/ecommerce/orders"
-              ><i class="bx bx-cog"></i><span>Orders</span></a
-            >
+
+          <li *ngIf="expStatus !== 'EXPIRED'">
+            <a class="dropdown-item">
+              License type
+              <span> {{ activePlanDetail?.PlanName || "-" }} </span> <br />
+              {{ remDays }}
+            </a>
           </li>
-          <li>
-            <a class="dropdown-item" routerLink="/dashboard/e-commerce"
-              ><i class="bx bx-home-circle"></i><span>Dashboard</span></a
-            >
-          </li>
-          <li>
-            <a class="dropdown-item" routerLink="/earnings"
-              ><i class="bx bx-dollar-circle"></i><span>Earnings</span></a
-            >
-          </li>
-          <li>
-            <a class="dropdown-item" routerLink="/downloads"
-              ><i class="bx bx-download"></i><span>Downloads</span></a
-            >
+
+          <li *ngIf="expStatus === 'EXPIRED'">
+            <a class="dropdown-item">
+              {{ activePlanDetail?.PlanName || "-" }}
+              <span> Plan is Expired </span>
+            </a>
           </li>
           <li>
             <div class="dropdown-divider mb-0"></div>
