@@ -92,7 +92,7 @@ export class SidebarComponent implements OnInit {
       if (!!this.activePlanDetail) {
         this.subscriptionService.ifHaveActivePlan.next(true);
       }
-      if (this.activePlanDetail.id_FkSubscriptionPlan === 1) {
+      if (this.activePlanDetail?.id_FkSubscriptionPlan === 1) {
         this.isTrialActivated = true;
       }
       let user = this.authService.getLoggedInUserDetails();
@@ -150,8 +150,8 @@ export class SidebarComponent implements OnInit {
                     isExternalLink: false,
                     submenu: [],
                   });
-                  if (window.location.pathname === '/reports') {
-                    this.router.navigate([this.menuItems[0].path]);
+                  if (window.location.pathname === 'reports') {
+                    this.router.navigate([this.menuItems[0].submenu[0].path]);
                   }
                 } else {
                   this.menuItems.push({

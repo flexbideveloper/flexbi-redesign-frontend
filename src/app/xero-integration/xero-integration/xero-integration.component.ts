@@ -18,7 +18,7 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
   public searchText = '';
   public pendingApprovals = false;
   public showInActive: boolean = false;
-
+  errorText: string = '';
   showReportActive: boolean = false;
 
   public tenantsList = [];
@@ -194,6 +194,7 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
         this.stepperIndex = 2;
       } else if (dataStatus['XERO-AUTH'].isError) {
         this.showError = true;
+        this.errorText = dataStatus['XERO-AUTH'].error;
         this.active == 'load';
       }
     }
@@ -203,6 +204,7 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
         this.stepperIndex = 3;
       } else if (dataStatus['XERO-DATA-LOAD'].isError) {
         this.showError = true;
+        this.errorText = dataStatus['XERO-DATA-LOAD'].error;
         this.active == 'creation';
       }
     }
@@ -212,6 +214,7 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
         this.stepperIndex = 4;
       } else if (dataStatus['DASHBOARD-CREATION'].isError) {
         this.showError = true;
+        this.errorText = dataStatus['DASHBOARD-CREATION'].error;
         this.active == 'refresh';
       }
     }
@@ -221,6 +224,7 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
         this.stepperIndex = 5;
       } else if (dataStatus['DATASET-REFRESH'].isError) {
         this.showError = true;
+        this.errorText = dataStatus['DATASET-REFRESH'].error;
         this.active == 'complete';
       }
     }
@@ -231,6 +235,7 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
         this.showReportActive = true;
       } else if (dataStatus['INITIAL-LOAD-COMPLETE'].isError) {
         this.showError = true;
+        this.errorText = dataStatus['INITIAL-LOAD-COMPLETE'].error;
         this.active == 'final';
         setTimeout(() => {
           window.location.reload();
@@ -274,6 +279,13 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
     } else {
       return 'PLAN-NOT-PURCHASED';
     }
+  }
+
+  showReport() {
+    this.router.navigate(['report']);
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   }
 
   ngOnDestroy(): void {
