@@ -4,6 +4,10 @@ import { ReportDisplayComponent } from './report-display/report-display.componen
 
 const routes: Routes = [
   {
+    path: '',
+    component: ReportDisplayComponent,
+  },
+  {
     path: ':reportId/:workspaceId/:xeroReport',
     component: ReportDisplayComponent,
   },

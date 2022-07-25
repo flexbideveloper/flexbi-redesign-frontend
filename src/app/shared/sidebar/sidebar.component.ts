@@ -150,9 +150,6 @@ export class SidebarComponent implements OnInit {
                     isExternalLink: false,
                     submenu: [],
                   });
-                  if (window.location.pathname === 'reports') {
-                    this.router.navigate([this.menuItems[0].submenu[0].path]);
-                  }
                 } else {
                   this.menuItems.push({
                     path: 'data-accounts',
@@ -174,7 +171,7 @@ export class SidebarComponent implements OnInit {
                     isExternalLink: false,
                     submenu: [],
                   });
-                  if (window.location.pathname === '/reports') {
+                  if (window.location.pathname === '/report') {
                     this.router.navigate([this.menuItems[0].path]);
                   }
                 }

@@ -20,7 +20,7 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
   public showInActive: boolean = false;
   errorText: string = '';
   showReportActive: boolean = false;
-
+  reportsList = [];
   public tenantsList = [];
 
   showStatus: boolean = false;
@@ -60,7 +60,8 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
     private notification: NotificationService,
     public authService: AuthService,
     public subscription: SubcriptionsService,
-    public router: Router
+    public router: Router,
+    public reportService: ReportService
   ) {
     this.getSubscriptionDetails();
 
@@ -282,10 +283,26 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
   }
 
   showReport() {
-    this.router.navigate(['report']);
-    setTimeout(() => {
-      window.location.reload();
-    }, 500);
+    this.reportService
+      .getAllReportsListByCustomerAndWorkspace(
+        this.authService.getLoggedInUserDetails().UserId
+      )
+      .subscribe((res: any) => {
+        this.reportsList = res.data || [];
+        if (this.reportsList.length > 0) {
+          this.router.navigate([
+            'report/' +
+              this.reportsList[0].RptID +
+              '/' +
+              this.reportsList[0].WorkspID +
+              '/' +
+              (this.reportsList[0].xeroReport &&
+              this.reportsList[0].xeroReport === true
+                ? true
+                : false),
+          ]);
+        }
+      });
   }
 
   ngOnDestroy(): void {

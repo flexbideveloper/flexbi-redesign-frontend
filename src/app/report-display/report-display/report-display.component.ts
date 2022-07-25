@@ -117,9 +117,6 @@ export class ReportDisplayComponent implements OnInit {
         }
       );
     } else {
-      this.isNewUser = true;
-      this.notification.error('Report not loaded.');
-      // window.location.reload();
     }
   }
 
