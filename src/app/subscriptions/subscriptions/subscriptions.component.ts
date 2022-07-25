@@ -73,7 +73,6 @@ export class SubscriptionsComponent implements OnInit {
     let userId = this.authService.getLoggedInUserDetails().UserId;
     this.subscriptionService.getActivePlan(userId).subscribe((data) => {
       this.activePlanDetail = data.data[0];
-      debugger;
       if (!!this.activePlanDetail) {
         this.subscriptionService.ifHaveActivePlan.next(true);
       }
@@ -170,6 +169,7 @@ export class SubscriptionsComponent implements OnInit {
             };
             this.getActivePlan();
             this.getSubscriptionsPlans();
+            window.location.reload();
           } else {
             this.tranObj = {
               isTranVerified: false,

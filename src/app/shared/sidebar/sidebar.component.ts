@@ -55,9 +55,6 @@ export class SidebarComponent implements OnInit {
         console.log(event.error);
       }
     });
-    this.subscription.ifHaveActivePlan.subscribe((plan) => {
-      this.activatedPlan = plan;
-    });
   }
 
   toggleSidebar() {
@@ -89,7 +86,118 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.menuItems = FLEXBI_ROUTES.filter((menuItem) => menuItem);
+    let userId = this.authService.getLoggedInUserDetails().UserId;
+    this.subscriptionService.getActivePlan(userId).subscribe((data) => {
+      this.activePlanDetail = data.data[0];
+      if (!!this.activePlanDetail) {
+        this.subscriptionService.ifHaveActivePlan.next(true);
+      }
+      if (this.activePlanDetail.id_FkSubscriptionPlan === 1) {
+        this.isTrialActivated = true;
+      }
+      let user = this.authService.getLoggedInUserDetails();
+      if (user.UserRole && user.UserRole === 'USER') {
+        if (!!this.activePlanDetail) {
+          // check for plan expiry..
+          if (this.getRemainingDays() === 'Plan is Expired.') {
+            this.router.navigate(['subscriptions']);
+          } else {
+            let reportsList = [];
+            // tslint:disable-next-line:max-line-length
+            this.reportService
+              .getAllReportsListByCustomerAndWorkspace(
+                this.authService.getLoggedInUserDetails().UserId
+              )
+              .subscribe((res: any) => {
+                reportsList = res.data || [];
+                if (reportsList.length > 0) {
+                  let child = [];
+                  reportsList.map((r: any) => {
+                    child.push({
+                      path:
+                        'report/' +
+                        r.RptID +
+                        '/' +
+                        r.WorkspID +
+                        '/' +
+                        (r.xeroReport && r.xeroReport === true ? true : false),
+                      title: r.ReportName,
+                      icon: 'bx bx-file',
+                      class: '',
+                      badge: '',
+                      badgeClass: '',
+                      isExternalLink: false,
+                      submenu: [],
+                    });
+                  });
+                  this.menuItems.push({
+                    path: '',
+                    title: 'Reports',
+                    icon: 'bx bx-file',
+                    class: 'sub',
+                    badge: '',
+                    badgeClass: '',
+                    isExternalLink: false,
+                    submenu: child,
+                  });
+                  this.menuItems.push({
+                    path: 'subscriptions',
+                    title: 'Subscription Plans',
+                    icon: 'bx bx-diamond',
+                    class: '',
+                    badge: '',
+                    badgeClass: '',
+                    isExternalLink: false,
+                    submenu: [],
+                  });
+                  if (window.location.pathname === '/reports') {
+                    this.router.navigate([this.menuItems[0].path]);
+                  }
+                } else {
+                  this.menuItems.push({
+                    path: 'data-accounts',
+                    title: 'Xero Integration',
+                    icon: 'bx bx-repeat',
+                    class: '',
+                    badge: '',
+                    badgeClass: '',
+                    isExternalLink: false,
+                    submenu: [],
+                  });
+                  this.menuItems.push({
+                    path: 'subscriptions',
+                    title: 'Subscription Plans',
+                    icon: 'bx bx-diamond',
+                    class: '',
+                    badge: '',
+                    badgeClass: '',
+                    isExternalLink: false,
+                    submenu: [],
+                  });
+                  if (window.location.pathname === '/reports') {
+                    this.router.navigate([this.menuItems[0].path]);
+                  }
+                }
+              });
+          }
+        } else {
+          this.menuItems.push({
+            path: 'subscriptions',
+            title: 'Subscription Plans',
+            icon: 'bx bx-diamond',
+            class: '',
+            badge: '',
+            badgeClass: '',
+            isExternalLink: false,
+            submenu: [],
+          });
+          this.router.navigate(['subscriptions']);
+        }
+      }
+    });
+
+    // this.menuItems = FLEXBI_ROUTES.filter((menuItem) => menuItem);
+    $.getScript('./assets/js/app-sidebar.js');
   }
 
   getRemainingDays() {
