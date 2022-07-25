@@ -36,7 +36,7 @@ export class NavbarComponent implements OnInit {
     this.subscriptionService.getActivePlan(userId).subscribe((data) => {
       this.activePlanDetail = data.data[0];
       this.expStatus = this.getExpiryStatus(data.data[0]);
-      this.remDays = this.getExpiryStatus(data.data[0]);
+      this.remDays = this.getRemainingDays(data.data[0]);
       this.cdr.markForCheck();
     });
   }
