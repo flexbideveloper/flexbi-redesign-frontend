@@ -14,13 +14,14 @@ import { SubcriptionsService } from 'src/app/services/subscription.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { SubscriptionPlan } from 'src/app/subscriptions/subscriptions/subscription.interface';
 import { ReportService } from 'src/app/services/report.service';
+import { RouteInfo } from './sidebar.metadata';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
 })
 export class SidebarComponent implements OnInit {
-  menuItems: any[] = [];
+  menuItems: RouteInfo[] = [];
   activatedPlan: boolean = false;
   activePlanDetail: SubscriptionPlan;
   public isTrialActivated: any = false;
@@ -88,166 +89,7 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.menuItems = FLEXBI_ROUTES.filter((menuItem) => menuItem);
-
-    if (
-      localStorage.getItem('identity') == null ||
-      localStorage.getItem('identity') == 'false'
-    ) {
-      this.router.navigate(['/pages/login']);
-    } else {
-      let user =
-        this.authService.getLoggedInUserDetails &&
-        this.authService.getLoggedInUserDetails();
-      if (user.UserRole && user.UserRole === 'USER') {
-        // get the report list...
-        let userId = this.authService.getLoggedInUserDetails().UserId;
-        this.subscriptionService.getActivePlan(userId).subscribe((data) => {
-          this.activePlanDetail = data.data[0];
-          if (this.activePlanDetail) {
-            this.subscriptionService.ifHaveActivePlan.next(true);
-          }
-          if (this.activePlanDetail.id_FkSubscriptionPlan === 1) {
-            this.isTrialActivated = true;
-          }
-          if (this.activePlanDetail) {
-            // check for plan expiry..
-            if (this.getRemainingDays() === 'Plan is Expired.') {
-              this.router.navigate(['pages/subscriptions']);
-            } else {
-              let reportsList = [];
-              // tslint:disable-next-line:max-line-length
-              this.reportService
-                .getAllReportsListByCustomerAndWorkspace(
-                  this.authService.getLoggedInUserDetails().UserId
-                )
-                .subscribe(
-                  (res: any) => {
-                    reportsList = res.data || [];
-                    if (reportsList.length > 0) {
-                      let child = [];
-                      reportsList.map((r: any) => {
-                        child.push({
-                          path:
-                            'reports/' +
-                            r.RptID +
-                            '/' +
-                            r.WorkspID +
-                            '/' +
-                            (r.xeroReport && r.xeroReport === true
-                              ? true
-                              : false),
-                          title: r.ReportName,
-                          icon: 'bx bx-right-arrow-alt',
-                          class: '',
-                          badge: '',
-                          badgeClass: '',
-                          isExternalLink: false,
-                          submenu: [],
-                        });
-                      });
-
-                      this.menuItems.push({
-                        path: '',
-                        title: 'Dashboard',
-                        icon: 'bx bx-home-circle',
-                        class: 'sub',
-                        badge: '',
-                        badgeClass: '',
-                        isExternalLink: false,
-                        submenu: child,
-                      });
-                      this.menuItems.push({
-                        title: 'Subscription Plans',
-                        icon: 'bx bx-diamond',
-                        path: 'subscriptions',
-                        class: '',
-                        badge: '',
-                        badgeClass: '',
-                        isExternalpath: false,
-                        submenu: [],
-                      });
-
-                      // let child = [];
-
-                      // this.menuItems.push({
-                      //   path: '',
-                      //   title: 'Dashboard',
-                      //   icon: 'bx bx-home-circle',
-                      //   class: 'sub',
-                      //   badge: '',
-                      //   badgeClass: '',
-                      //   isExternalLink: false,
-                      // });
-
-                      // this.menuItems.push({
-                      //   title: 'Subscription Plans',
-                      //   icon: 'bx bx-home-circle',
-                      //   path: 'subscriptions',
-                      //   class: 'sub',
-                      //   badge: '',
-                      //   badgeClass: '',
-                      //   isExternalLink: false,
-                      // });
-                      if (window.location.pathname === '/pages/userreports') {
-                        this.router.navigate([
-                          this.menuItems[0].submenu[0].path,
-                        ]);
-                      }
-                    } else {
-                      // this.menuItems.push({
-                      //   icon: 'home-outline',
-                      //   path: '/pages/userreports',
-                      //   title: 'Reports'
-                      // });
-                      // temporaray code for adding menu
-
-                      this.menuItems.push({
-                        title: 'Xero Integration',
-                        icon: 'bx bx-repeat',
-                        path: 'data-accounts',
-                        class: '',
-                        badge: '',
-                        badgeClass: '',
-                        isExternalpath: false,
-                        submenu: [],
-                      });
-                      this.menuItems.push({
-                        title: 'Subscription Plans',
-                        icon: 'bx bx-diamond',
-                        path: 'subscriptions',
-                        class: '',
-                        badge: '',
-                        badgeClass: '',
-                        isExternalpath: false,
-                        submenu: [],
-                      });
-                      if (window.location.pathname === 'userreports') {
-                        this.router.navigate([this.menuItems[0].path]);
-                      }
-                    }
-                  },
-                  (res: any) => {
-                    this.menuItems.push({
-                      path: 'report',
-                      title: 'Reports',
-                      icon: 'bx bx-fle-circle',
-                      class: 'sub',
-                      badge: '',
-                      badgeClass: '',
-                      isExternalpath: false,
-                      submenu: [],
-                    });
-                    this.router.navigate([this.menuItems[0].path]);
-                  }
-                );
-            }
-          } else {
-            this.router.navigate(['pages/subscriptions']);
-          }
-        });
-      }
-    }
+    this.menuItems = FLEXBI_ROUTES.filter((menuItem) => menuItem);
   }
 
   getRemainingDays() {

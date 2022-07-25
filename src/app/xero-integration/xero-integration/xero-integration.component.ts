@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
@@ -11,7 +11,7 @@ import { interval, Subscription } from 'rxjs';
   templateUrl: './xero-integration.component.html',
   styleUrls: ['./xero-integration.component.scss'],
 })
-export class XeroIntegrationComponent implements OnInit {
+export class XeroIntegrationComponent implements OnInit, OnDestroy {
   loading: boolean = true;
   customerList: any = [];
   dumyCustomerList: any = [];
@@ -191,7 +191,7 @@ export class XeroIntegrationComponent implements OnInit {
   checkStepsAndPassStepper(dataStatus: any) {
     if (dataStatus['XERO-AUTH']) {
       if (dataStatus['XERO-AUTH'].isCompleted) {
-        this.stepperIndex++;
+        this.stepperIndex = 2;
       } else if (dataStatus['XERO-AUTH'].isError) {
         this.showError = true;
         this.active == 'load';
@@ -200,7 +200,7 @@ export class XeroIntegrationComponent implements OnInit {
 
     if (dataStatus['XERO-DATA-LOAD']) {
       if (dataStatus['XERO-DATA-LOAD'].isCompleted) {
-        this.stepperIndex++;
+        this.stepperIndex = 3;
       } else if (dataStatus['XERO-DATA-LOAD'].isError) {
         this.showError = true;
         this.active == 'creation';
@@ -209,7 +209,7 @@ export class XeroIntegrationComponent implements OnInit {
 
     if (dataStatus['DASHBOARD-CREATION']) {
       if (dataStatus['DASHBOARD-CREATION'].isCompleted) {
-        this.stepperIndex++;
+        this.stepperIndex = 4;
       } else if (dataStatus['DASHBOARD-CREATION'].isError) {
         this.showError = true;
         this.active == 'refresh';
@@ -218,7 +218,7 @@ export class XeroIntegrationComponent implements OnInit {
 
     if (dataStatus['DATASET-REFRESH']) {
       if (dataStatus['DATASET-REFRESH'].isCompleted) {
-        this.stepperIndex++;
+        this.stepperIndex = 5;
       } else if (dataStatus['DATASET-REFRESH'].isError) {
         this.showError = true;
         this.active == 'complete';
@@ -227,14 +227,11 @@ export class XeroIntegrationComponent implements OnInit {
 
     if (dataStatus['INITIAL-LOAD-COMPLETE']) {
       if (dataStatus['INITIAL-LOAD-COMPLETE'].isCompleted) {
-        this.stepperIndex++;
+        this.stepperIndex = 6;
         this.showReportActive = true;
       } else if (dataStatus['INITIAL-LOAD-COMPLETE'].isError) {
         this.showError = true;
         this.active == 'final';
-
-        this.showReportActive = true;
-
         setTimeout(() => {
           window.location.reload();
         }, 1500);
@@ -277,5 +274,9 @@ export class XeroIntegrationComponent implements OnInit {
     } else {
       return 'PLAN-NOT-PURCHASED';
     }
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 }

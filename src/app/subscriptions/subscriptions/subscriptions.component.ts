@@ -73,7 +73,8 @@ export class SubscriptionsComponent implements OnInit {
     let userId = this.authService.getLoggedInUserDetails().UserId;
     this.subscriptionService.getActivePlan(userId).subscribe((data) => {
       this.activePlanDetail = data.data[0];
-      if (this.activePlanDetail) {
+      debugger;
+      if (!!this.activePlanDetail) {
         this.subscriptionService.ifHaveActivePlan.next(true);
       }
       if (this.activePlanDetail.id_FkSubscriptionPlan === 1) {
@@ -103,7 +104,7 @@ export class SubscriptionsComponent implements OnInit {
     // activate free trial plan
     this.subscriptionService.activateFreeTrail(userId).subscribe((res: any) => {
       if (res && res.status === 200) {
-        // window.location.reload();
+        window.location.reload();
         // sessionStorage.setItem('subDetails', JSON.stringify(res.planData));
         this.getActivePlan();
       }
