@@ -71,6 +71,8 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {}
 
+  getReport() {}
+
   getXeroBtnLink() {
     if (this.stepperIndex === 1 && !this.isTokenPrsent) {
       this.xeroAppService.getXeroAuthLink().subscribe(
@@ -159,9 +161,6 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
       (res: any) => {
         this.loading = false;
         this.notification.error('Failed to get token details. Try again...');
-        setTimeout(() => {
-          this.showStatus = false;
-        }, 5000);
       }
     );
   }
@@ -234,8 +233,8 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
       if (dataStatus['INITIAL-LOAD-COMPLETE'].isCompleted) {
         this.stepperIndex = 6;
         this.showReportActive = true;
+        window.location.reload();
         this.sub.unsubscribe();
-        this.subscription.pageReload.next(true);
       } else if (dataStatus['INITIAL-LOAD-COMPLETE'].isError) {
         this.showError = true;
         this.errorText = dataStatus['INITIAL-LOAD-COMPLETE'].error;

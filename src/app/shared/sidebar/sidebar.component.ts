@@ -15,7 +15,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { SubscriptionPlan } from 'src/app/subscriptions/subscriptions/subscription.interface';
 import { ReportService } from 'src/app/services/report.service';
 import { RouteInfo } from './sidebar.metadata';
-import { tap } from 'rxjs';
+import { take, tap } from 'rxjs';
+import { data } from 'jquery';
 
 @Component({
   selector: 'app-sidebar',
@@ -35,14 +36,6 @@ export class SidebarComponent implements OnInit {
     private subscriptionService: SubcriptionsService,
     private reportService: ReportService
   ) {
-    subscriptionService.pageReload.pipe(
-      tap((data) => {
-        if (data) {
-          this.ngOnInit();
-        }
-      })
-    );
-
     router.events.subscribe((event: Event) => {
       if (event instanceof NavigationStart) {
         // Show loading indicator
@@ -160,6 +153,11 @@ export class SidebarComponent implements OnInit {
                     isExternalLink: false,
                     submenu: [],
                   });
+
+                  debugger;
+                  if (window.location.href.indexOf('data-accounts') >= 0) {
+                    this.router.navigate([this.menuItems[0].submenu[0].path]);
+                  }
                 } else {
                   this.menuItems.push({
                     path: 'data-accounts',

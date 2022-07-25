@@ -1,0 +1,9 @@
+.main-mob {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .main-mob {
+    display: inline;
+  }
+}
