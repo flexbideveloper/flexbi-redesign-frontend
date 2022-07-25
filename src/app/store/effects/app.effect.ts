@@ -42,6 +42,8 @@ export class AppEffects {
         tap((action) => {
           if (action.payload.isRedirect) {
             sessionStorage.removeItem('identity');
+            sessionStorage.removeItem('BearerToken');
+            localStorage.removeItem('loggedInUserDetails');
             this.router.navigateByUrl('/auth/sign');
           }
         })

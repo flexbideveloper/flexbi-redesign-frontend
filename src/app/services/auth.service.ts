@@ -60,7 +60,7 @@ export class AuthService {
     this.socialLogin.next(v);
   }
   getAccessToken(): Observable<string> {
-    return of(JSON.parse(sessionStorage.getItem('identity'))?.AuthToken);
+    return of(JSON.parse(sessionStorage.getItem('BearerToken')));
   }
 
   clientLogin(paylod: SignInRequest): Observable<any> {
@@ -75,6 +75,10 @@ export class AuthService {
         mergeMap((response) => {
           if (response && response.status === 200) {
             sessionStorage.setItem('identity', JSON.stringify(response.data));
+            sessionStorage.setItem(
+              'BearerToken',
+              JSON.stringify(response.token)
+            );
             this.setLoggedInUserDetails({
               UserId: response.data.id,
               UserName: response.data.UserName,
