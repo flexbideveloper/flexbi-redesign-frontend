@@ -568,13 +568,14 @@
         <ul class="dropdown-menu dropdown-menu-end">
           <li>
             <a class="dropdown-item">
-              Company Name<span> {{ d.userDetails?.CompanyName || "-" }} </span>
+              Company Name :
+              <span> {{ d.userDetails?.CompanyName || "-" }} </span>
             </a>
           </li>
 
           <li *ngIf="expStatus !== 'EXPIRED'">
             <a class="dropdown-item">
-              License type
+              License type :
               <span> {{ activePlanDetail?.PlanName || "-" }} </span> <br />
               {{ remDays }}
             </a>
