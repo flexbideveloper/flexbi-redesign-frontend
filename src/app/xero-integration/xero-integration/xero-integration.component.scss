@@ -32,6 +32,7 @@
       align-items: center;
       justify-content: center;
       flex-direction: column;
+      text-align: center;
       img {
         width: 50px;
         margin-bottom: 15px;
@@ -114,4 +115,13 @@
 .error {
   color: #f62718;
   text-align: center;
+}
+
+@media (min-width: 767px) and (max-width: 1300px) {
+  .step-holder {
+    display: block;
+    .step {
+      width: 100%;
+    }
+  }
 }

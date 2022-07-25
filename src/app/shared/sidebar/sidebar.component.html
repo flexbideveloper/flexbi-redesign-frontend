@@ -3,7 +3,18 @@
   <!-- Sidebar Header starts -->
   <div class="sidebar-header">
     <div>
-      <img src="assets/images/icons/flex-bi-logo.png" width="125" alt="" />
+      <img
+        *ngIf="!collapsed"
+        src="assets/images/icons/flex-bi-logo.png"
+        width="125"
+        alt=""
+      />
+      <img
+        *ngIf="collapsed"
+        src="assets/images/small-logo.png"
+        width="35px"
+        alt=""
+      />
     </div>
 
     <div class="toggle-icon ms-auto">

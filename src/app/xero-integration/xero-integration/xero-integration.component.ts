@@ -65,7 +65,7 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
   ) {
     this.getSubscriptionDetails();
 
-    const source = interval(4000);
+    const source = interval(5000);
     this.sub = source.subscribe((val) => this.refreshStepper());
   }
 
@@ -234,13 +234,12 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
       if (dataStatus['INITIAL-LOAD-COMPLETE'].isCompleted) {
         this.stepperIndex = 6;
         this.showReportActive = true;
+        this.sub.unsubscribe();
+        this.subscription.pageReload.next(true);
       } else if (dataStatus['INITIAL-LOAD-COMPLETE'].isError) {
         this.showError = true;
         this.errorText = dataStatus['INITIAL-LOAD-COMPLETE'].error;
         this.active == 'final';
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
       }
     }
   }

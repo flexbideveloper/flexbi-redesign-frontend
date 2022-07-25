@@ -16,6 +16,9 @@ import {
 })
 export class SubcriptionsService {
   ifHaveActivePlan = new BehaviorSubject(false);
+
+  pageReload = new BehaviorSubject(false);
+
   socialLogin = new BehaviorSubject(false);
   constructor(private http: HttpClient, protected store: Store) {}
 

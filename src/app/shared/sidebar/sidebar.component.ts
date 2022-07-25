@@ -15,6 +15,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { SubscriptionPlan } from 'src/app/subscriptions/subscriptions/subscription.interface';
 import { ReportService } from 'src/app/services/report.service';
 import { RouteInfo } from './sidebar.metadata';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -25,7 +26,7 @@ export class SidebarComponent implements OnInit {
   activatedPlan: boolean = false;
   activePlanDetail: SubscriptionPlan;
   public isTrialActivated: any = false;
-
+  collapsed: boolean = false;
   constructor(
     public sidebarservice: SidebarService,
     private router: Router,
@@ -34,6 +35,14 @@ export class SidebarComponent implements OnInit {
     private subscriptionService: SubcriptionsService,
     private reportService: ReportService
   ) {
+    subscriptionService.pageReload.pipe(
+      tap((data) => {
+        if (data) {
+          this.ngOnInit();
+        }
+      })
+    );
+
     router.events.subscribe((event: Event) => {
       if (event instanceof NavigationStart) {
         // Show loading indicator
@@ -58,6 +67,7 @@ export class SidebarComponent implements OnInit {
   }
 
   toggleSidebar() {
+    this.collapsed = !this.collapsed;
     this.sidebarservice.setSidebarState(!this.sidebarservice.getSidebarState());
 
     if ($('.wrapper').hasClass('nav-collapsed')) {
