@@ -98,6 +98,26 @@ export class AppEffects {
     { dispatch: false }
   );
 
+  setCompanyName$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType<a.SetCompanyName>(a.SET_COMPANY_NAME),
+        map((action) => action.payload),
+
+        switchMap(({ CompanyName }) => {
+          return of('').pipe(
+            map((response) => {
+              return this.store.dispatch(
+                new a.SetCompanyNameSuccess({ CompanyName })
+              );
+            })
+          );
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
   registerSocialUser$ = createEffect(
     () => {
       return this.actions$.pipe(
@@ -120,6 +140,10 @@ export class AppEffects {
                 UserRole: 'USER',
                 UserRoleId: 100,
               });
+              sessionStorage.setItem(
+                'BearerToken',
+                JSON.stringify(response.token)
+              );
               sessionStorage.setItem('identity', JSON.stringify(response.data));
               return this.store.dispatch(new a.SetSocialUser(response.data));
             })

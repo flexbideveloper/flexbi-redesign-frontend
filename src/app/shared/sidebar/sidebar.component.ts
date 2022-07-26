@@ -99,14 +99,24 @@ export class SidebarComponent implements OnInit {
         this.isTrialActivated = true;
       }
       let user = this.authService.getLoggedInUserDetails();
+
       if (user.UserRole && user.UserRole === 'USER') {
         if (!!this.activePlanDetail) {
           // check for plan expiry..
           if (this.getRemainingDays() === 'Plan is Expired.') {
+            this.menuItems.push({
+              path: 'subscriptions',
+              title: 'Subscription Plans',
+              icon: 'bx bx-diamond',
+              class: '',
+              badge: '',
+              badgeClass: '',
+              isExternalLink: false,
+              submenu: [],
+            });
             this.router.navigate(['subscriptions']);
           } else {
             let reportsList = [];
-            // tslint:disable-next-line:max-line-length
             this.reportService
               .getAllReportsListByCustomerAndWorkspace(
                 this.authService.getLoggedInUserDetails().UserId
@@ -154,7 +164,6 @@ export class SidebarComponent implements OnInit {
                     submenu: [],
                   });
 
-                  debugger;
                   if (window.location.href.indexOf('data-accounts') >= 0) {
                     this.router.navigate([this.menuItems[0].submenu[0].path]);
                   }

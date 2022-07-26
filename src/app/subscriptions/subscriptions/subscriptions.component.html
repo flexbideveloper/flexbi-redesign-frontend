@@ -33,7 +33,11 @@
               (click)="activateFreeTrail()"
               class="btn btn-flexbi my-2 radius-30 text-weight-bold"
             >
-              {{ isTrialActivated ? "Current Plan" : "Activate" }}
+              {{
+                isTrialActivated || activePlanDetail?.planId === plan.id
+                  ? "Current Plan"
+                  : "Activate"
+              }}
             </button>
           </div>
         </div>

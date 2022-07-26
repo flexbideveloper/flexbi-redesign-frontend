@@ -233,7 +233,7 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
       if (dataStatus['INITIAL-LOAD-COMPLETE'].isCompleted) {
         this.stepperIndex = 6;
         this.showReportActive = true;
-        window.location.reload();
+        // window.location.reload();
         this.sub.unsubscribe();
       } else if (dataStatus['INITIAL-LOAD-COMPLETE'].isError) {
         this.showError = true;
@@ -301,6 +301,9 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
           ]);
         }
       });
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   }
 
   ngOnDestroy(): void {

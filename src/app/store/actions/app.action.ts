@@ -26,6 +26,9 @@ export const SET_SOCIAL_USER = '[Auth] Set Social Login';
 
 export const REMOVE_USER = '[Auth] Remove User';
 
+export const SET_COMPANY_NAME = '[Auth] Company Name User';
+export const SET_COMPANY_NAME_SUCCESS = '[Auth] Company Name Success';
+
 export class onSignUp implements Action {
   readonly type = SIGN_UP_REQUEST;
 
@@ -76,10 +79,21 @@ export class RegisterSocialUser implements Action {
   constructor(public payload: { user: AppSocialUser }) {}
 }
 
+export class SetCompanyName implements Action {
+  readonly type = SET_COMPANY_NAME;
+
+  constructor(public payload: { CompanyName: string }) {}
+}
 export class SetSocialUser implements Action {
   readonly type = SET_SOCIAL_USER;
 
   constructor(public payload: UserDetail) {}
+}
+
+export class SetCompanyNameSuccess implements Action {
+  readonly type = SET_COMPANY_NAME_SUCCESS;
+
+  constructor(public payload: { CompanyName: string }) {}
 }
 
 export class RemoveUser implements Action {
@@ -94,5 +108,7 @@ export type AppAction =
   | onSignUp
   | RegisterSocialUser
   | SetSocialUser
+  | SetCompanyNameSuccess
   | RemoveUser
+  | SetCompanyName
   | SignUpSuccess;

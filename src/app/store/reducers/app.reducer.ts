@@ -47,6 +47,15 @@ export function reducer(
         ...initialState,
       };
     }
+    case fromApp.SET_COMPANY_NAME_SUCCESS: {
+      return {
+        ...initialState,
+        userDetail: {
+          ...state.userDetail,
+          CompanyName: action.payload.CompanyName,
+        },
+      };
+    }
   }
 
   return state;

@@ -84,10 +84,10 @@ export class SubscriptionsComponent implements OnInit {
 
   activateFreeTrail() {
     const userId = this.authService.getLoggedInUserDetails().UserId;
-    const CompanyName = this.authService.getLoggedInUserDetails().CompanyName;
+    let CompanyName = this.authService.getLoggedInUserDetails().CompanyName;
     // check for company name
 
-    if (CompanyName && CompanyName.length > 0) {
+    if (CompanyName && CompanyName?.length > 0) {
       this.activateFreeTrialPlanMethod(userId);
     } else {
       // show company name accept dialog
@@ -112,25 +112,27 @@ export class SubscriptionsComponent implements OnInit {
 
   activatePlan(plan) {
     const userId = this.authService.getLoggedInUserDetails().UserId;
-    const CompanyName = this.authService.getLoggedInUserDetails().CompanyName;
-    // check for company name
+    let CompanyName = this.authService.getLoggedInUserDetails().CompanyName; // check for company name
     // show company name accept dialog
-    const modal = this.modalService.open(AcceptPaymentPromptComponent, {
-      centered: true,
-    });
+    if (CompanyName && CompanyName?.length > 0) {
+      const modal = this.modalService.open(AcceptPaymentPromptComponent, {
+        centered: true,
+      });
 
-    modal.componentInstance.planRequest = {
-      userId,
-      CompanyName,
-      PlanName: plan.PlanName,
-      PlanAmount: plan.Amount,
-      PlanId: plan.id,
-    };
-    // .onClose.subscribe((param: any) => {
-    //   if (param.status && param.status === 200) {
-    //     sessionStorage.setItem('subDetails', JSON.stringify(param.planData));
-    //   }
-    // });
+      modal.componentInstance.planRequest = {
+        userId,
+        CompanyName,
+        PlanName: plan.PlanName,
+        PlanAmount: plan.Amount,
+        PlanId: plan.id,
+      };
+    } else {
+      // show company name accept dialog
+      const modal = this.modalService.open(CompanyNameComponent, {
+        centered: true,
+      });
+      modal.componentInstance.user_id = userId;
+    }
   }
 
   getPlan(type) {

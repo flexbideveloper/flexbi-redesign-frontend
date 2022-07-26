@@ -1,9 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { SubcriptionsService } from 'src/app/services/subscription.service';
+import * as fromStore from 'src/app/store';
+import { SetCompanyName, SetCompanyNameSuccess } from 'src/app/store';
 
 export interface ConfirmAction {
   text: string;
@@ -27,7 +30,8 @@ export class CompanyNameComponent implements OnInit {
     private fb: FormBuilder,
     private subscription: SubcriptionsService,
     private authService: AuthService,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private store: Store<fromStore.AppState>
   ) {}
 
   ngOnInit(): void {
@@ -47,6 +51,19 @@ export class CompanyNameComponent implements OnInit {
           const userDetails = this.authService.getLoggedInUserDetails();
           userDetails.CompanyName = this.form.value.CompanyName;
           this.authService.setLoggedInUserDetails(userDetails);
+          const ux =
+            (sessionStorage.getItem('identity') &&
+              JSON.parse(sessionStorage.getItem('identity'))) ||
+            null;
+          ux.CompanyName = this.form.value.CompanyName;
+          sessionStorage.setItem('identity', JSON.stringify(ux));
+          // this.store.dispatch(new SetCompanyName(this.form.value.CompanyName));
+          this.store.dispatch(
+            new SetCompanyNameSuccess({
+              CompanyName: this.form.value.CompanyName,
+            })
+          );
+          this.modelClose();
         }
       },
       (res: any) => {
