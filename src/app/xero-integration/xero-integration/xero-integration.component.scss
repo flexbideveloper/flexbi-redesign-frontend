@@ -12,7 +12,7 @@
   // height: calc(100vh - 270px);
 
   .step {
-    min-width: 200px;
+    min-width: 210px;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -106,7 +106,7 @@
 
 .step-holder {
   display: flex;
-  justify-content: center;
+  // justify-content: center;
 }
 .action-btn {
   margin-top: 15px;
