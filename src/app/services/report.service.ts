@@ -50,4 +50,15 @@ export class ReportService {
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.REPORT_ALLOCATION_LIST}`;
     return this.http.post<any>(url, { customerId });
   }
+
+  uploadVisuals(data: any): Observable<any> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.PAGE_VISUALS}`;
+    return this.http.post<EmbededResponse>(url, data);
+  }
+
+  getPageVisuals(): Observable<string> {
+    let userId = this.authService.getLoggedInUserDetails().UserId;
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.PAGE_VISUALS}/${userId}`;
+    return this.http.get<string>(url);
+  }
 }

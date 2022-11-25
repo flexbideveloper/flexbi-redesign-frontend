@@ -86,6 +86,8 @@ export class ReportDisplayComponent implements OnInit {
             filterPaneEnabled: true,
             navContentPaneEnabled: true,
           };
+
+
           let config: pbi.IEmbedConfiguration = {
             type: 'report',
             tokenType: pbi.models.TokenType.Embed,
@@ -103,6 +105,7 @@ export class ReportDisplayComponent implements OnInit {
           );
           this.report = powerbi.embed(reportContainer, config);
           this.report.off('loaded');
+
           this.report.on('loaded', () => {
             // this.setTokenExpirationListener(Token.expiration, 2);
             this.reportPrint = powerbi.get(reportContainer);

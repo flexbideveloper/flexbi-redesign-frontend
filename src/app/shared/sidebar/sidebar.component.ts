@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FLEXBI_ROUTES } from './sidebar-routes.config';
 import {
   Router,
@@ -13,20 +13,31 @@ import * as $ from 'jquery';
 import { SubcriptionsService } from 'src/app/services/subscription.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { SubscriptionPlan } from 'src/app/subscriptions/subscriptions/subscription.interface';
-import { ReportService } from 'src/app/services/report.service';
 import { RouteInfo } from './sidebar.metadata';
 import { take, tap } from 'rxjs';
 import { data } from 'jquery';
+import * as pbi from 'powerbi-client';
+import { Report } from 'report';
+
+import {
+  EmbededResponse,
+  ReportPayload,
+  ReportService,
+} from 'src/app/services/report.service';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
 })
 export class SidebarComponent implements OnInit {
+  report: pbi.Embed;
+  @ViewChild('reportContainer', { static: false }) reportContainer: ElementRef;
   menuItems: RouteInfo[] = [];
   activatedPlan: boolean = false;
   activePlanDetail: SubscriptionPlan;
   public isTrialActivated: any = false;
+  public reportObj: EmbededResponse;
+
   collapsed: boolean = false;
   constructor(
     public sidebarservice: SidebarService,
@@ -117,11 +128,12 @@ export class SidebarComponent implements OnInit {
             this.router.navigate(['subscriptions']);
           } else {
             let reportsList = [];
+            let visualsList: any = [];
             this.reportService
               .getAllReportsListByCustomerAndWorkspace(
                 this.authService.getLoggedInUserDetails().UserId
               )
-              .subscribe((res: any) => {
+              .subscribe(async(res: any) => {
                 reportsList = res.data || [];
                 if (reportsList.length > 0) {
                   let child = [];
@@ -153,6 +165,100 @@ export class SidebarComponent implements OnInit {
                     isExternalLink: false,
                     submenu: child,
                   });
+                  // check for pages and visuals
+                  if (res.isReportPagesPresent) {
+                    this.menuItems.push({
+                      path: 'summaryreport',
+                      title: 'Summary Report',
+                      icon: 'bx bxs-report',
+                      class: '',
+                      badge: '',
+                      badgeClass: '',
+                      isExternalLink: false,
+                      submenu: [],
+                    });
+                    // check for visuals
+                    if (!res.isDbVisualsPresent) {
+                      // fetch the visuals
+                      this.reportObj = res.tokenRes;
+                      let embedUrl = 'https://app.powerbi.com/reportEmbed';
+                      let embedReportId = this.reportObj.embedUrl[0].reportId;
+                      let settings: pbi.IEmbedSettings = {
+                        filterPaneEnabled: true,
+                        navContentPaneEnabled: true,
+                      };
+
+
+                      let config: pbi.IEmbedConfiguration = {
+                        type: 'report',
+                        tokenType: pbi.models.TokenType.Embed,
+                        accessToken: this.reportObj.accessToken,
+                        embedUrl: embedUrl,
+                        id: embedReportId,
+                        filters: [],
+                        settings: settings,
+                      };
+                      let reportContainer = this.reportContainer.nativeElement;
+                      let powerbi = new pbi.service.Service(
+                        pbi.factories.hpmFactory,
+                        pbi.factories.wpmpFactory,
+                        pbi.factories.routerFactory
+                      );
+                      // this.report = await powerbi.embed(reportContainer, config);
+                      const report: Report = <Report>(powerbi.embed(reportContainer, config));
+                      report.off('loaded');
+
+                      report.on('loaded', async () => {
+                        console.log("Loaded");
+                        const fetchCalls: any = [];
+                        await report.getPages().then(async(p: any) => {
+                          await res.reportPages.map(async(rp: any)=> {
+                            const pageObj = this.getPageObj(p, rp.PageName, rp.EmbedPage);
+                            fetchCalls.push(pageObj.getVisuals().then(async(visuals: any) => {
+                              if(visuals && visuals.length > 0) {
+                                await visuals.map(async(v: any)=>{
+                                  await res.visualSettings.map((vs: any) => {
+                                    if (vs.VisualName === v.title){
+                                      // insert visual into the DB
+                                      visualsList.push({
+                                        id_FkReportPage: rp.id,
+                                        id_FkClientProfile: userId,
+                                        VisualName: v.name,
+                                        VisualDisplayName: v.title,
+                                        Height: v.layout.height,
+                                        Width: v.layout.width
+                                      });
+                                    }
+                                  });
+                                });
+                              }
+                            }))
+                          });
+                          return Promise.all(fetchCalls).then((res)=>{
+                            if (visualsList.length > 0) {
+                              console.log(visualsList);
+                              this.reportService.uploadVisuals({data: visualsList}).subscribe(
+                                (res: any) => {
+                                  if (res.status === 200) {
+                                    console.log("Visuals added");
+                                  } else {
+                                    console.log("Failed to add visuals");
+                                  }
+                                }
+                              );
+                            }
+                          }, (errrr: any)=> {
+                            console.log(errrr);
+                          });
+                        }, (er: any)=> {
+                          console.log(er);
+                        });
+                      });
+                      report.on('error', () => {
+                        console.log('Error');
+                      });
+                    }
+                  }
                   this.menuItems.push({
                     path: 'subscriptions',
                     title: 'Subscription Plans',
@@ -214,6 +320,18 @@ export class SidebarComponent implements OnInit {
     $.getScript('./assets/js/app-sidebar.js');
   }
 
+  getPageObj(pages, pname, embedPage) {
+    let page: any;
+    if (!embedPage) {
+      pages.map((p: any)=> {
+        if (p.name === pname){
+          page = p;
+        }
+      });
+      return page;
+    }
+    return null;
+  }
   getRemainingDays() {
     if (this.activePlanDetail) {
       let diffDays = 0;

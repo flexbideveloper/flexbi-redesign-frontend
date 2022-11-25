@@ -28,4 +28,5 @@ export const REQUEST_ROUTES = {
 
   GET_REPORT: 'clientReportAllocation/getEmbedReport',
   GET_LOGS_STATUS: 'subscriptionsallocation/getJobsDetails/',
+  PAGE_VISUALS: 'pageVisuals'
 };
