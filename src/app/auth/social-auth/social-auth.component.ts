@@ -61,7 +61,7 @@ export class SocialAuthComponent implements OnInit {
       obj = {
         UserName: user.name,
         Email: user.email,
-        CompanyName: '',
+        // CompanyName: '',
         Provider: 'GOOGLE',
         UniqueID: user.id,
         AuthToken: user.authToken,
@@ -70,7 +70,7 @@ export class SocialAuthComponent implements OnInit {
       obj = {
         UserName: user.account.username || user.account.name,
         Email: user.account.username,
-        CompanyName: '',
+        // CompanyName: '',
         Provider: 'MICROSOFT',
         UniqueID: user.account.tenantId,
         AuthToken: user.accessToken,

@@ -16,6 +16,7 @@ export class AcceptPaymentPromptComponent implements OnInit {
     PlanName: string;
     PlanAmount: number;
     PlanId: string;
+    Email: string;
   };
 
   paymentObj: any = {

@@ -14,7 +14,7 @@
   </nb-card> -->
 
 <div class="modal-header">
-  Company Name
+  Select your choice:
   <span
     class="close-icon absolute-btn"
     aria-label="Close"
@@ -23,12 +23,32 @@
 </div>
 
 <div class="modal-body">
+  <label for="inputProductType" class="form-label"
+    >Product Type</label
+  >
+  <select class="form-select" id="inputProductType" [(ngModel)]="inputProductType">
+    <option></option>
+    <option value="1">Already your org connected with FlexBI, Connect to Existing Dashboard</option>
+    <option value="2">Purchase New Plan for Organization</option>
+  </select>
+
+  <!-- <div class="btn-group btn-group-toggle" data-toggle="buttons">
+    <label class="btn btn-primary active">
+      <input type="radio" value="1" name="options" id="option1" autocomplete="off"> Connect to Existing Dashboard
+    </label>
+    <label class="btn btn-primary">
+      <input type="radio" value="2" name="options" id="option2" autocomplete="off"> Purchase New Plan for Organization
+    </label>
+  </div> -->
+</div>
+
+<div class="modal-body" *ngIf="inputProductType == 2">
   <form [formGroup]="form">
     <div class="row">
       <div class="col-sm-12">
         <label class="form-label">Company Name</label>
         <input
-          type="email"
+          type="text"
           class="form-control"
           formControlName="CompanyName"
         />
@@ -44,6 +64,117 @@
           }}
         </div>
       </div>
+      <div class="col-sm-12">
+        <label class="form-label">Company Email</label>
+        <input
+          type="email"
+          class="form-control"
+          formControlName="Email"
+        />
+        <div class="invalid">
+          {{
+            form.get("Email")?.touched
+              ? form.get("Email")?.errors?.required
+                ? "Company Email required."
+                : form.get("Email")?.errors?.pattern
+                ? "Company Email Required"
+                : ""
+              : ""
+          }}
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal-body" *ngIf="inputProductType == 1">
+  <form class="row g-3" [formGroup]="signUpForm">
+    <div class="col-sm-12">
+      <label class="form-label">Full Name</label>
+      <input
+        type="email"
+        class="form-control"
+        formControlName="firstName"
+      />
+      <div class="invalid">
+        {{
+          signUpForm.get("firstName")?.touched
+            ? signUpForm.get("firstName")?.errors?.required
+              ? "First Name Required"
+              : signUpForm.get("firstName")?.errors?.pattern
+              ? "Invalid First Name"
+              : ""
+            : ""
+        }}
+      </div>
+    </div>
+    <!-- <div class="col-sm-6">
+      <label class="form-label">Last Name</label>
+      <input
+        type="email"
+        class="form-control"
+        formControlName="lastName"
+      />
+      <div class="invalid">
+        {{
+          signUpForm.get("lastName")?.touched
+            ? signUpForm.get("lastName")?.errors?.required
+              ? "Last Name required."
+              : signUpForm.get("lastName")?.errors?.pattern
+              ? "Last Name Required"
+              : ""
+            : ""
+        }}
+      </div>
+    </div> -->
+    <div class="col-12">
+      <label class="form-label">Company Name</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="companyName"
+      />
+      <div class="invalid">
+        {{
+          signUpForm.get("companyName")?.touched
+            ? signUpForm.get("companyName")?.errors?.required
+              ? "Company Name required."
+              : signUpForm.get("companyName")?.errors?.pattern
+              ? "Invalid Company Name"
+              : ""
+            : ""
+        }}
+      </div>
+    </div>
+    <div class="col-12">
+      <label class="form-label">Contact Number</label>
+      <input
+        type="number"
+        class="form-control"
+        formControlName="contactNumber"
+      />
+      <div class="invalid">
+        {{
+          signUpForm.get("contactNumber")?.touched
+            ? signUpForm.get("contactNumber")?.errors?.required
+              ? "Contact number is required."
+              : signUpForm.get("contactNumber")?.invalid
+              ? "Invalid Contact Number."
+              : ""
+            : ""
+        }}
+      </div>
+    </div>
+
+    <div class="col-12">
+      <form [formGroup]="aFormGroup">
+        <ngx-recaptcha2
+          [siteKey]="captchaSiteKey"
+          (success)="handleSuccess($event)"
+          formControlName="recaptcha"
+        >
+        </ngx-recaptcha2>
+      </form>
     </div>
   </form>
 </div>

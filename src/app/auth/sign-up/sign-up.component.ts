@@ -90,6 +90,7 @@ export class SignUpComponent implements OnInit {
       this.isNoRobotClick &&
       this.isCaptchaValidate
     ) {
+      delete this.signUpForm.value.companyName;
       this.appStore.dispatch(new a.onSignUp({ form: this.signUpForm.value }));
     }
   }

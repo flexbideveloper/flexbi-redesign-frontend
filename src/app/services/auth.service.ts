@@ -80,9 +80,11 @@ export class AuthService {
               JSON.stringify(response.token)
             );
             this.setLoggedInUserDetails({
-              UserId: response.data.id,
+              UserId: response.data.id_FkClientProfile,
+              ClientUserId: response.data.id,
               UserName: response.data.UserName,
               CompanyName: response.data.CompanyName,
+              id_FkClientProfile: response.data.id_FkClientProfile,
               Email: response.data.Email,
               UserRole: 'USER',
               UserRoleId: 100,
@@ -118,7 +120,7 @@ export class AuthService {
   signUp(form: SignUpRequest): Observable<SignUpResponse> {
     let body = {
       Email: form.email,
-      CompanyName: form.companyName,
+      // CompanyName: form.companyName,
       Password: form.password,
       UserName: form.firstName + '' + form.lastName,
       Provider: form.Provider,

@@ -10,6 +10,7 @@ export const REQUEST_ROUTES = {
   CLIENT_PROFILE: 'clientProfiles/',
 
   CLIENT_PROFILE_COMPANY_NAME: 'clientProfiles/companyName',
+  NOTIFY_ADMIN: 'clientProfiles/notifyAdmin',
   ALL_SETTING: 'googleMicroAuthSettings/allSettings',
   SUBSCRIPTION_LIST: 'subscriptionsplans',
 
@@ -17,6 +18,7 @@ export const REQUEST_ROUTES = {
   SUBSCRIPTION_PAYMENT_URL: 'subscriptionsallocation/getPaymentUrl',
   SUBSCRIPTION_STATUS: 'subscriptionsallocation/verifyTransaction',
   SUBSCRIPTION_ACTIVE_GET: 'subscriptionsallocation/getActivePlan/',
+  USER_APPROVED_OR_NOT: 'subscriptionsallocation/isUserApproved/',
 
   DATA_LOAD_PROCESS: 'subscriptionsallocation/checkDataLoadProcess/',
 

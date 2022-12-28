@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -18,6 +19,7 @@ import { AcceptPaymentPromptComponent } from './accept-payment-prompt/accept-pay
     NgbModule,
     ModalModule,
     ReactiveFormsModule,
+    FormsModule,
   ],
 })
 export class SubscriptionsModule {}

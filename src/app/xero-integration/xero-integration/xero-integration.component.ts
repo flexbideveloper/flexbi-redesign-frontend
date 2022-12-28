@@ -95,7 +95,7 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.isDataFetchSuccess = false;
     const userId = this.authService.getLoggedInUserDetails().UserId;
-    this.subscription.getActivePlan(userId).subscribe(
+    userId && this.subscription.getActivePlan(userId).subscribe(
       (res: any) => {
         this.isDataFetchSuccess = true;
         if (res && res.status === 200 && res.data.length > 0) {

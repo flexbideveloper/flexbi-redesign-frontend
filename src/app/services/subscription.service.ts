@@ -37,6 +37,11 @@ export class SubcriptionsService {
     return this.http.get<SubscriptionResponse>(url);
   }
 
+  getUserApprovedOrNot(userProfileId: string): Observable<any> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.USER_APPROVED_OR_NOT}${userProfileId}`;
+    return this.http.get<any>(url);
+  }
+
   checkDataLoadProcess(userId: string): Observable<DataLoadProcess> {
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.DATA_LOAD_PROCESS}${userId}`;
     return this.http.get<DataLoadProcess>(url);
@@ -57,8 +62,21 @@ export class SubcriptionsService {
     return this.http.get<any>(url);
   }
 
+  notifyAdmin(data: {
+    firstName: string;
+    lastName: string,
+    companyName: string,
+    contactNumber: string,
+    type: string,
+    userId: string;
+  }): Observable<any> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.NOTIFY_ADMIN}`;
+    return this.http.post<any>(url, data);
+  }
+
   addCompanyName(data: {
     CompanyName: string;
+    Email: string,
     userId: string;
   }): Observable<any> {
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.CLIENT_PROFILE_COMPANY_NAME}`;

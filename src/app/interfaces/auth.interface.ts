@@ -29,6 +29,7 @@ export interface UserDetail {
   UserName: string;
   gcmToken: string;
   id: string;
+  id_FkClientProfile: string;
 }
 
 export interface AdminLoginResponse {
@@ -107,7 +108,7 @@ export interface SignUpRequest {
   firstName: string;
   lastName: string;
   email: string;
-  companyName: string;
+  // companyName: string;
   password: string;
   Provider: string;
   cPassword: string;
@@ -121,7 +122,7 @@ export interface SignUpResponse {
 export interface AppSocialUser {
   UserName: string;
   Email: string;
-  CompanyName: string;
+  // CompanyName: string;
   Provider: string;
   UniqueID: string;
   AuthToken: string;

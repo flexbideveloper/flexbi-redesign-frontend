@@ -133,7 +133,7 @@ export class AppEffects {
                 this.notification.error(response.message);
               }
               this.authService.setLoggedInUserDetails({
-                UserId: response.data.id,
+                UserId: response.data.id_FkClientProfile ? response.data.id_FkClientProfile : response.data.id,
                 UserName: response.data.UserName,
                 CompanyName: response.data.CompanyName,
                 Email: response.data.Email,
