@@ -32,7 +32,7 @@ export class NavbarComponent implements OnInit {
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {
-    let userId = this.authService.getLoggedInUserDetails().UserId;
+    let userId = this.authService.getLoggedInUserDetails()?.UserId;
     if (userId && userId !== null) {
       this.subscriptionService.getActivePlan(userId).subscribe((data) => {
         this.activePlanDetail = data.data[0];

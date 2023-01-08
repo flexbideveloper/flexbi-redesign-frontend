@@ -47,6 +47,7 @@
     "ngx-perfect-scrollbar": "^10.1.1",
     "ngx-toastr": "^15.0.0",
     "powerbi-client": "^2.21.1",
+    "powerbi-client-angular": "^2.0.1",
     "rxjs": "~7.5.0",
     "smartwizard": "^5.1.1",
     "text-mask-addons": "^3.8.0",

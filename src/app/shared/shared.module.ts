@@ -8,8 +8,11 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { ColorSwitcherComponent } from './color-switcher/color-switcher.component';
+import { ConversionsComponent } from './conversions/conversions.component';
 import { PasswordValidatorPipe } from './pipes/password-validator.pipe';
+import { AvatarPhotoComponent } from './avatar-photo/avatar-photo.component';
+import { MessageComponent } from './message/message.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   exports: [
@@ -17,16 +20,19 @@ import { PasswordValidatorPipe } from './pipes/password-validator.pipe';
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
-    ColorSwitcherComponent,
+    ConversionsComponent,
     NgbModule,
+    AvatarPhotoComponent
   ],
-  imports: [RouterModule, CommonModule, NgbModule, PerfectScrollbarModule],
+  imports: [RouterModule, CommonModule, NgbModule, PerfectScrollbarModule,ReactiveFormsModule],
   declarations: [
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
-    ColorSwitcherComponent,
+    ConversionsComponent,
     PasswordValidatorPipe,
+    AvatarPhotoComponent,
+    MessageComponent
   ],
   providers: [],
 })

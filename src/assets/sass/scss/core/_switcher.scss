@@ -1,15 +1,17 @@
 .switcher-wrapper {
-  width: 280px;
+  margin-top: 61px;
+  width: 550px;
   height: 100%;
   position: fixed;
-  right: -280px;
+  right: -550px;
   top: 0;
   bottom: 0;
   z-index: 16;
-  background: #fff;
+  background: #f4f4f4;
   border-left: 0 solid #d2d2d2;
   box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.13);
   transition: all 0.2s ease-out;
+  height: calc(100vh - 61px);
 }
 
 .switcher-btn {
@@ -24,7 +26,7 @@
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   position: absolute;
-  top: 40%;
+  top: 10%;
   right: 100%;
   cursor: pointer;
 }
@@ -35,11 +37,20 @@
 
 .switcher-body {
   padding: 1.25rem;
+  overflow: auto;
+  height: 75vh;
 
   .form-check {
     .form-check-input,
     .form-check-label {
       cursor: pointer;
     }
+  }
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #90A4AE;
   }
 }
