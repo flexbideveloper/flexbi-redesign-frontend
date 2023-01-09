@@ -45,15 +45,18 @@ export class ConversionsComponent implements OnInit {
     if (this.messageForm.invalid) {
       return;
     }
-    this.messageService
-      .postConversion(this.messageForm.value.message)
-      .subscribe((resp) => {
-        if (resp.status === 200) {
-          this.messageService.getConversions().subscribe((resp) => {
-            this.messages = this.formateMessage(resp.data as any);
-          });
-        }
-      });
+    let message = this.messageForm.value.message;
+    this.messageForm.get('message').setValue('');
+
+    this.messageService.postConversion(message).subscribe((resp) => {
+      this.messageForm.get('message').setValue('');
+
+      if (resp.status === 200) {
+        this.messageService.getConversions().subscribe((resp) => {
+          this.messages = this.formateMessage(resp.data as any);
+        });
+      }
+    });
   }
 
   formateMessage(data: IGetMessages[]): IMesageDateFormate[] {
