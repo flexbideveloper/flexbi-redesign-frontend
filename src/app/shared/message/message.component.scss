@@ -39,6 +39,9 @@ textarea{
         &__control{
             cursor: pointer;
             color: #21cead ;
+            span{
+                color: #5a5a5a;
+            }
         }
     }
     &.no-bg{

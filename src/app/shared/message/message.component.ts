@@ -14,6 +14,7 @@ export class MessageComponent implements OnInit {
   @Input() id: string;
   messageForm: FormGroup;
   innerMessages: IMessage[] = [];
+  label: string;
   constructor(
     private messageService: MessageService,
     private fb: FormBuilder
@@ -24,6 +25,7 @@ export class MessageComponent implements OnInit {
       Message: ['', Validators.required],
       id_FkParentMessage: [parseInt(this.message.MessageID)],
     });
+    this.label = this.message.CountLabel;
   }
 
   loadMessage() {
@@ -53,7 +55,8 @@ export class MessageComponent implements OnInit {
       .postConversionById(this.messageForm.value)
       .subscribe((resp) => {
         if (resp.status === 200) {
-          this.innerMessages.push(resp.data as any);
+          this.label = resp.data.CountLabel;
+          this.innerMessages.push(resp.data);
           this.messageForm.get('Message').setValue('');
         }
       });

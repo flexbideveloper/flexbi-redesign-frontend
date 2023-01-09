@@ -70,14 +70,14 @@ export class MessageService {
     return this.http.get<IGetResponseByID<IMessage[]>>(url);
   }
 
-  postConversionById(request: IReqMessagById): Observable<IGetResponse<IMessage>> {
+  postConversionById(request: IReqMessagById): Observable<IGetResponseByID<IMessage>> {
     const payload: IReqConversion = {
       id_FkUserProfile: this.authService.getLoggedInUserDetails().ClientUserId,
       id_FkClientProfile: this.authService.getLoggedInUserDetails().id_FkClientProfile,
      ...request
     };
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.CONVERSIONS}`;
-    return this.http.post<IGetResponse<IMessage>>(url , payload);
+    return this.http.post<IGetResponseByID<IMessage>>(url , payload);
   }
 
 

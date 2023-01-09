@@ -13,7 +13,7 @@
       {{ message.Message }}
     </div>
     <div
-      *ngIf="!!message.CountLabel"
+      *ngIf="!!label"
       class="message-body__control"
       data-bs-toggle="collapse"
       [attr.data-bs-target]="'#collapseBox' + id"
@@ -22,10 +22,11 @@
       (click)="replyBtn = !replyBtn; loadMessage()"
     >
       {{
-        message.CountLabel
+        label
       }}
       &nbsp;
-      {{ replyBtn ? "Collapse All" : "" }}
+      <span>{{ replyBtn ? "Collapse All" : "" }}</span>
+      
     </div>
     <div
       class="tree-view collapse"
