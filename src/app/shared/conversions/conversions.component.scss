@@ -1,0 +1,21 @@
+.msg-container{
+    width:100%;
+  
+}
+.start-conversion{
+    padding: 0.5rem
+}
+
+
+.no-message{
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.msg-body{
+   &__date-title{
+    text-align: center;
+    color: #5a5a5a;
+   } 
+}

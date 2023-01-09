@@ -1,0 +1,84 @@
+<div class="msg-body">
+  <div class="message-avatar">
+    <app-avatar-photo [name]="message.UserName"></app-avatar-photo>
+  </div>
+  <div class="message-body">
+    <div class="message-body__title">
+      {{ message.UserName }}
+      <span class="message-body__title--date">
+        {{ message.MessageDateTime | date : "h:mm a" }}</span
+      >
+    </div>
+    <div class="message-body__msg border-bottom">
+      {{ message.Message }}
+    </div>
+    <div
+      *ngIf="!!message.CountLabel"
+      class="message-body__control"
+      data-bs-toggle="collapse"
+      [attr.data-bs-target]="'#collapseBox' + id"
+      aria-expanded="false"
+      [attr.aria-controls]="'collapseBox' + id"
+      (click)="replyBtn = !replyBtn; loadMessage()"
+    >
+      {{
+        message.CountLabel
+      }}
+      &nbsp;
+      {{ replyBtn ? "Collapse All" : "" }}
+    </div>
+    <div
+      class="tree-view collapse"
+      [attr.id]="'collapseBox' + id"
+      class="accordion-collapse collapse"
+    >
+      <div class="col-12 msg-body no-bg" *ngFor="let msg of innerMessages">
+        <div class="message-avatar">
+          <app-avatar-photo [name]="msg.UserName"></app-avatar-photo>
+        </div>
+        <div class="message-body">
+          <div class="message-body__title">
+            {{ msg.UserName }}
+            <span class="message-body__title--date">
+              {{ msg.MessageDateTime | date : "h:mm a" }}</span
+            >
+          </div>
+          <div class="message-body__msg">
+            {{ msg.Message }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="message-body__msg--reply">
+      <span
+        data-bs-toggle="collapse"
+        [attr.data-bs-target]="'#replyBtn' + id"
+        aria-expanded="false"
+        [attr.aria-controls]="'replyBtn' + id"
+        >Reply</span
+      >
+      <form
+        [formGroup]="messageForm"
+        (ngSubmit)="sendMesage()"
+        class="tree-view collapse"
+        [attr.id]="'replyBtn' + id"
+        class="row accordion-collapse collapse"
+      >
+        <div class="col-md-10">
+          <textarea
+            formControlName="Message"
+            class="form-control"
+            placeholder="Please type reply and send .."
+            rows="1"
+          ></textarea>
+        </div>
+        <div class="col-md-2 d-flex align-items-center">
+          <button type="submit" class="btn btn-primary">
+            <i class="bx bx-send"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
