@@ -2,84 +2,89 @@
 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
   <div class="breadcrumb-title pe-3">Summary Report</div>
 </div>
-<div class="row">
+<div class="row" *ngIf="this.tokenObj">
   <!-- Visuals -->
   <div class="col-12 col-md-9">
+    <div class="col-12">
+      <app-visual
+        [height]="500"
+        [visualItem]="allVisuals[0]"
+        [reportId]="this.tokenObj.embedUrl[0].reportId"
+      ></app-visual>
+    </div>
+
+    <div class="col-12">
+      <div class="row">
+        <div class="col-4">
+          <app-visual
+            [height]="180"
+            [visualItem]="allVisuals[2]"
+            [reportId]="this.tokenObj.embedUrl[0].reportId"
+          ></app-visual>
+        </div>
+        <div class="col-4">
+          <app-visual
+            [height]="180"
+            [visualItem]="allVisuals[3]"
+            [reportId]="this.tokenObj.embedUrl[0].reportId"
+          ></app-visual>
+        </div>
+        <div class="col-4">
+          <app-visual
+            [height]="180"
+            [visualItem]="allVisuals[4]"
+            [reportId]="this.tokenObj.embedUrl[0].reportId"
+          ></app-visual>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-3">
     <app-visual
-      [height]="530"
-      [visualItem]="allVisuals[0]"
+      [height]="500 + 180 + 15"
+      [visualItem]="allVisuals[1]"
       [reportId]="this.tokenObj.embedUrl[0].reportId"
     ></app-visual>
   </div>
-  <div class="col-12 col-md-3">
+
+  <div class="col-12 col-md-9">
     <div class="row">
       <div class="col-12">
         <app-visual
-          [height]="160"
-          [visualItem]="allVisuals[1]"
-          [reportId]="this.tokenObj.embedUrl[0].reportId"
-        ></app-visual>
-      </div>
-      <div class="col-12">
-        <app-visual
-          [height]="160"
-          [visualItem]="allVisuals[2]"
-          [reportId]="this.tokenObj.embedUrl[0].reportId"
-        ></app-visual>
-      </div>
-      <div class="col-12 ">
-        <app-visual
-          [height]="180"
-          [visualItem]="allVisuals[3]"
+          [height]="400"
+          [visualItem]="allVisuals[5]"
           [reportId]="this.tokenObj.embedUrl[0].reportId"
         ></app-visual>
       </div>
     </div>
+
+    <div class="col-12">
+      <app-visual
+        [height]="500"
+        [visualItem]="allVisuals[7]"
+        [reportId]="this.tokenObj.embedUrl[0].reportId"
+      ></app-visual>
+    </div>
   </div>
 
-  <div class="col-12 col-md-12">
+  <div class="col-12 col-md-3">
     <app-visual
-      [height]="200"
-      [visualItem]="allVisuals[4]"
-      [reportId]="this.tokenObj.embedUrl[0].reportId"
-    ></app-visual>
-  </div>
-
-  <div class="col-12 col-md-7">
-    <app-visual
-      [height]="550"
-      [visualItem]="allVisuals[5]"
-      [reportId]="this.tokenObj.embedUrl[0].reportId"
-    ></app-visual>
-  </div>
-
-  <div class="col-12 col-md-5">
-    <app-visual
-      [height]="550"
+      [height]="915"
       [visualItem]="allVisuals[6]"
       [reportId]="this.tokenObj.embedUrl[0].reportId"
     ></app-visual>
-   
   </div>
 
-  <div class="col-12 col-md-7">
-    <app-visual
-    [height]="200"
-    [visualItem]="allVisuals[7]"
-    [reportId]="this.tokenObj.embedUrl[0].reportId"
-  ></app-visual>
-  </div>
 
-  <div class="col-12 col-md-5">
+  <!-- <div class="col-12 col-md-9">
     <app-visual
-      [height]="200"
+      [height]="500"
       [visualItem]="allVisuals[8]"
       [reportId]="this.tokenObj.embedUrl[0].reportId"
     ></app-visual>
   </div>
 
-
-  <div class="col-12 col-md-7">
+  <div class="col-12 col-md-9">
     <app-visual
       [height]="400"
       [visualItem]="allVisuals[9]"
@@ -87,18 +92,19 @@
     ></app-visual>
   </div>
 
-  <div class="col-12 col-md-5">
+  <div class="col-12 col-md-9">
     <app-visual
       [height]="400"
       [visualItem]="allVisuals[10]"
       [reportId]="this.tokenObj.embedUrl[0].reportId"
     ></app-visual>
-  </div>
+  </div> -->
 
-  
 </div>
 
-<div class="row">
+
+<!-- Please visuals -->
+<!-- <div class="row">
   <div class="col-sm-6" *ngFor="let visual of allPageVisual">
     <app-visual
       [height]="visual.height"
@@ -106,11 +112,10 @@
       [reportId]="this.tokenObj.embedUrl[0].reportId"
     ></app-visual>
   </div>
-</div>
+</div> -->
 
-<div class="row" *ngIf="false">
+<!-- <div class="row" *ngIf="false">
   <div class="row">
-    <!-- Visuals -->
     <div
       class="col-sm-12"
       id="estimated-cashflow"
@@ -159,7 +164,6 @@
     #rolling12Months
     style="width: 100%; height: 700px; margin-top: 30px"
   ></div>
-</div>
-
+</div> -->
 
 <app-conversions></app-conversions>

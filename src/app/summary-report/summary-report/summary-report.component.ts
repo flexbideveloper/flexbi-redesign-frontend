@@ -41,7 +41,6 @@ export class SummaryReportComponent {
         this.pageList = data.pages;
         this.visualList = data.visuals;
         this.tokenObj = data.tokenRes;
-
         let embedUrl = 'https://app.powerbi.com/reportEmbed';
         let embedReportId = this.tokenObj.embedUrl[0].reportId;
         let visualSettings: pbi.IEmbedSettings = {
