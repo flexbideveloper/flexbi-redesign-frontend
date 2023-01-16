@@ -12,6 +12,11 @@ export interface LoginResponse {
   token: string;
 }
 
+export interface UserLoginResp {
+  data : UserDetail
+  planData : UserPlanData[]
+}
+
 export interface UserDetail {
   AuthToken: string;
   CompanyName: string;

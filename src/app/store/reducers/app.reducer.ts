@@ -28,7 +28,7 @@ export function reducer(
     case fromApp.ON_LOGIN: {
       return {
         ...state,
-        userDetail: action.payload,
+        userDetail: action.payload.data,
       };
     }
     case fromApp.SET_SOCIAL_USER: {

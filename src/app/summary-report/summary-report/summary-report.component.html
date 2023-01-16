@@ -4,8 +4,8 @@
 </div>
 <div class="row" *ngIf="this.tokenObj">
   <!-- Visuals -->
-  <div class="col-12 col-md-9">
-    <div class="col-12">
+  <div class="mg-15 col-12 col-md-9">
+    <div class="col-12 mg-15">
       <app-visual
         [height]="500"
         [visualItem]="allVisuals[0]"
@@ -15,21 +15,21 @@
 
     <div class="col-12">
       <div class="row">
-        <div class="col-4">
+        <div class="col-12 col-md-4">
           <app-visual
             [height]="180"
             [visualItem]="allVisuals[2]"
             [reportId]="this.tokenObj.embedUrl[0].reportId"
           ></app-visual>
         </div>
-        <div class="col-4">
+        <div class="col-12 col-md-4">
           <app-visual
             [height]="180"
             [visualItem]="allVisuals[3]"
             [reportId]="this.tokenObj.embedUrl[0].reportId"
           ></app-visual>
         </div>
-        <div class="col-4">
+        <div class="col-12 col-md-4">
           <app-visual
             [height]="180"
             [visualItem]="allVisuals[4]"
@@ -39,9 +39,9 @@
       </div>
     </div>
   </div>
-  <div class="col-12 col-md-3">
+  <div class="col-12 col-md-3 mg-15">
     <app-visual
-      [height]="500 + 180 + 15"
+      [height]="500 + 180 + 25"
       [visualItem]="allVisuals[1]"
       [reportId]="this.tokenObj.embedUrl[0].reportId"
     ></app-visual>
@@ -49,7 +49,7 @@
 
   <div class="col-12 col-md-9">
     <div class="row">
-      <div class="col-12">
+      <div class="col-12 mg-15">
         <app-visual
           [height]="400"
           [visualItem]="allVisuals[5]"
@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div class="col-12">
+    <div class="col-12 mg-15">
       <app-visual
         [height]="500"
         [visualItem]="allVisuals[7]"
@@ -67,9 +67,9 @@
     </div>
   </div>
 
-  <div class="col-12 col-md-3">
+  <div class="col-12 col-md-3 mg-15">
     <app-visual
-      [height]="915"
+      [height]="925"
       [visualItem]="allVisuals[6]"
       [reportId]="this.tokenObj.embedUrl[0].reportId"
     ></app-visual>

@@ -15,8 +15,12 @@ export class AppEffects {
     () => {
       return this.actions$.pipe(
         ofType<a.OnLogin>(a.ON_LOGIN),
-        tap((action) => {
-          this.router.navigateByUrl('subscriptions');
+        tap(({payload}) => {
+          if(payload.planData[0].IsActive){
+            this.router.navigateByUrl('summaryreport');
+          }else{
+            this.router.navigateByUrl('subscriptions');
+          }
         })
       );
     },

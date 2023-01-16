@@ -6,6 +6,7 @@ import {
   SignUpRequest,
   SignUpResponse,
   UserDetail,
+  UserLoginResp,
 } from 'src/app/interfaces/auth.interface';
 
 export const ON_LOGIN = '[App] On Login';
@@ -43,7 +44,7 @@ export class SignUpSuccess implements Action {
 export class OnLogin implements Action {
   readonly type = ON_LOGIN;
 
-  constructor(public payload: UserDetail) {}
+  constructor(public payload: UserLoginResp) {}
 }
 
 export class OnLoginSuccess implements Action {

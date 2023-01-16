@@ -89,7 +89,7 @@ export class AuthService {
               UserRole: 'USER',
               UserRoleId: 100,
             });
-            this.store.dispatch(new a.OnLogin(response.data));
+            this.store.dispatch(new a.OnLogin(response));
             return of(response);
           } else {
             this.notification.error(response.message);
