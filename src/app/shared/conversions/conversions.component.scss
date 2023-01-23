@@ -1,9 +1,29 @@
 .msg-container{
     width:100%;
-  
+    
 }
+.switcher-body{
+    height: 90%;
+}
+
 .start-conversion{
-    padding: 0.5rem
+    padding: 0.5rem;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    form{
+        width: 100%;
+        textarea{
+            width: 80%;
+        }
+        .buttons{
+            width: 15%;
+            button{
+                float: right;
+            }
+        }
+    }
 }
 
 

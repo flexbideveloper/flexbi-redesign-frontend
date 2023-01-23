@@ -288,17 +288,18 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         this.reportsList = res.data || [];
         if (this.reportsList.length > 0) {
-          this.router.navigate([
-            'report/' +
-              this.reportsList[0].RptID +
-              '/' +
-              this.reportsList[0].WorkspID +
-              '/' +
-              (this.reportsList[0].xeroReport &&
-              this.reportsList[0].xeroReport === true
-                ? true
-                : false),
-          ]);
+          // this.router.navigate([
+          //   'report/' +
+          //     this.reportsList[0].RptID +
+          //     '/' +
+          //     this.reportsList[0].WorkspID +
+          //     '/' +
+          //     (this.reportsList[0].xeroReport &&
+          //     this.reportsList[0].xeroReport === true
+          //       ? true
+          //       : false),
+          // ]);
+          this.router.navigate(['/summaryreport'])
         }
       });
     setTimeout(() => {

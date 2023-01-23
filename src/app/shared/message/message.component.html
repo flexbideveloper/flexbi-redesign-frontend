@@ -5,9 +5,9 @@
   <div class="message-body">
     <div class="message-body__title">
       {{ message.UserName }}
-      <span class="message-body__title--date">
-        {{ message.MessageDateTime | date : "h:mm a" }}</span
-      >
+      <!-- <span class="message-body__title--date">
+        {{ message.MessageDateTime | date : "yyyy-MM-dd h:mm a" }}</span
+      > -->
     </div>
     <div class="message-body__msg border-bottom">
       {{ message.Message }}
@@ -41,7 +41,7 @@
           <div class="message-body__title">
             {{ msg.UserName }}
             <span class="message-body__title--date">
-              {{ msg.MessageDateTime | date : "h:mm a" }}</span
+              {{ msg.MessageDateTime | date : "yyyy-MM-dd h:mm a" }}</span
             >
           </div>
           <div class="message-body__msg">

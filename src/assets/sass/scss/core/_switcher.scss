@@ -6,13 +6,22 @@
   right: -550px;
   top: 0;
   bottom: 0;
-  z-index: 16;
+  z-index: 2;
   background: #f4f4f4;
   border-left: 0 solid #d2d2d2;
   box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.13);
   transition: all 0.2s ease-out;
   height: calc(100vh - 61px);
+  &.switcher-toggled{
+    .btn-close{
+      position: fixed;
+      right: 12px;
+      border: 1px solid #000;
+    }
+  }
 }
+
+
 
 .switcher-btn {
   width: 40px;

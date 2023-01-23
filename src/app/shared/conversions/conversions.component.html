@@ -1,7 +1,7 @@
 <!--start switcher-->
 <div class="switcher-wrapper">
   <div class="switcher-btn"><i class="bx bx-comment-detail"></i></div>
-  <div class="switcher-body">
+  <div class="switcher-body"  #scrollMe [scrollTop]="scrollMe.scrollHeight">
     <div class="d-flex align-items-center">
       <h5>Comments</h5>
       <button
@@ -11,7 +11,7 @@
       ></button>
     </div>
 
-    <div class="msg-container">
+    <div class="msg-container" >
       <div class="row">
         <div class="col-12 msg-body" *ngFor="let msg of messages">
           <div class="msg-body__date-title"> {{msg.title}}</div>
@@ -27,18 +27,18 @@
   </div>
   <div class="start-conversion">
     <form class="row" [formGroup]="messageForm" (ngSubmit)="sendMesage()">
-      <div class="col-md-10">
+      <div class="col-md-12 d-flex justify-content-center p-r-0">
         <textarea
           class="form-control"
           placeholder="Please enter comment.."
           rows="1"
           formControlName="message"
         ></textarea>
-      </div>
-      <div class="col-md-2 d-flex align-items-center">
-        <button type="submit" class="btn btn-primary">
+       <div class="buttons">
+        <button type="submit" class="btn btn-primary float-right">
           <i class="bx bx-send"></i>
         </button>
+       </div>
       </div>
     </form>
   </div>

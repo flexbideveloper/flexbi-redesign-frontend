@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { IMessage, MessageService } from 'src/app/services/message.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -17,7 +17,7 @@ export interface IMesageDateFormate {
 })
 export class ConversionsComponent implements OnInit {
   messages: IMesageDateFormate[] = [];
-
+  @ViewChild('scrollMe') private chatContainer: ElementRef;
   messageForm: FormGroup;
   constructor(private messageService: MessageService, private fb: FormBuilder) {
     this.messageForm = this.fb.group({
@@ -39,6 +39,7 @@ export class ConversionsComponent implements OnInit {
     $('.close-switcher').on('click', function () {
       $('.switcher-wrapper').removeClass('switcher-toggled');
     });
+
   }
 
   sendMesage() {
@@ -57,6 +58,7 @@ export class ConversionsComponent implements OnInit {
         });
       }
     });
+    this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
   }
 
   formateMessage(data: IGetMessages[]): IMesageDateFormate[] {
@@ -70,4 +72,6 @@ export class ConversionsComponent implements OnInit {
     }));
     return arrData;
   }
+
+
 }
