@@ -36,14 +36,12 @@ export class SummaryReportComponent {
   }
 
   getVisualsAndPages() {
-    this.loading = true;
+    this.loading = true
     this.reportService.getPageVisuals().subscribe((data: any) => {
       if (data.status === 200) {
         this.pageList = data.pages;
         this.visualList = data.visuals;
-        if(this.visualList.length){
-          this.loading = false
-        }
+        this.loading = false;
         this.tokenObj = data.tokenRes;
         let embedUrl = 'https://app.powerbi.com/reportEmbed';
         let embedReportId = this.tokenObj.embedUrl[0].reportId;

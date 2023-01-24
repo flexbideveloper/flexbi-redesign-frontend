@@ -6,7 +6,8 @@
 <div class="row" *ngIf="loading">
   <div class="col-12 center">
     <div class="" role="status">
-      <img src="../../../assets/images/report-loader.gif" alt="Report Loader">
+      <img src="../../../assets/images/report-loader.gif" alt="Report Loader" />
+      <h> Hold tight - Your dashboard will be ready soon. </h>
     </div>
   </div>
 </div>
@@ -16,7 +17,7 @@
   <div class="mg-15 col-12 col-md-9">
     <div class="col-12 mg-15">
       <app-visual
-        [height]="460"
+        [height]="70"
         [visualItem]="allVisuals[0]"
         [reportId]="this.tokenObj.embedUrl[0].reportId"
       ></app-visual>
@@ -26,21 +27,21 @@
       <div class="row">
         <div class="col-12 col-md-4">
           <app-visual
-            [height]="230"
+            [height]="30"
             [visualItem]="allVisuals[2]"
             [reportId]="this.tokenObj.embedUrl[0].reportId"
           ></app-visual>
         </div>
         <div class="col-12 col-md-4">
           <app-visual
-            [height]="230"
+            [height]="30"
             [visualItem]="allVisuals[3]"
             [reportId]="this.tokenObj.embedUrl[0].reportId"
           ></app-visual>
         </div>
         <div class="col-12 col-md-4">
           <app-visual
-            [height]="230"
+            [height]="30"
             [visualItem]="allVisuals[4]"
             [reportId]="this.tokenObj.embedUrl[0].reportId"
           ></app-visual>
@@ -48,9 +49,10 @@
       </div>
     </div>
   </div>
-  <div class="col-12 col-md-3 mg-15">
+  <div class="col-12 col-md-3 mg-15 bg-white">
     <app-visual
-      [height]="460 + 230 + 25"
+      [padding]="25"
+      [height]="100"
       [visualItem]="allVisuals[1]"
       [reportId]="this.tokenObj.embedUrl[0].reportId"
     ></app-visual>
@@ -60,7 +62,7 @@
     <div class="row">
       <div class="col-12 mg-15">
         <app-visual
-          [height]="400"
+          [height]="60"
           [visualItem]="allVisuals[5]"
           [reportId]="this.tokenObj.embedUrl[0].reportId"
         ></app-visual>
@@ -71,26 +73,26 @@
       <div class="row">
         <div class="col-12 col-md-7">
           <app-visual
-          [height]="500"
-          [visualItem]="allVisuals[7]"
-          [reportId]="this.tokenObj.embedUrl[0].reportId"
-        ></app-visual>
+            [height]="75"
+            [visualItem]="allVisuals[7]"
+            [reportId]="this.tokenObj.embedUrl[0].reportId"
+          ></app-visual>
         </div>
         <div class="col-12 col-md-5">
           <app-visual
-          [height]="500"
-          [visualItem]="allVisuals[8]"
-          [reportId]="this.tokenObj.embedUrl[0].reportId"
-        ></app-visual>
+            [height]="75"
+            [visualItem]="allVisuals[8]"
+            [reportId]="this.tokenObj.embedUrl[0].reportId"
+          ></app-visual>
         </div>
       </div>
-    
     </div>
   </div>
 
-  <div class="col-12 col-md-3 mg-15">
+  <div class="col-12 col-md-3 mg-15 bg-white" >
     <app-visual
-      [height]="925"
+      [padding]="25"
+      [height]="135"
       [visualItem]="allVisuals[6]"
       [reportId]="this.tokenObj.embedUrl[0].reportId"
     ></app-visual>
@@ -111,9 +113,7 @@
       [reportId]="this.tokenObj.embedUrl[0].reportId"
     ></app-visual>
   </div>  -->
-
 </div>
-
 
 <!-- Please visuals -->
 <!-- <div class="row">

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, Renderer2 } from '@angular/core';
 import * as pbi from 'powerbi-client';
 
 @Component({
@@ -12,11 +12,14 @@ export class VisualComponent implements AfterViewInit {
   @Input() visualItem: pbi.IVisualEmbedConfiguration;
   @Input() height:number;
   @Input() width:number;
+  @Input() padding:number = 0;
+
+  
   embedUrl = 'https://app.powerbi.com/reportEmbed';
   report: pbi.Embed;
 
   @Input() config: pbi.IVisualEmbedConfiguration;
-  constructor() {
+  constructor(private renderer: Renderer2) {
   }
 
   ngAfterViewInit(): void {
@@ -38,5 +41,7 @@ export class VisualComponent implements AfterViewInit {
       console.log('Error');
       // this.notification.error('Report not loaded.');
     });
+
   }
+
 }
