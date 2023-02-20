@@ -10,6 +10,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class MessageComponent implements OnInit {
   replyBtn: boolean = false;
   loadRecord: boolean = false;
+  randomId = Math.floor(Math.random() * 10000)
   @Input() message: IMessage;
   @Input() id: string;
   messageForm: FormGroup;

@@ -7,13 +7,42 @@
   <div class="col-12 center">
     <div class="" role="status">
       <img src="../../../assets/images/report-loader.gif" alt="Report Loader" />
-      <h6> Hold tight - Your dashboard will be ready soon. </h6>
+      <h6>Hold tight - Your dashboard will be ready soon.</h6>
     </div>
   </div>
 </div>
 
 <div class="row" *ngIf="this.tokenObj && !loading">
   <!-- Visuals -->
+  <div class="col-12 section-label">
+    <div class="title">Customer Analysis</div>
+    <div class="buttons">
+      <button
+        type="button"
+        class="btn btn-white ms-2"
+        title="Customer concentration refers to the degree to which a business depends on a small number of key customers for its earnings. When a large percentage of a company's revenue is derived from a few top customers, the business faces greater risk from those customers in areas such as payment default, product/service quality, and relationship management."
+      >
+        <i class="bx bx-info-circle me-0"></i>
+        Customer Concentration Risk
+      </button>
+      <button
+        type="button"
+        class="btn btn-white ms-2"
+        title="Managing debtors is crucial for effectively managing cash flow. It's a common mistake to assume that the best customers are also the best payers. By analyzing and comparing the payment terms with the actual receipt date, businesses can take proactive measures to manage their client plan and debtor book strategy."
+      >
+        <i class="bx bx-info-circle me-0"></i>
+        Debtor Management
+      </button>
+      <button
+        type="button"
+        class="btn btn-white ms-2"
+        title="Examining the mix of new versus old customers provides valuable information on a business's client engagement strategy. Such analysis can reveal details such as when a customer last made a purchase, whether they make repeat purchases and any patterns underlying their behavior, as well as the effectiveness of the business development strategy in attracting new customers"
+      >
+        <i class="bx bx-info-circle me-0"></i>
+        Client Engagement
+      </button>
+    </div>
+  </div>
   <div class="mg-15 col-12 col-md-9">
     <div class="col-12 mg-15">
       <app-visual
@@ -58,6 +87,37 @@
     ></app-visual>
   </div>
 
+
+  <div class="col-12 section-label">
+    <div class="title">Cash Analysis</div>
+    <div class="buttons">
+      <button
+        type="button"
+        class="btn btn-white ms-2"
+        title="Customer concentration refers to the degree to which a business depends on a small number of key customers for its earnings. When a large percentage of a company's revenue is derived from a few top customers, the business faces greater risk from those customers in areas such as payment default, product/service quality, and relationship management."
+      >
+        <i class="bx bx-info-circle me-0"></i>
+        Customer Concentration Risk
+      </button>
+      <button
+        type="button"
+        class="btn btn-white ms-2"
+        title="Managing debtors is crucial for effectively managing cash flow. It's a common mistake to assume that the best customers are also the best payers. By analyzing and comparing the payment terms with the actual receipt date, businesses can take proactive measures to manage their client plan and debtor book strategy."
+      >
+        <i class="bx bx-info-circle me-0"></i>
+        Debtor Management
+      </button>
+      <button
+        type="button"
+        class="btn btn-white ms-2"
+        title="Examining the mix of new versus old customers provides valuable information on a business's client engagement strategy. Such analysis can reveal details such as when a customer last made a purchase, whether they make repeat purchases and any patterns underlying their behavior, as well as the effectiveness of the business development strategy in attracting new customers"
+      >
+        <i class="bx bx-info-circle me-0"></i>
+        Client Engagement
+      </button>
+    </div>
+  </div>
+
   <div class="col-12 col-md-9">
     <div class="row">
       <div class="col-12 mg-15">
@@ -89,7 +149,7 @@
     </div>
   </div>
 
-  <div class="col-12 col-md-3 mg-15 bg-white" >
+  <div class="col-12 col-md-3 mg-15 bg-white">
     <app-visual
       [padding]="25"
       [height]="132"

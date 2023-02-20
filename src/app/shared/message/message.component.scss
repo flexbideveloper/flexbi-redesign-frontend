@@ -17,7 +17,7 @@ textarea{
     width: 100%;
         &__title{
             font-size: 14px;
-            font-weight: 500;
+            font-weight: bold;
             color: #00000096;
             &--date{
                 float: right;
@@ -27,6 +27,9 @@ textarea{
                 top:5px;
                 right:5px;
                 }
+                &--adviser span{
+                    color: #fd625e;
+                }
         }
         &__msg{
             font-size: 13px;
@@ -34,6 +37,11 @@ textarea{
                 cursor: pointer;
                 color: #21cead ;  
                 font-weight: bold; 
+            }
+
+            &--adviser{
+              background-color: #f9b9b8;
+              padding: 2px;
             }
         }
         &__control{

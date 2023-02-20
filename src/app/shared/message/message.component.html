@@ -3,13 +3,13 @@
     <app-avatar-photo [name]="message.UserName"></app-avatar-photo>
   </div>
   <div class="message-body">
-    <div class="message-body__title">
-      {{ message.UserName }}
+    <div class="message-body__title" [class.message-body__title--adviser]="message?.Adviser">
+      {{ message.UserName }} <span *ngIf="message?.Adviser">(Adviser)</span>
       <!-- <span class="message-body__title--date">
         {{ message.MessageDateTime | date : "yyyy-MM-dd h:mm a" }}</span
       > -->
     </div>
-    <div class="message-body__msg border-bottom">
+    <div class="message-body__msg border-bottom  " [class.message-body__msg--adviser]="message?.Adviser">
       {{ message.Message }}
     </div>
     <div
@@ -44,7 +44,7 @@
               {{ msg.MessageDateTime | date : "yyyy-MM-dd h:mm a" }}</span
             >
           </div>
-          <div class="message-body__msg">
+          <div class="message-body__msg" [class.message-body__msg--adviser]="msg?.Adviser">
             {{ msg.Message }}
           </div>
         </div>
@@ -54,16 +54,16 @@
     <div class="message-body__msg--reply">
       <span
         data-bs-toggle="collapse"
-        [attr.data-bs-target]="'#replyBtn' + id"
+        [attr.data-bs-target]="'#replyBtn' + randomId"
         aria-expanded="false"
-        [attr.aria-controls]="'replyBtn' + id"
+        [attr.aria-controls]="'replyBtn' + randomId"
         >Reply</span
       >
       <form
         [formGroup]="messageForm"
         (ngSubmit)="sendMesage()"
         class="tree-view collapse"
-        [attr.id]="'replyBtn' + id"
+        [attr.id]="'replyBtn' + randomId"
         class="row accordion-collapse collapse"
       >
         <div class="col-md-10">

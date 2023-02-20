@@ -17,3 +17,23 @@
 .bg-white{
   background-color: #fff;
 }
+
+.section-label{
+  height: 50px;
+  color: #fff;
+  background-color: #21cead;
+  padding: 10px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: calc(100% - 12px);
+  margin-left: 12px;
+  .buttons{
+    float: right;
+    button{
+      font-size: 12px;
+    }
+  }
+}
+

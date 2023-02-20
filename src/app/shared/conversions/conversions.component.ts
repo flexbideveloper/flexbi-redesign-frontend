@@ -58,7 +58,7 @@ export class ConversionsComponent implements OnInit {
         });
       }
     });
-    this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+    // this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
   }
 
   formateMessage(data: IGetMessages[]): IMesageDateFormate[] {

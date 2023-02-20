@@ -16,6 +16,7 @@ export interface IMessage {
   MessageDate: string;
   UserCount: number;
   CountLabel:string
+  Adviser: 0 | 1
 }
 
 export interface IGetResponse<T> {
@@ -78,6 +79,13 @@ export class MessageService {
     };
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.CONVERSIONS}`;
     return this.http.post<IGetResponseByID<IMessage>>(url , payload);
+  }
+
+
+  isAdviser(): Observable<IGetResponse<any>> {
+    const id_FkUserProfile = this.authService.getLoggedInUserDetails().ClientUserId;
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.IS_ADVISER_ACTIVE}${id_FkUserProfile}`;
+    return this.http.get<IGetResponse<any>>(url , {});
   }
 
 
