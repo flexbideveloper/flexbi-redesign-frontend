@@ -7,7 +7,7 @@ import { map, of, switchMap, tap } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import * as a from '../actions/app.action';
-import * as fromStore from 'src/app/store';
+import * as fromStore from '@app/core/store';
 
 @Injectable()
 export class AppEffects {
@@ -15,16 +15,16 @@ export class AppEffects {
     () => {
       return this.actions$.pipe(
         ofType<a.OnLogin>(a.ON_LOGIN),
-        tap(({payload}) => {
-          if(payload.planData[0].IsActive){
-            this.router.navigateByUrl('summaryreport');
-          }else{
-            this.router.navigateByUrl('subscriptions');
-          }
-        })
+        // tap(({payload}) => {
+        //   if(payload.planData[0].IsActive){
+        //     this.router.navigateByUrl('summaryreport');
+        //   }else{
+        //     this.router.navigateByUrl('subscriptions');
+        //   }
+        // })
+        map(({payload}) => new a.OnLoginSuccess({userDetail : payload}))
       );
     },
-    { dispatch: false }
   );
 
   setUser$ = createEffect(
@@ -48,7 +48,7 @@ export class AppEffects {
             sessionStorage.removeItem('identity');
             sessionStorage.removeItem('BearerToken');
             localStorage.removeItem('loggedInUserDetails');
-            this.router.navigateByUrl('/auth/sign');
+            this.router.navigateByUrl('auth/sign');
           }
         })
       );

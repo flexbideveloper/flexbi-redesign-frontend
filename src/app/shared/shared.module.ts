@@ -12,7 +12,9 @@ import { ConversionsComponent } from './conversions/conversions.component';
 import { PasswordValidatorPipe } from './pipes/password-validator.pipe';
 import { AvatarPhotoComponent } from './avatar-photo/avatar-photo.component';
 import { MessageComponent } from './message/message.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule ,FormsModule} from '@angular/forms';
+import { InputSuggetionModule } from './input-suggetion/input-suggetion.module';
+
 
 @NgModule({
   exports: [
@@ -22,9 +24,17 @@ import { ReactiveFormsModule } from '@angular/forms';
     SidebarComponent,
     ConversionsComponent,
     NgbModule,
-    AvatarPhotoComponent
+    AvatarPhotoComponent,
   ],
-  imports: [RouterModule, CommonModule, NgbModule, PerfectScrollbarModule,ReactiveFormsModule],
+  imports: [
+    RouterModule,
+    CommonModule,
+    NgbModule,
+    FormsModule,
+    PerfectScrollbarModule,
+    ReactiveFormsModule,
+    InputSuggetionModule
+  ],
   declarations: [
     FooterComponent,
     NavbarComponent,
@@ -32,7 +42,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ConversionsComponent,
     PasswordValidatorPipe,
     AvatarPhotoComponent,
-    MessageComponent
+    MessageComponent,
   ],
   providers: [],
 })

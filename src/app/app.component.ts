@@ -9,7 +9,7 @@ import { MessageService } from './services/message.service';
 })
 export class AppComponent {
   constructor(private msg: MessageService) {
-    msg.isAdviser().subscribe()
+    // msg.isAdviser().subscribe()
   }
 
 }

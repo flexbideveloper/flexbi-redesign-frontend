@@ -4,8 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import * as fromStore from 'src/app/store';
-import * as a from 'src/app/store/actions/app.action';
+import * as fromStore from '@app/core/store';
 import { ConfirmedValidator } from '../sign-up/sign-up.component';
 
 @Component({

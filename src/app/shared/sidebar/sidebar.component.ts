@@ -100,7 +100,7 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    let userId = this.authService.getLoggedInUserDetails().UserId;
+    let userId = '107';
     userId && this.subscriptionService.getActivePlan(userId).subscribe((data) => {
       this.activePlanDetail = data.data[0];
       if (!!this.activePlanDetail) {

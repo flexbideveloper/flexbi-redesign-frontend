@@ -12,6 +12,7 @@ import {
 export const ON_LOGIN = '[App] On Login';
 export const ON_LOGIN_ADMIN = '[App] On Login Admin';
 
+
 export const SIGN_UP_REQUEST = '[Auth] Sign Up Request';
 export const SIGN_UP_SUCCESS = '[Auth] Sign Up Success';
 
@@ -30,6 +31,12 @@ export const REMOVE_USER = '[Auth] Remove User';
 export const SET_COMPANY_NAME = '[Auth] Company Name User';
 export const SET_COMPANY_NAME_SUCCESS = '[Auth] Company Name Success';
 
+export const GET_ORG_USERS = '[Auth] Org Users User';
+export const GET_ORG_USERS_SUCCESS = '[Auth] Org Users Success';
+
+export const GET_ORG_VISUALS = '[Auth] Org Users User';
+export const GET_ORG_VISUALS_SUCCESS = '[Auth] Org Users Success';
+
 export class onSignUp implements Action {
   readonly type = SIGN_UP_REQUEST;
 
@@ -44,7 +51,7 @@ export class SignUpSuccess implements Action {
 export class OnLogin implements Action {
   readonly type = ON_LOGIN;
 
-  constructor(public payload: UserLoginResp) {}
+  constructor(public payload: LoginResponse) {}
 }
 
 export class OnLoginSuccess implements Action {

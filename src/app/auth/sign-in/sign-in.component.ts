@@ -16,6 +16,7 @@ import {
   throwError,
 } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { NavigationService } from 'src/app/services/navigation.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { environment } from 'src/environments/environment';
 
@@ -51,7 +52,8 @@ export class SignInComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private authService: AuthService,
     private socialAuthService: SocialAuthService,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private navigationService: NavigationService
   ) {}
 
   // On Forgotpassword link click
@@ -92,6 +94,7 @@ export class SignInComponent implements OnInit, OnDestroy {
   onLoginHandler(): Observable<any> {
     return this.authService.clientLogin(this.form.value).pipe(
       mergeMap((data) => {
+        this.navigationService.redirectToDashboard();
         return of(data);
       }),
       catchError((err) => {

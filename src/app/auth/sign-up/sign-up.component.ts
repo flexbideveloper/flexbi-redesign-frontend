@@ -8,8 +8,7 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { Store } from '@ngrx/store';
-import * as fromStore from 'src/app/store';
-import * as a from 'src/app/store/actions/app.action';
+import * as fromStore from '@app/core/store';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 
@@ -91,7 +90,7 @@ export class SignUpComponent implements OnInit {
       this.isCaptchaValidate
     ) {
       delete this.signUpForm.value.companyName;
-      this.appStore.dispatch(new a.onSignUp({ form: this.signUpForm.value }));
+      this.appStore.dispatch(new fromStore.onSignUp({ form: this.signUpForm.value }));
     }
   }
 

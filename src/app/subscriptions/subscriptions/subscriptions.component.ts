@@ -1,19 +1,281 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Route } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { SubcriptionsService } from 'src/app/services/subscription.service';
+// import { IUser , IVisual } from 'src/app/shared/input-suggetion/containers/input-box/input-box.component';
 import { AcceptPaymentPromptComponent } from '../accept-payment-prompt/accept-payment-prompt.component';
 import { CompanyNameComponent } from '../company-name/company-name.component';
 import { SubscriptionPlan } from './subscription.interface';
-
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { IUser, IVisual } from 'src/app/shared/input-suggetion/containers/input-box/input-box.component';
 @Component({
   selector: 'app-subscriptions',
   templateUrl: './subscriptions.component.html',
   styleUrls: ['./subscriptions.component.scss'],
 })
 export class SubscriptionsComponent implements OnInit {
+  items : IUser[] =
+  [
+         {
+            "userId":1001,
+            "UserName":"Tejas Jadhav",
+            "Email":"jadhavlogin1@gmail.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1002,
+            "UserName":"IJ Test",
+            "Email":"ijindrajeet1@outlook.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1003,
+            "UserName":"Don Eau",
+            "Email":"doneau@gmail.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1004,
+            "UserName":"Don Eau",
+            "Email":"don.eau@mainsheet.com.au",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1005,
+            "UserName":"TJDemoJadhav",
+            "Email":"demo@demo.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1006,
+            "UserName":"TJUser",
+            "Email":"demo1@demo1.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1007,
+            "UserName":"AnotherUser",
+            "Email":"demo2@demo2.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1008,
+            "UserName":"ajayP",
+            "Email":"demo3@demo3.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1009,
+            "UserName":"test123test",
+            "Email":"demo4@demo4.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1012,
+            "UserName":"AjayShinde",
+            "Email":"demo5@demo5.com",
+            "IsAdvisor":1
+         },
+         {
+            "userId":1013,
+            "UserName":"Tejasassa",
+            "Email":"demo6@demo6.com",
+            "IsAdvisor":1
+         },
+         {
+            "userId":1014,
+            "UserName":"Demosdsdsd",
+            "Email":"demo7@demo7.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1015,
+            "UserName":"Demosdsdsd",
+            "Email":"demo8@demo8.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1016,
+            "UserName":"NewAccount",
+            "Email":"demo9@demo9.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1017,
+            "UserName":"vita nagarpalika",
+            "Email":"vitanagarpalikaaws@gmail.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1018,
+            "UserName":"AjayNew",
+            "Email":"demo99@demo99.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1019,
+            "UserName":"safaridsdsds",
+            "Email":"demo11@demo.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1020,
+            "UserName":"sddsdsdsdsd",
+            "Email":"demo22@demo.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1021,
+            "UserName":"dsdsddssdsd",
+            "Email":"demo33@demo.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1022,
+            "UserName":"sdsdddssdsd",
+            "Email":"demo44@demo.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1027,
+            "UserName":"Tejas Jadhav",
+            "Email":"scopeupaws@gmail.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1028,
+            "UserName":"Tejas Jadhav",
+            "Email":"tejas.jadhav6767@gmail.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1029,
+            "UserName":"anotherdsddsd",
+            "Email":"demo333@d.com",
+            "IsAdvisor":1
+         },
+         {
+            "userId":1030,
+            "UserName":"Indrajeet Jadhav",
+            "Email":"indrajeet.developer1@gmail.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1033,
+            "UserName":"IndraJ",
+            "Email":"ijindrajeet@outlook.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1045,
+            "UserName":"Tejas Jadhav",
+            "Email":"jadhavlogin2@gmail.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1046,
+            "UserName":"Tejas Jadhav",
+            "Email":"jadhavlogin3@gmail.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1047,
+            "UserName":"Tejas Jadhav",
+            "Email":"jadhavlogin4@gmail.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1048,
+            "UserName":"Tejas Jadhav",
+            "Email":"jadhavlogin5@gmail.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1049,
+            "UserName":"Kunal Patidar",
+            "Email":"itskunaldev@gmail.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1050,
+            "UserName":"Tejas Jadhav",
+            "Email":"jadhavlogin6@gmail.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1051,
+            "UserName":"Indrajeet Jadhav",
+            "Email":"indrajeet.developer@gmail.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1052,
+            "UserName":"Tejas Jadhav",
+            "Email":"jadhavlogin@gmail.com",
+            "IsAdvisor":0
+         },
+         {
+            "userId":1053,
+            "UserName":"Hemant Patidar",
+            "Email":"iamhemant.indore@gmail.com",
+            "IsAdvisor":0
+         }
+      ];
+  form: FormGroup = this.fb.group({
+    status: [''],
+  });
+  status: string = '';
+  formValue = '';
+    itemsB : IVisual[] = [
+      {
+         "VisualName":"989cee2306deaccc8fce",
+         "VisualDisplayName":"Findings - Revenue",
+         "visualId":437
+      },
+      {
+         "VisualName":"f747183852ce8817f023",
+         "VisualDisplayName":"Unpaid Balance %",
+         "visualId":438
+      },
+      {
+         "VisualName":"ab37c7941f62c1b466af",
+         "VisualDisplayName":"Revenue %",
+         "visualId":439
+      },
+      {
+         "VisualName":"7c70e847951a1d4b6100",
+         "VisualDisplayName":"Customer Pattern",
+         "visualId":440
+      },
+      {
+         "VisualName":"b944a20a05230600d5c0",
+         "VisualDisplayName":"Top 20 Customers by Revenue",
+         "visualId":441
+      },
+      {
+         "VisualName":"a4cfbf83546b00a36787",
+         "VisualDisplayName":"Top 20 Creditors",
+         "visualId":442
+      },
+      {
+         "VisualName":"7497b4f51c02b52ab302",
+         "VisualDisplayName":"Estimated Cashflow - next 28 days",
+         "visualId":443
+      },
+      {
+         "VisualName":"5e36d125cd68f566947f",
+         "VisualDisplayName":"Findings - Cashflow",
+         "visualId":444
+      },
+      {
+         "VisualName":"4be273429b9d6b9e5048",
+         "VisualDisplayName":"Top 20 Debtors",
+         "visualId":445
+      }
+   ];
   subscriptionPlans: SubscriptionPlan[];
   dumysubPlanList: SubscriptionPlan[];
   activePlanDetail: SubscriptionPlan;
@@ -35,7 +297,8 @@ export class SubscriptionsComponent implements OnInit {
     private authService: AuthService,
     private modalService: NgbModal,
     private activeRoute: ActivatedRoute,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private fb: FormBuilder
   ) {
     if (
       this.activeRoute.snapshot.queryParamMap.get('isTranComplete') !== null &&
@@ -72,7 +335,10 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   getActivePlan(user_id: any = null) {
-    let userId = user_id && user_id !== null ? user_id : this.authService.getLoggedInUserDetails().UserId;
+    let userId =
+      user_id && user_id !== null
+        ? user_id
+        : this.authService.getLoggedInUserDetails().UserId;
     if (userId && userId !== null) {
       this.subscriptionService.getActivePlan(userId).subscribe((data) => {
         this.activePlanDetail = data.data[0];
@@ -86,9 +352,17 @@ export class SubscriptionsComponent implements OnInit {
     }
     if (!this.authService.getLoggedInUserDetails().orgId) {
       // Is user approved
-      this.subscriptionService.getUserApprovedOrNot(this.authService.getLoggedInUserDetails().id ? this.authService.getLoggedInUserDetails().id : (this.authService.getLoggedInUserDetails().ClientUserId ? this.authService.getLoggedInUserDetails().ClientUserId : this.authService.getLoggedInUserDetails().UserId)).subscribe((data) => {
-        this.approvalPending = data?.data?.IsApproved === 0 ? true : false;
-      });
+      this.subscriptionService
+        .getUserApprovedOrNot(
+          this.authService.getLoggedInUserDetails().id
+            ? this.authService.getLoggedInUserDetails().id
+            : this.authService.getLoggedInUserDetails().ClientUserId
+            ? this.authService.getLoggedInUserDetails().ClientUserId
+            : this.authService.getLoggedInUserDetails().UserId
+        )
+        .subscribe((data) => {
+          this.approvalPending = data?.data?.IsApproved === 0 ? true : false;
+        });
     }
   }
 
@@ -104,20 +378,28 @@ export class SubscriptionsComponent implements OnInit {
       const modal = this.modalService.open(CompanyNameComponent, {
         centered: true,
       });
-      modal.componentInstance.user_id = this.authService.getLoggedInUserDetails().id ? this.authService.getLoggedInUserDetails().id : (this.authService.getLoggedInUserDetails().ClientUserId ? this.authService.getLoggedInUserDetails().ClientUserId : this.authService.getLoggedInUserDetails().UserId);
-      modal.result.then((data: any) => {
-        console.log("Success");
-        if (data && data.status === 200 && data.orgData && data.orgData.id) {
-          this.updateUserDetails(data);
-          this.activateFreeTrialPlanMethod(data.orgData.id);
+      modal.componentInstance.user_id =
+        this.authService.getLoggedInUserDetails().id
+          ? this.authService.getLoggedInUserDetails().id
+          : this.authService.getLoggedInUserDetails().ClientUserId
+          ? this.authService.getLoggedInUserDetails().ClientUserId
+          : this.authService.getLoggedInUserDetails().UserId;
+      modal.result.then(
+        (data: any) => {
+          console.log('Success');
+          if (data && data.status === 200 && data.orgData && data.orgData.id) {
+            this.updateUserDetails(data);
+            this.activateFreeTrialPlanMethod(data.orgData.id);
+          }
+        },
+        (data: any) => {
+          console.log('Success');
+          if (data && data.status === 200 && data.orgData && data.orgData.id) {
+            this.updateUserDetails(data);
+            this.activateFreeTrialPlanMethod(data.orgData.id);
+          }
         }
-      }, (data: any) => {
-        console.log("Success");
-        if (data && data.status === 200 && data.orgData && data.orgData.id) {
-          this.updateUserDetails(data);
-          this.activateFreeTrialPlanMethod(data.orgData.id);
-        }
-      })
+      );
     }
   }
 
@@ -125,12 +407,11 @@ export class SubscriptionsComponent implements OnInit {
     // activate free trial plan
     this.subscriptionService.activateFreeTrail(userId).subscribe((res: any) => {
       if (res && res.status === 200) {
-
         // sessionStorage.setItem('subDetails', JSON.stringify(res.planData));
         setTimeout(() => {
           this.getActivePlan(userId);
           window.location.reload();
-        },1000);
+        }, 1000);
       }
     });
   }
@@ -146,7 +427,7 @@ export class SubscriptionsComponent implements OnInit {
       PlanName: plan.PlanName,
       PlanAmount: plan.Amount,
       PlanId: plan.id,
-      id_FkClientProfile
+      id_FkClientProfile,
     };
   }
 
@@ -157,27 +438,58 @@ export class SubscriptionsComponent implements OnInit {
     let id_FkClientProfile = this.authService.getLoggedInUserDetails().UserId;
 
     // show company name accept dialog
-    if (id_FkClientProfile && id_FkClientProfile !== null && CompanyName && CompanyName?.length > 0) {
-      this.activateNewPlan(plan, userId, orgId, CompanyName, id_FkClientProfile);
+    if (
+      id_FkClientProfile &&
+      id_FkClientProfile !== null &&
+      CompanyName &&
+      CompanyName?.length > 0
+    ) {
+      this.activateNewPlan(
+        plan,
+        userId,
+        orgId,
+        CompanyName,
+        id_FkClientProfile
+      );
     } else {
       // show company name accept dialog
       const modal = this.modalService.open(CompanyNameComponent, {
         centered: true,
       });
-      modal.componentInstance.user_id = this.authService.getLoggedInUserDetails().id ? this.authService.getLoggedInUserDetails().id : (this.authService.getLoggedInUserDetails().ClientUserId ? this.authService.getLoggedInUserDetails().ClientUserId : this.authService.getLoggedInUserDetails().UserId);
-      modal.result.then((data: any) => {
-        console.log("Success");
-        if (data && data.status === 200 && data.orgData && data.orgData.id) {
-          this.updateUserDetails(data);
-          this.activateNewPlan(plan, userId, data.orgData.id, CompanyName, id_FkClientProfile);
+      modal.componentInstance.user_id =
+        this.authService.getLoggedInUserDetails().id
+          ? this.authService.getLoggedInUserDetails().id
+          : this.authService.getLoggedInUserDetails().ClientUserId
+          ? this.authService.getLoggedInUserDetails().ClientUserId
+          : this.authService.getLoggedInUserDetails().UserId;
+      modal.result.then(
+        (data: any) => {
+          console.log('Success');
+          if (data && data.status === 200 && data.orgData && data.orgData.id) {
+            this.updateUserDetails(data);
+            this.activateNewPlan(
+              plan,
+              userId,
+              data.orgData.id,
+              CompanyName,
+              id_FkClientProfile
+            );
+          }
+        },
+        (data: any) => {
+          console.log('Success');
+          if (data && data.status === 200 && data.orgData && data.orgData.id) {
+            this.updateUserDetails(data);
+            this.activateNewPlan(
+              plan,
+              userId,
+              data.orgData.id,
+              CompanyName,
+              id_FkClientProfile
+            );
+          }
         }
-      }, (data: any) => {
-        console.log("Success");
-        if (data && data.status === 200 && data.orgData && data.orgData.id) {
-          this.updateUserDetails(data);
-          this.activateNewPlan(plan, userId, data.orgData.id, CompanyName, id_FkClientProfile);
-        }
-      })
+      );
     }
   }
 
@@ -186,13 +498,13 @@ export class SubscriptionsComponent implements OnInit {
     logInUser.UserId = data.orgData.id;
     this.authService.setLoggedInUserDetails(logInUser);
     const ux =
-        (sessionStorage.getItem('identity') &&
-          JSON.parse(sessionStorage.getItem('identity'))) ||
-        null;
-      ux.CompanyName = data.orgData.CompanyName;
-      ux.id_FkClientProfile = data.orgData.id;
-      ux.id = data.orgData.id;
-      sessionStorage.setItem('identity', JSON.stringify(ux));
+      (sessionStorage.getItem('identity') &&
+        JSON.parse(sessionStorage.getItem('identity'))) ||
+      null;
+    ux.CompanyName = data.orgData.CompanyName;
+    ux.id_FkClientProfile = data.orgData.id;
+    ux.id = data.orgData.id;
+    sessionStorage.setItem('identity', JSON.stringify(ux));
   }
 
   getPlan(type) {

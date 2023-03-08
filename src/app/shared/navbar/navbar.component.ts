@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { SidebarService } from '../sidebar/sidebar.service';
-import * as fromStore from 'src/app/store';
+import * as fromStore from '@app/core/store';
 import { AuthService } from 'src/app/services/auth.service';
 import { SubcriptionsService } from 'src/app/services/subscription.service';
 import { SubscriptionPlan } from 'src/app/subscriptions/subscriptions/subscription.interface';

@@ -1,6 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { IMessage, MessageService } from 'src/app/services/message.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import * as fromAppStore from '@app/core/store';
+import * as fromReportStore from 'src/app/summary-report/store';
+import { sendMessage } from 'src/app/summary-report/store';
 
 export interface IGetMessages {
   [key: string]: IMessage[];
@@ -16,19 +20,17 @@ export interface IMesageDateFormate {
   styleUrls: ['./conversions.component.scss'],
 })
 export class ConversionsComponent implements OnInit {
-  messages: IMesageDateFormate[] = [];
+  isLoading$ = this.store.select(fromReportStore.selectMSGLoading);
+  messages$ = this.store.select(fromReportStore.selectMSGData);
+
+  users$ = this.store.select(fromReportStore.selectUsers);
+  visuals$ = this.store.select(fromReportStore.selectVisuals);
   @ViewChild('scrollMe') private chatContainer: ElementRef;
+
   messageForm: FormGroup;
-  constructor(private messageService: MessageService, private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private store: Store) {
     this.messageForm = this.fb.group({
       message: ['', Validators.required],
-    });
-    this.getConversion();
-  }
-
-  getConversion() {
-    this.messageService.getConversions().subscribe((resp) => {
-      this.messages = this.formateMessage(resp.data as any);
     });
   }
 
@@ -39,7 +41,6 @@ export class ConversionsComponent implements OnInit {
     $('.close-switcher').on('click', function () {
       $('.switcher-wrapper').removeClass('switcher-toggled');
     });
-
   }
 
   sendMesage() {
@@ -48,30 +49,7 @@ export class ConversionsComponent implements OnInit {
     }
     let message = this.messageForm.value.message;
     this.messageForm.get('message').setValue('');
-
-    this.messageService.postConversion(message).subscribe((resp) => {
-      this.messageForm.get('message').setValue('');
-
-      if (resp.status === 200) {
-        this.messageService.getConversions().subscribe((resp) => {
-          this.messages = this.formateMessage(resp.data as any);
-        });
-      }
-    });
+    this.store.dispatch(fromReportStore.sendMessage({ message }));
     // this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
   }
-
-  formateMessage(data: IGetMessages[]): IMesageDateFormate[] {
-    if (!data) {
-      return [];
-    }
-    let keysData = Object.keys(data);
-    let arrData = keysData.map((key: string) => ({
-      title: key,
-      data: data[key],
-    }));
-    return arrData;
-  }
-
-
 }

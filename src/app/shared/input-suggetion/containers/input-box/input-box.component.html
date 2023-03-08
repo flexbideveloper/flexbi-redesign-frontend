@@ -1,0 +1,42 @@
+<div class="input-box">
+    <div class="box-top">
+        <ul class="list list--users" *ngIf="userDropdownShow">
+            <li class="list list__item" *ngFor="let items of userList" (click)="selectUser(items)">
+                {{ prefixUser }} {{ items.UserName }}
+            </li>
+        </ul>
+
+
+        <ul class="list list--visuals" *ngIf="visualDropdownShow">
+            <li class="list list__item" *ngFor="let items of visualList" (click)="selectVisual(items)">
+                {{ prefixVisual }} {{ items.VisualDisplayName }}
+            </li>
+        </ul>
+    </div>
+    <input
+    #InputField
+    class="form-control
+      ui-input__group-field
+      {{ uiTypeValue }}__group-field
+      {{ sizeValue }}__group-field
+    "
+    [(ngModel)]="dataInput"
+    [ngClass]="{
+      search: searchSvg,
+      clear: clearSvg,
+      'error-field': !!errorMsg
+    }"
+    [id]="idInputValue"
+    [attr.name]="nameValue"
+    (keydown.enter)="enterPress()"
+    (keypress)="keyPress($event)"
+    (ngModelChange)="onInputChange($event)"
+    (blur)="onBlur()"
+    (focus)="onFocus()"
+    placeholder="{{ placeholder }}"
+    [type]="inputTypeValue"
+    [required]="required"
+    [disabled]="disabled"
+    [autocomplete]="autocomplete"
+  />
+</div>

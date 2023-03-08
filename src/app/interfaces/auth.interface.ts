@@ -4,12 +4,22 @@ export interface SignInRequest {
   gcmTonken: string;
 }
 
+export interface IOrganisation {
+  orgId: number;
+  CompanyName: string;
+}
+
 export interface LoginResponse {
   data: UserDetail;
   message: string;
+ 
+  
   planData: UserPlanData[];
   status: number;
   token: string;
+
+  orgData : IOrganisation[];
+  isAdvisor : boolean
 }
 
 export interface UserLoginResp {
@@ -35,6 +45,7 @@ export interface UserDetail {
   gcmToken: string;
   id: string;
   id_FkClientProfile: string;
+  orgId:string | number
 }
 
 export interface AdminLoginResponse {

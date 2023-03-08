@@ -1,5 +1,10 @@
 <!--breadcrumb-->
-<div *ngIf="!approvalPending" class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+
+
+<div
+  *ngIf="!approvalPending"
+  class="page-breadcrumb d-none d-sm-flex align-items-center mb-3"
+>
   <div class="breadcrumb-title pe-3">Subscription Plans</div>
 </div>
 
@@ -88,8 +93,11 @@
   </div>
 </div>
 
-<div *ngIf="approvalPending" style="text-align: center;margin-top: 40px;">
-  <label style="font-size: 18px;color: maroon;">Your request is submitted to the administrator, we will notify once the admin approved your request.</label>
+<div *ngIf="approvalPending" style="text-align: center; margin-top: 40px">
+  <label style="font-size: 18px; color: maroon"
+    >Your request is submitted to the administrator, we will notify once the
+    admin approved your request.</label
+  >
 </div>
 <!-- Section: Pricing table -->
 

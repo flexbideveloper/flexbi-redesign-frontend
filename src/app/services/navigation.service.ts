@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
-import * as s from 'src/app/store/selectors';
+import * as fromStore from '@app/core/store';
 import { UserDetail } from '../interfaces/auth.interface';
+import { PAGE_ROUTES } from './pages-routes.constant';
 
 @Injectable({
   providedIn: 'root',
@@ -21,22 +22,22 @@ export class NavigationService {
 
   redirectToDashboard(): void {
     this.store
-      .select(s.getUserDetails)
+      .select(fromStore.getUserToken)
       .pipe(take(1))
-      .subscribe((userToken) => {
+      .subscribe(userToken => {
         this.getDefaultRedirectPage(userToken, true);
       });
   }
 
-  getDefaultRedirectPage(
-    userToken: UserDetail,
-    withRedirect?: boolean
-  ): string {
+  getDefaultRedirectPage(userToken: string, withRedirect?: boolean): string {
     if (!userToken) {
       return '';
     }
 
-    let redirectTo = 'subscriptions';
+    let redirectTo = PAGE_ROUTES.SUBSCRIPTIONS;
+   
+
+
 
     if (withRedirect) {
       this.router.navigateByUrl(redirectTo);

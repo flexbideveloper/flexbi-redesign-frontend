@@ -6,8 +6,8 @@ import { Store } from '@ngrx/store';
 import { AppSocialUser } from 'src/app/interfaces/auth.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import * as fromStore from 'src/app/store';
-import { RegisterSocialUser } from 'src/app/store';
+import * as fromStore from '@app/core/store';
+import { RegisterSocialUser } from '@app/core/store';
 
 @Component({
   selector: 'app-social-auth',

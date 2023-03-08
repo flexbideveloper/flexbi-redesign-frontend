@@ -1,45 +1,48 @@
-<!--start switcher-->
-<div class="switcher-wrapper">
-  <div class="switcher-btn"><i class="bx bx-comment-detail"></i></div>
-  <div class="switcher-body" >
-    <div class="d-flex align-items-center">
-      <h5>Comments</h5>
-      <button
-        type="button"
-        class="btn-close ms-auto close-switcher"
-        aria-label="Close"
-      ></button>
-    </div>
 
-    <div class="msg-container" >
-      <div class="row">
-        <div class="col-12 msg-body" *ngFor="let msg of messages">
-          <div class="msg-body__date-title"> {{msg.title}}</div>
-          <div class="message" *ngFor="let m of msg.data; let p = index">
-            <app-message [id]="p" [message]="m"></app-message>
+  <div class="switcher-wrapper">
+    <div class="switcher-btn"><i class="bx bx-comment-detail"></i></div>
+    <div class="switcher-body">
+      <div class="d-flex align-items-center">
+        <h5>Comments</h5>
+        <button
+          type="button"
+          class="btn-close ms-auto close-switcher"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div
+        class="msg-container"
+        *ngIf="{ messages: messages$ | async } as data"
+      >
+        <div class="row">
+          <div class="col-12 msg-body" *ngFor="let msg of data.messages">
+            <div class="msg-body__date-title">{{ msg.title }}</div>
+            <div class="message" *ngFor="let m of msg.data; let p = index">
+              <app-message [id]="p" [message]="m"></app-message>
+            </div>
+          </div>
+          <div class="col-12 no-message" *ngIf="!data.messages.length">
+            No Conversions
           </div>
         </div>
-        <div class="col-12 no-message" *ngIf="!messages.length">
-          No Conversions 
-        </div>
       </div>
     </div>
+    <div class="start-conversion">
+      <form class="row" [formGroup]="messageForm" (ngSubmit)="sendMesage()">
+        <div class="col-md-12 d-flex justify-content-center p-r-0">
+          <input-box
+            formControlName="message"
+            [userList]="users$ | async"
+            [visualList]="visuals$ | async"
+          ></input-box>
+
+          <div class="buttons">
+            <button type="submit" class="btn btn-primary float-right">
+              <i class="bx bx-send"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
-  <div class="start-conversion">
-    <form class="row" [formGroup]="messageForm" (ngSubmit)="sendMesage()">
-      <div class="col-md-12 d-flex justify-content-center p-r-0">
-        <textarea
-          class="form-control"
-          placeholder="Please enter comment.."
-          rows="1"
-          formControlName="message"
-        ></textarea>
-       <div class="buttons">
-        <button type="submit" class="btn btn-primary float-right">
-          <i class="bx bx-send"></i>
-        </button>
-       </div>
-      </div>
-    </form>
-  </div>
-</div>

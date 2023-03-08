@@ -6,8 +6,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { SubcriptionsService } from 'src/app/services/subscription.service';
-import * as fromStore from 'src/app/store';
-import { SetCompanyName, SetCompanyNameSuccess } from 'src/app/store';
+import * as fromStore from '@app/core/store';
 
 export interface ConfirmAction {
   text: string;
@@ -96,7 +95,7 @@ export class CompanyNameComponent implements OnInit {
             sessionStorage.setItem('identity', JSON.stringify(ux));
             // this.store.dispatch(new SetCompanyName(this.form.value.CompanyName));
             this.store.dispatch(
-              new SetCompanyNameSuccess({
+              new fromStore.SetCompanyNameSuccess({
                 CompanyName: this.form.value.CompanyName,
               })
             );

@@ -36,5 +36,10 @@ export const REQUEST_ROUTES = {
   CONVERSIONS_MESAGE_BU_ID : 'clientUserMessages/messageDetails/',
 
 
-  IS_ADVISER_ACTIVE : 'clientProfiles/activateAsAdvisor/'
+  IS_ADVISER_ACTIVE : 'clientProfiles/activateAsAdvisor/',
+
+
+  GET_USERS: 'clientUsersList',
+  
+  GET_VISUALS: 'visualsList/',
 };

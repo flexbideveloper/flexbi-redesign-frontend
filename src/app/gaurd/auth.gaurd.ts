@@ -9,22 +9,21 @@ import {
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
-import { AppState } from '../store';
-import * as s from 'src/app/store/selectors';
+import * as fromStore from '@app/core/store';
 import { UserDetail } from '../interfaces/auth.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private store: Store<AppState>, private router: Router) {}
+  constructor(private store: Store<fromStore.AppState>, private router: Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> {
     return this.store.pipe(
-      select(s.getUserDetails),
+      select(fromStore.getUserDetails),
       take(1),
       map((user: UserDetail) => {
         if (user) {

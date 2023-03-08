@@ -27,9 +27,12 @@ import {
   SignUpRequest,
   SignUpResponse,
 } from '../interfaces/auth.interface';
-import * as a from 'src/app/store/actions';
-import * as s from 'src/app/store/selectors';
+import * as fromStore from '@app/core/store';
 import { NotificationService } from './notification.service';
+import {
+  IUsersResponse,
+  IVisualResponse,
+} from '@app/core/store/interface/common.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -43,11 +46,11 @@ export class AuthService {
   ) {}
 
   isLoggedIn$: Observable<boolean> = combineLatest([
-    this.store.select(s.getUserDetails),
-    this.store.select(s.getAccessToken),
+    this.store.select(fromStore.getUserDetails),
+    this.store.select(fromStore.getAccessToken),
   ]).pipe(
     map(([userToken, accessToken]) => {
-      if (!accessToken || !userToken) {
+      if (!accessToken) {
         return false;
       }
       return true;
@@ -89,7 +92,8 @@ export class AuthService {
               UserRole: 'USER',
               UserRoleId: 100,
             });
-            this.store.dispatch(new a.OnLogin(response));
+
+            this.store.dispatch(new fromStore.OnLogin(response));
             return of(response);
           } else {
             this.notification.error(response.message);
@@ -213,5 +217,16 @@ export class AuthService {
       return JSON.parse(localStorage.getItem('loggedInUserDetails'));
     }
     return null;
+  }
+
+  // /${id}
+  getUserLists(id: string | number): Observable<IUsersResponse> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.GET_USERS}`;
+    return this.http.get<IUsersResponse>(url);
+  }
+
+  getVisualsList(id: string | number): Observable<IVisualResponse> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.GET_VISUALS}/${id}`;
+    return this.http.get<IVisualResponse>(url);
   }
 }

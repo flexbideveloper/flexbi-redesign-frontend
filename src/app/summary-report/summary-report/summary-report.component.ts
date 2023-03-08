@@ -1,11 +1,16 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import * as pbi from 'powerbi-client';
-import { AuthService } from 'src/app/services/auth.service';
-import { NotificationService } from 'src/app/services/notification.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
-  ReportService,
-} from 'src/app/services/report.service';
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
+import * as fromAppStore from '@app/core/store';
+import { Store } from '@ngrx/store';
+import * as pbi from 'powerbi-client';
+import { BehaviorSubject, combineLatest, tap } from 'rxjs';
+import { IOrganisation } from 'src/app/interfaces/auth.interface';
+import * as fromStore from '../store';
 
 @Component({
   selector: 'app-summary-report',
@@ -26,68 +31,116 @@ export class SummaryReportComponent {
   tokenObj: any = null;
 
   public isTrialActivated: any = false;
-  allVisuals : pbi.IVisualEmbedConfiguration[]= [];
-  allPageVisual : pbi.IEmbedConfiguration[]= []
+  allVisuals: pbi.IVisualEmbedConfiguration[] = [];
+  allPageVisual: pbi.IEmbedConfiguration[] = [];
 
+  orglist$ = this.store.select(fromAppStore.selectOrgLists);
+  isAdvisor$ = this.store.select(fromAppStore.isAdvisor);
+
+  reportDetails$ = this.store.select(fromStore.selectSummaryData);
+  isLoading$ = this.store.select(fromStore.selectSummaryLoading);
+
+  form: FormGroup;
+  selectionChanged$: BehaviorSubject<boolean> = new BehaviorSubject(true);
   constructor(
-    private reportService: ReportService,
+    private store: Store<fromStore.IReportState>,
+    private fb: FormBuilder
   ) {
-    this.getVisualsAndPages();
+    this.store.dispatch(fromStore.init());
+
+    this.form = this.fb.group({
+      orgId: [null, Validators.required],
+    });
   }
 
-  getVisualsAndPages() {
-    this.loading = true
-    this.reportService.getPageVisuals().subscribe((data: any) => {
-      if (data.status === 200) {
-        this.pageList = data.pages;
-        this.visualList = data.visuals;
-        this.loading = false;
-        this.tokenObj = data.tokenRes;
-        let embedUrl = 'https://app.powerbi.com/reportEmbed';
-        let embedReportId = this.tokenObj.embedUrl[0].reportId;
-        let visualSettings: pbi.IEmbedSettings = {
-          filterPaneEnabled: true,
-          navContentPaneEnabled: true,
-        };
+  ngOnInit(): void {
+    combineLatest(
+      this.reportDetails$,
+      this.isLoading$
+    )
+      .pipe(
+        tap(([report, isLoading]) => {
+  
+          if (!!report && !isLoading) {
+            let embedUrl = 'https://app.powerbi.com/reportEmbed';
+            let pageSettings: pbi.IEmbedSettings = {
+              filterPaneEnabled: false,
+              navContentPaneEnabled: false,
+            };
+            let visualSettings: pbi.IEmbedSettings = {
+              filterPaneEnabled: true,
+              navContentPaneEnabled: true,
+            };
+            let embedReportId = report.tokenRes.embedUrl[0].reportId;
 
-        this.allVisuals =  this.visualList.map((v: any) => {
-          let config: pbi.IVisualEmbedConfiguration = {
-            type: 'visual',
-            tokenType: pbi.models.TokenType.Embed,
-            accessToken: this.tokenObj.accessToken,
-            embedUrl: embedUrl,
-            id: embedReportId,
-            filters: [],
-            settings: visualSettings,
-            pageName: v.PageName,
-            visualName: v.VisualName,
-            // height : v.Height,
-            // width : v.Width
-          };
-          return config
-        });
+            this.pageList = report.pages;
+            this.visualList = report.visuals;
 
-        let pageSettings: pbi.IEmbedSettings = {
-          filterPaneEnabled: false,
-          navContentPaneEnabled: false,
-        };
-        this.allPageVisual =    this.pageList.map((p: any) => {
-          let config: pbi.IEmbedConfiguration = {
-            type: 'report',
-            tokenType: pbi.models.TokenType.Embed,
-            accessToken: this.tokenObj.accessToken,
-            embedUrl: embedUrl,
-            id: embedReportId,
-            filters: [],
-            settings: pageSettings,
-            pageName: p.PageName,
-            pageView: 'fitToWidth',
-            // height : p.Height,
-            // width : p.Width
-          };
-          return config
-        });
-      }
-    });
+            this.allPageVisual = this.pageList.map((p: any) => {
+              let config: pbi.IEmbedConfiguration = {
+                type: 'report',
+                tokenType: pbi.models.TokenType.Embed,
+                accessToken: report.tokenRes.accessToken,
+                embedUrl: embedUrl,
+                id: embedReportId,
+                filters: [],
+                settings: pageSettings,
+                pageName: p.PageName,
+                pageView: 'fitToWidth',
+                // height : p.Height,
+                // width : p.Width
+              };
+              return config;
+            });
+
+            this.allVisuals = this.visualList.map((v: any) => {
+              let config: pbi.IVisualEmbedConfiguration = {
+                type: 'visual',
+                tokenType: pbi.models.TokenType.Embed,
+                accessToken: report.tokenRes.accessToken,
+                embedUrl: embedUrl,
+                id: embedReportId,
+                filters: [],
+                settings: visualSettings,
+                pageName: v.PageName,
+                visualName: v.VisualName,
+                // height : v.Height,
+                // width : v.Width
+              };
+              return config;
+            });
+          }
+        })
+      )
+      .subscribe();
+
+    this.getOrgId.valueChanges
+      .pipe(
+        tap((id: string) => {
+          this.onSearch();
+        })
+      )
+      .subscribe();
+
+      this.orglist$
+      .pipe(
+        tap((orgLists : IOrganisation[]) => {
+          this.form.get('orgId').setValue(orgLists[0].orgId);
+          this.store.dispatch(fromStore.setOrgId({ orgId : orgLists[0].orgId as any }));
+        })
+      )
+      .subscribe();
+
+  }
+
+  onSearch(): void {
+    const orgId = this.form.value.orgId;
+    if (orgId) {
+      this.store.dispatch(fromStore.setOrgId({ orgId }));
+    }
+  }
+
+  get getOrgId(): AbstractControl {
+    return this.form.get('orgId') as AbstractControl;
   }
 }

@@ -9,18 +9,19 @@ import { CONTENT_ROUTES } from './shared/routes/content-layout.routes';
 import { RedirectToDashboardCanActivate } from './gaurd/redirect-to-dashboard-guard';
 import { AuthGuard } from './gaurd/auth.gaurd';
 import { FLEX_BI_ROUTES } from './shared/routes/flexbi-layout.routes';
+import { AccessGuard } from './gaurd/access.gaurd';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'auth/sign-in',
-    pathMatch: 'full',
+    canActivate: [RedirectToDashboardCanActivate],
+    loadChildren: () => import('./auth/auth.module').then((c) => c.AuthModule),
   },
   {
     path: '',
     component: FullLayoutComponent,
     data: { title: 'full Views' },
-    canActivate: [AuthGuard],
+    canActivate: [AccessGuard],
     children: FLEX_BI_ROUTES,
   },
   {
@@ -29,16 +30,12 @@ const routes: Routes = [
     data: { title: 'content Views' },
     children: CONTENT_ROUTES,
   },
+  { path: '', redirectTo: 'auth/sign-in', pathMatch: 'full' },
   { path: '**', redirectTo: 'auth/sign-in' },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, {
-      preloadingStrategy: PreloadAllModules,
-      useHash: true,
-    }),
-  ],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

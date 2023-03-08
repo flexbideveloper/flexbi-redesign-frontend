@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { IUsersResponse, IVisualResponse } from '@app/core/store/interface/common.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { REQUEST_ROUTES } from '../constants/request-routes.constant';
+import { IReportPageVisuals } from '../summary-report/interfaces/report.interface';
 import { AuthService } from './auth.service';
 
 export interface EmbededResponse {
@@ -56,9 +58,10 @@ export class ReportService {
     return this.http.post<EmbededResponse>(url, data);
   }
 
-  getPageVisuals(): Observable<string> {
-    let userId = this.authService.getLoggedInUserDetails().UserId;
-    const url = `${environment.serviceUrl}${REQUEST_ROUTES.PAGE_VISUALS}/${userId}`;
-    return this.http.get<string>(url);
+  getPageVisuals(id:string | number): Observable<IReportPageVisuals> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.PAGE_VISUALS}/${id}`;
+    return this.http.get<IReportPageVisuals>(url);
   }
+
+
 }

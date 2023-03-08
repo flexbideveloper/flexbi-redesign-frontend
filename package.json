@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "buildProd" : "ng b --configuration=production "
+    "buildProd": "ng b --configuration=production "
   },
   "private": true,
   "dependencies": {
@@ -44,6 +44,8 @@
     "jquery": "^3.6.0",
     "ng2-charts": "^2.4.2",
     "ngb-modal": "^2.0.3",
+    "ngrx-store-freeze": "^0.2.4",
+    "ngrx-store-localstorage": "^15.0.0",
     "ngx-captcha": "^11.0.0",
     "ngx-perfect-scrollbar": "^10.1.1",
     "ngx-toastr": "^15.0.0",

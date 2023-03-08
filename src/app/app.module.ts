@@ -27,10 +27,15 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   wheelPropagation: false,
 };
 
-import { effects, reducers } from 'src/app/store';
+import { effects, reducers } from 'src/app/core/store';
 
 import * as $ from 'jquery';
-import { StoreModule } from '@ngrx/store';
+import {
+  ActionReducer,
+  MetaReducer,
+  StoreModule,
+  USER_PROVIDED_META_REDUCERS,
+} from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
@@ -47,6 +52,47 @@ import {
   PublicClientApplication,
 } from '@azure/msal-browser';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { localStorageSync } from 'ngrx-store-localstorage';
+import { AppState } from './core/store/reducers/app.reducer';
+import { storeFreeze } from 'ngrx-store-freeze';
+import { TabService } from './services/tab/tab.service';
+
+export function localStorageSyncReducer(
+  tabService: TabService
+): MetaReducer<any> {
+  return (reducer: ActionReducer<any>) => {
+    return localStorageSync({
+      keys: [
+        {
+          app: ['token', 'isAdvisor', 'orgData', 'planData', 'data'],
+        },
+      ],
+      rehydrate: true,
+      syncCondition: () => tabService.isTabActive(),
+    })(reducer);
+  };
+}
+
+export function sessionStorageSync(
+  reducer: ActionReducer<any>
+): ActionReducer<any> {
+  return localStorageSync({
+    keys: [
+      {
+        app: ['token', 'isAdvisor', 'orgData', 'planData', 'data'],
+      },
+    ],
+    storage: sessionStorage,
+    rehydrate: true,
+  })(reducer);
+}
+export const metaReducers: MetaReducer<AppState>[] = !environment.production
+  ? [storeFreeze]
+  : [];
+
+export const metaReducersFactory = (
+  tabService: TabService
+): MetaReducer<any>[] => [localStorageSyncReducer(tabService)];
 
 // import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 
@@ -169,6 +215,11 @@ function getGoogleProvider() {
       useFactory: MSALInstanceFactory,
     },
     MsalService,
+    {
+      provide: USER_PROVIDED_META_REDUCERS,
+      deps: [TabService],
+      useFactory: metaReducersFactory,
+    },
   ],
   bootstrap: [AppComponent],
 })
