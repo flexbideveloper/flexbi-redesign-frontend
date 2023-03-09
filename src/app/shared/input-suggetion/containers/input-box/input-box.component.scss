@@ -26,3 +26,11 @@
     }
   }
 }
+input {
+  &:focus
+  
+      > .box-top .list{
+            display: block;
+        }
+  
+}

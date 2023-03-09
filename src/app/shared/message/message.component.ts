@@ -1,13 +1,19 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { IMessage, MessageService } from 'src/app/services/message.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import * as fromReportStore from 'src/app/summary-report/store';
 
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss'],
+  changeDetection :ChangeDetectionStrategy.OnPush
 })
 export class MessageComponent implements OnInit {
+  users$ = this.store.select(fromReportStore.selectUsers);
+  visuals$ = this.store.select(fromReportStore.selectVisuals);
+
   replyBtn: boolean = false;
   loadRecord: boolean = false;
   randomId = Math.floor(Math.random() * 10000)
@@ -18,8 +24,11 @@ export class MessageComponent implements OnInit {
   label: string;
   constructor(
     private messageService: MessageService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private store: Store,
+    private cdr: ChangeDetectorRef
   ) {}
+
 
   ngOnInit(): void {
     this.messageForm = this.fb.group({
@@ -59,6 +68,7 @@ export class MessageComponent implements OnInit {
           this.label = resp.data.CountLabel;
           this.innerMessages.push(resp.data);
           this.messageForm.get('Message').setValue('');
+          this.cdr.markForCheck()
         }
       });
   }

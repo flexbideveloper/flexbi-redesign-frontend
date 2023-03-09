@@ -3,13 +3,19 @@
     <app-avatar-photo [name]="message.UserName"></app-avatar-photo>
   </div>
   <div class="message-body">
-    <div class="message-body__title" [class.message-body__title--adviser]="message?.Adviser">
+    <div
+      class="message-body__title"
+      [class.message-body__title--adviser]="message?.Adviser"
+    >
       {{ message.UserName }} <span *ngIf="message?.Adviser">(Adviser)</span>
       <!-- <span class="message-body__title--date">
         {{ message.MessageDateTime | date : "yyyy-MM-dd h:mm a" }}</span
       > -->
     </div>
-    <div class="message-body__msg border-bottom  " [class.message-body__msg--adviser]="message?.Adviser">
+    <div
+      class="message-body__msg border-bottom"
+      [class.message-body__msg--adviser]="message?.Adviser"
+    >
       {{ message.Message }}
     </div>
     <div
@@ -21,12 +27,9 @@
       [attr.aria-controls]="'collapseBox' + id"
       (click)="replyBtn = !replyBtn; loadMessage()"
     >
-      {{
-        label
-      }}
+      {{ label }}
       &nbsp;
       <span>{{ replyBtn ? "Collapse All" : "" }}</span>
-      
     </div>
     <div
       class="tree-view collapse"
@@ -44,7 +47,10 @@
               {{ msg.MessageDateTime | date : "yyyy-MM-dd h:mm a" }}</span
             >
           </div>
-          <div class="message-body__msg" [class.message-body__msg--adviser]="msg?.Adviser">
+          <div
+            class="message-body__msg"
+            [class.message-body__msg--adviser]="msg?.Adviser"
+          >
             {{ msg.Message }}
           </div>
         </div>
@@ -67,15 +73,14 @@
         class="row accordion-collapse collapse"
       >
         <div class="col-md-10">
-          <textarea
+          <input-box
             formControlName="Message"
-            class="form-control"
-            placeholder="Please type reply and send .."
-            rows="1"
-          ></textarea>
+            [userList]="users$ | async"
+            [visualList]="visuals$ | async"
+          ></input-box>
         </div>
         <div class="col-md-2 d-flex align-items-center">
-          <button type="submit" class="btn btn-primary">
+          <button type="submit" class="btn btn-primary"  (click)="sendMesage()">
             <i class="bx bx-send"></i>
           </button>
         </div>

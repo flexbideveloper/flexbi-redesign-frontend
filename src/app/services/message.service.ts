@@ -32,8 +32,8 @@ export interface IGetResponseByID<T> {
 }
 
 export interface IReqConversion {
-  id_FkUserProfile: string | number;
-  id_FkClientProfile: string | number;
+  id_FkUserProfile:  number;
+  id_FkClientProfile:  number;
   Message: string;
 }
 

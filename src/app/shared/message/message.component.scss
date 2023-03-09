@@ -1,66 +1,68 @@
-textarea{
-    font-size: 13px;
+textarea {
+  font-size: 13px;
 }
-.border-bottom{
-    border-bottom: 1px solid #d4d4d4;
+.border-bottom {
+  border-bottom: 1px solid #d4d4d4;
 }
-.msg-body{
-    display: flex;
-    border: 1px solid #d7d7d7;
-    padding: 5px;
-    margin-bottom: 5px;
-    background: #fff;
-    border-radius: 3px;
-    .message-body{
-        margin-left:10px;
-        position: relative;
+.msg-body {
+  display: flex;
+  border: 1px solid #d7d7d7;
+  padding: 5px;
+  margin-bottom: 5px;
+  background: #fff;
+  border-radius: 3px;
+  .message-body {
+    margin-left: 10px;
+    position: relative;
     width: 100%;
-        &__title{
-            font-size: 14px;
-            font-weight: bold;
-            color: #00000096;
-            &--date{
-                float: right;
-                font-size: 10px;
-                color: #5a5a5a;
-                position: absolute;
-                top:5px;
-                right:5px;
-                }
-                &--adviser span{
-                    color: #fd625e;
-                }
-        }
-        &__msg{
-            font-size: 13px;
-            &--reply{
-                cursor: pointer;
-                color: #21cead ;  
-                font-weight: bold; 
-            }
+    &__title {
+      font-size: 14px;
+      font-weight: bold;
+      color: #00000096;
+      &--date {
+        float: right;
+        font-size: 10px;
+        color: #5a5a5a;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+      }
+      &--adviser span {
+        color: #fd625e;
+      }
+    }
+    &__msg {
+      font-size: 13px;
+      &--reply {
+        cursor: pointer;
+      span{
+        color: #21cead;
+        font-weight: bold;
+      }
+      }
 
-            &--adviser{
-              background-color: #f9b9b8;
-              padding: 2px;
-            }
-        }
-        &__control{
-            cursor: pointer;
-            color: #21cead ;
-            span{
-                color: #5a5a5a;
-            }
-        }
+      &--adviser {
+        background-color: #f9b9b8;
+        padding: 2px;
+      }
     }
-    &.no-bg{
-        border: none;
-        background: #f4f4f4;
+    &__control {
+      cursor: pointer;
+      color: #21cead;
+      span {
+        color: #5a5a5a;
+      }
     }
+  }
+  &.no-bg {
+    border: none;
+    background: #f4f4f4;
+  }
 }
-.tree-view{
-    display: block;
-    transition: .4s;
-    &.collapsed{
-        display: none;
-    }
+.tree-view {
+  display: block;
+  transition: 0.4s;
+  &.collapsed {
+    display: none;
+  }
 }

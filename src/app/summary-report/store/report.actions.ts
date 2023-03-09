@@ -5,7 +5,7 @@ export const init = createAction('[SUMMARY REPORT] Init Load Summy Report');
 
 export const setOrgId = createAction(
   '[SUMMARY REPORT] set org id Summy Report',
-  props<{ orgId: string }>()
+  props<{ orgId: number }>()
 );
 
 export const load = createAction('[SUMMARY REPORT] Load Summy Report');

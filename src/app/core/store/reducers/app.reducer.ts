@@ -77,4 +77,4 @@ export function reducer(
 }
 export const getAccessToken = (state: AppState): string => state.token;
 export const getUserDetails = (state: AppState): UserDetail =>
-  state?.userDetail;
+  state?.data;

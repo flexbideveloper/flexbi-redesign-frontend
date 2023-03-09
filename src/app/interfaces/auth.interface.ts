@@ -43,8 +43,8 @@ export interface UserDetail {
   UniqueID: string;
   UserName: string;
   gcmToken: string;
-  id: string;
-  id_FkClientProfile: string;
+  id: number;
+  id_FkClientProfile: number;
   orgId:string | number
 }
 

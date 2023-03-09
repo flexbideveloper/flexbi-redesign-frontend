@@ -9,7 +9,7 @@ import { IReportPageVisuals } from '../interfaces/report.interface';
 export const featureKey = 'reportModule';
 
 export interface IReportState {
-  orgId: string;
+  orgId: number;
   data: IReportPageVisuals;
   isLoading: boolean;
   messages: {
@@ -27,7 +27,7 @@ export interface IReportState {
 }
 
 export const initialState: IReportState = {
-  orgId: '',
+  orgId: 0,
   data: null,
   isLoading: false,
   messages: {

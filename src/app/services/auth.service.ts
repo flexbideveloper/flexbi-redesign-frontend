@@ -219,9 +219,8 @@ export class AuthService {
     return null;
   }
 
-  // /${id}
   getUserLists(id: string | number): Observable<IUsersResponse> {
-    const url = `${environment.serviceUrl}${REQUEST_ROUTES.GET_USERS}`;
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.GET_USERS}/${id}`;
     return this.http.get<IUsersResponse>(url);
   }
 
