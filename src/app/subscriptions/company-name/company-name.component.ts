@@ -114,6 +114,30 @@ export class CompanyNameComponent implements OnInit {
           });
         }
       );
+    } else if(this.inputProductType === "3") {
+      // register as advisor
+      if (this.signUpForm.invalid) {
+        return;
+      }
+      this.subscription.registerAsAdvisor(this.signUpForm.value).subscribe(
+        (data: any) => {
+          if (data.status === 200) {
+            this.notification.success("Your request is submitted successfully.")
+          }
+          this.modal.dismiss({
+            status: 200
+          });
+          setTimeout(() => {
+            window.location.reload();
+          },1000);
+        },
+        (res: any) => {
+          this.notification.error(res.message);
+          this.modal.dismiss({
+            status: 500
+          });
+        }
+      );
     } else {
       if (this.signUpForm.invalid) {
         return;

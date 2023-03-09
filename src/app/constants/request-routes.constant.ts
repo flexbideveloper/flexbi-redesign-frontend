@@ -13,6 +13,7 @@ export const REQUEST_ROUTES = {
   NOTIFY_ADMIN: 'clientProfiles/notifyAdmin',
   ALL_SETTING: 'googleMicroAuthSettings/allSettings',
   SUBSCRIPTION_LIST: 'subscriptionsplans',
+  REGISTER_AS_ADVISOR: '/clientProfiles/markAsAdvisor/',
 
   SUBSCRIPTION_ACTIVE_FREE: 'subscriptionsallocation/activateTrail/',
   SUBSCRIPTION_PAYMENT_URL: 'subscriptionsallocation/getPaymentUrl',

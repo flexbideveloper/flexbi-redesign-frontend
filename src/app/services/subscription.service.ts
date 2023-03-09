@@ -74,6 +74,17 @@ export class SubcriptionsService {
     return this.http.post<any>(url, data);
   }
 
+  registerAsAdvisor(data: {
+    firstName: string;
+    companyName: string,
+    contactNumber: string,
+    type: string,
+    userId: string;
+  }): Observable<any> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.REGISTER_AS_ADVISOR}${data.userId}`;
+    return this.http.post<any>(url, data);
+  }
+
   addCompanyName(data: {
     CompanyName: string;
     Email: string,

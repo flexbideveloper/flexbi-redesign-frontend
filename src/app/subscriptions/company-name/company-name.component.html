@@ -30,6 +30,7 @@
     <option></option>
     <option value="1">Already your org connected with FlexBI, Connect to Existing Dashboard</option>
     <option value="2">Purchase New Plan for Organization</option>
+    <option value="3">Register as advisor</option>
   </select>
 
   <!-- <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -160,6 +161,80 @@
               ? "Contact number is required."
               : signUpForm.get("contactNumber")?.invalid
               ? "Invalid Contact Number."
+              : ""
+            : ""
+        }}
+      </div>
+    </div>
+
+    <div class="col-12">
+      <form [formGroup]="aFormGroup">
+        <ngx-recaptcha2
+          [siteKey]="captchaSiteKey"
+          (success)="handleSuccess($event)"
+          formControlName="recaptcha"
+        >
+        </ngx-recaptcha2>
+      </form>
+    </div>
+  </form>
+</div>
+
+<div class="modal-body" *ngIf="inputProductType == 3">
+  <form class="row g-3" [formGroup]="signUpForm">
+    <div class="col-sm-12">
+      <label class="form-label">Full Name</label>
+      <input
+        type="email"
+        class="form-control"
+        formControlName="firstName"
+      />
+      <div class="invalid">
+        {{
+          signUpForm.get("firstName")?.touched
+            ? signUpForm.get("firstName")?.errors?.required
+              ? "First Name Required"
+              : signUpForm.get("firstName")?.errors?.pattern
+              ? "Invalid First Name"
+              : ""
+            : ""
+        }}
+      </div>
+    </div>
+    <div class="col-12">
+      <label class="form-label">Contact Number</label>
+      <input
+        type="number"
+        class="form-control"
+        formControlName="contactNumber"
+      />
+      <div class="invalid">
+        {{
+          signUpForm.get("contactNumber")?.touched
+            ? signUpForm.get("contactNumber")?.errors?.required
+              ? "Contact number is required."
+              : signUpForm.get("contactNumber")?.invalid
+              ? "Invalid Contact Number."
+              : ""
+            : ""
+        }}
+      </div>
+    </div>
+    <div class="col-12">
+      <label class="form-label">Company Names (Please provide comma seperated company names here for which you want to register as advisor)</label>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Please provide comma seperated company names"
+        formControlName="companyName"
+      />
+      <div class="invalid">
+        {{
+          signUpForm.get("companyName")?.touched
+            ? signUpForm.get("companyName")?.errors?.required
+              ? "Company Name required."
+              : signUpForm.get("companyName")?.errors?.pattern
+              ? "Invalid Company Name"
               : ""
             : ""
         }}
