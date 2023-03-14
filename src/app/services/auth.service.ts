@@ -35,14 +35,17 @@ import {
   IVisualResponse,
 } from '@app/core/store/interface/common.interface';
 import { getAuthSettings } from '@app/core/store';
+import { BrowserAuthOptions } from '@azure/msal-browser';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
- 
+
+
   socialLogin = new BehaviorSubject(false);
-   getAuthValue: IAuthTokenSetting[];
+  getAuthValue: IAuthTokenSetting[];
+  static getAuthValue: any;
   constructor(
     private http: HttpClient,
     protected store: Store,
@@ -175,12 +178,10 @@ export class AuthService {
 
   allSettings(): Observable<any> {
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.ALL_SETTING}`;
-    return this.http
-      .get<any>(url, {
-        params: { skipAuthorization: 'true' },
-      })
+    return this.http.get<any>(url, {
+      params: { skipAuthorization: 'true' },
+    });
   }
-
 
   getLoggedInUserDetails() {
     if (localStorage.getItem('loggedInUserDetails') != null) {
@@ -199,12 +200,11 @@ export class AuthService {
     return this.http.get<IVisualResponse>(url);
   }
 
-  get getAuthDetails() :IAuthTokenSetting[]{
-     this.store.select(getAuthSettings).subscribe(data =>  {
-      this.getAuthValue = data
+  get getAuthDetails(): IAuthTokenSetting[] {
+    this.store.select(getAuthSettings).subscribe((data) => {
+      this.getAuthValue = data;
     });
-    return this.getAuthValue
+    return this.getAuthValue;
   }
 
- 
 }

@@ -9,9 +9,9 @@ export const reportReducer = createReducer(
     ...initialState,
   })),
 
-  on(a.setOrgId, (state, { orgId }) => ({
+  on(a.setOrgId, (state, { orgId  } ) => ({
     ...state,
-    orgId,
+    orgId : orgId as number,
     isLoading :true,
     data : null
   })),

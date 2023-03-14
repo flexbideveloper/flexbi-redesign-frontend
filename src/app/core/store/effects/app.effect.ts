@@ -45,7 +45,7 @@ export class AppEffects {
             sessionStorage.removeItem('identity');
             sessionStorage.removeItem('BearerToken');
             localStorage.removeItem('loggedInUserDetails');
-            this.router.navigateByUrl('auth/sign');
+            this.router.navigateByUrl('auth/sign-in');
           }
         })
       );
@@ -67,6 +67,7 @@ export class AppEffects {
               } else {
                 this.notification.error(response.message);
               }
+              this.router.navigateByUrl('auth/sign-in');
               return new a.SignUpSuccess(response);
             })
           );

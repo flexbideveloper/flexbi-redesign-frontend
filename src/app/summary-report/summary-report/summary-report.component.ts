@@ -116,8 +116,8 @@ export class SummaryReportComponent {
 
     this.getOrgId.valueChanges
       .pipe(
-        tap((id: string) => {
-          this.onSearch();
+        tap((id: number) => {
+          this.onSearch(id);
         })
       )
       .subscribe();
@@ -126,18 +126,15 @@ export class SummaryReportComponent {
       .pipe(
         tap((orgLists : IOrganisation[]) => {
           this.form.get('orgId').setValue(orgLists[0].orgId);
-          this.store.dispatch(fromStore.setOrgId({ orgId : orgLists[0].orgId as any }));
+          this.store.dispatch(fromStore.setOrgId({ orgId : orgLists[0].orgId as number }));
         })
       )
       .subscribe();
 
   }
 
-  onSearch(): void {
-    const orgId = this.form.value.orgId;
-    if (orgId) {
-      this.store.dispatch(fromStore.setOrgId({ orgId }));
-    }
+  onSearch(id:number): void {
+      this.store.dispatch(fromStore.setOrgId({ orgId : id }));
   }
 
   get getOrgId(): AbstractControl {

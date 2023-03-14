@@ -27,12 +27,13 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   wheelPropagation: false,
 };
 
-import { effects, reducers } from 'src/app/core/store';
+import { effects, getAuthSettings, reducers } from 'src/app/core/store';
 
 import * as $ from 'jquery';
 import {
   ActionReducer,
   MetaReducer,
+  Store,
   StoreModule,
   USER_PROVIDED_META_REDUCERS,
 } from '@ngrx/store';
@@ -132,7 +133,6 @@ function getClientIdRedirectURL() {
       clientId: '3f576ff9-29ee-45ec-8778-3bb4010113ff',
       redirectUri: 'https://flexbireport.com.au',
     };
-  
 }
 
 function getGoogleProvider() {
@@ -206,4 +206,16 @@ function getGoogleProvider() {
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private store:Store){
+    const isAuthSetting$ = this.store.select(getAuthSettings);
+    console.log(isAuthSetting$.subscribe(data => console.log(data)))
+  }
+
+  getData(){
+    return {
+      clientId: '3f576ff9-29ee-45ec-8778-3bb4010113ff',
+      redirectUri: 'https://flexbireport.com.au',
+    };
+  }
+}

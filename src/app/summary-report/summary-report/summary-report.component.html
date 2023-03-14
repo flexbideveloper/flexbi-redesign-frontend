@@ -14,7 +14,7 @@
 
     <div class="action" *ngIf="data.isAdvisor && data.orglist.length">
       <form [formGroup]="form">
-        <select class="form-control" formControlName="orgId">
+        <select class="form-control form-select mb-3" formControlName="orgId">
           <option [value]="null" disabled >Select Organtisation</option>
           <option [value]="item.orgId" *ngFor="let item of data.orglist">
             {{ item.CompanyName }}

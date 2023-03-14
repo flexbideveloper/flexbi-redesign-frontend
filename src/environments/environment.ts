@@ -9,6 +9,7 @@ export const environment = {
     // 'http://localhost:3000/',
   gcmToken:
     'dvs8NCiGdu14Lv7Mcnff70:APA91bHStrZrda4A2c4MFZdwT2UVjP--cq1xlD9rUVzuN6DPFZw4Ai2Qju1QdTePn4uKGXGZTqZFbE3nPw4dFUA7LPDkMgpHMuqc3VGTqrWEIJitSPPCPKEbz-Npk8qIS5_lr_CL9nw3',
+
   isValidateCaptch: false,
   deployUrl: 'http://localhost:4200',
 };
