@@ -14,11 +14,6 @@ import { AccessGuard } from './gaurd/access.gaurd';
 const routes: Routes = [
   {
     path: '',
-    canActivate: [RedirectToDashboardCanActivate],
-    loadChildren: () => import('./auth/auth.module').then((c) => c.AuthModule),
-  },
-  {
-    path: '',
     component: FullLayoutComponent,
     data: { title: 'full Views' },
     canActivate: [AccessGuard],
@@ -30,8 +25,6 @@ const routes: Routes = [
     data: { title: 'content Views' },
     children: CONTENT_ROUTES,
   },
-  { path: '', redirectTo: 'auth/sign-in', pathMatch: 'full' },
-  { path: '**', redirectTo: 'auth/sign-in' },
 ];
 
 @NgModule({

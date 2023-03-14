@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 import {
   AppSocialUser,
   ChangePassword,
+  IAuthTokenSetting,
   LoginResponse,
   SignUpRequest,
   SignUpResponse,
@@ -11,7 +12,8 @@ import {
 
 export const ON_LOGIN = '[App] On Login';
 export const ON_LOGIN_ADMIN = '[App] On Login Admin';
-
+export const LOAD_AUTH_SETTING = '[App] Load Auth Setting';
+export const LOAD_AUTH_SETTING_SUCCESS = '[App] Load Auth Setting Success';
 
 export const SIGN_UP_REQUEST = '[Auth] Sign Up Request';
 export const SIGN_UP_SUCCESS = '[Auth] Sign Up Success';
@@ -52,6 +54,19 @@ export class OnLogin implements Action {
   readonly type = ON_LOGIN;
 
   constructor(public payload: LoginResponse) {}
+}
+
+export class LoadAuthSetting implements Action {
+  readonly type = LOAD_AUTH_SETTING;
+}
+
+export class LoadAuthSettingSuccess implements Action {
+  readonly type = LOAD_AUTH_SETTING_SUCCESS;
+  constructor(
+    public payload: {
+      authSetting: IAuthTokenSetting[];
+    }
+  ) {}
 }
 
 export class OnLoginSuccess implements Action {
@@ -95,7 +110,11 @@ export class SetCompanyName implements Action {
 export class SetSocialUser implements Action {
   readonly type = SET_SOCIAL_USER;
 
-  constructor(public payload: UserDetail) {}
+  constructor(
+    public payload: {
+      userDetail: LoginResponse;
+    }
+  ) {}
 }
 
 export class SetCompanyNameSuccess implements Action {
@@ -119,4 +138,6 @@ export type AppAction =
   | SetCompanyNameSuccess
   | RemoveUser
   | SetCompanyName
-  | SignUpSuccess;
+  | SignUpSuccess
+  | LoadAuthSetting
+  | LoadAuthSettingSuccess;

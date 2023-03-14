@@ -55,7 +55,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   // On SignIn link click
   onSignIn(): void {
-    this.router.navigate(['auth/sign-in'], { relativeTo: this.route.parent });
+    this.router.navigate(['sign-in'], { relativeTo: this.route.parent });
   }
 
   requestForgetPassword() {
@@ -106,7 +106,7 @@ export class ForgotPasswordComponent implements OnInit {
           'Your password updated successfully. Please login to system by using your credentials'
         );
         this.step = 0;
-        this.router.navigateByUrl('auth/sign-in');
+        this.router.navigateByUrl('sign-in');
       }
     });
   }

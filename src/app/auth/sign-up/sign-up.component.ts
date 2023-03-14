@@ -11,6 +11,8 @@ import { Store } from '@ngrx/store';
 import * as fromStore from '@app/core/store';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { getAuthSettings } from '@app/core/store';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',
@@ -21,15 +23,12 @@ export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
   show: boolean = true;
   cShow: boolean = true;
-  captchaSiteKey =
-    sessionStorage.getItem('CAPTCHAKEY') &&
-    JSON.parse(sessionStorage.getItem('CAPTCHAKEY')).CaptchaKey;
-
   aFormGroup = this.fb.group({
     recaptcha: ['', Validators.required],
   });
 
   isCaptchaValidate: boolean = false;
+  authSetting$ =  this.store.select(getAuthSettings);
   isNoRobotClick: boolean = false;
   constructor(
     private router: Router,
@@ -37,12 +36,13 @@ export class SignUpComponent implements OnInit {
     private fb: FormBuilder,
     private appStore: Store<fromStore.AppState>,
     private authService: AuthService,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private store:Store
   ) {}
 
   // On Signup link click
   onSignIn() {
-    this.router.navigate(['auth/sign-in'], { relativeTo: this.route.parent });
+    this.router.navigate(['sign-in'], { relativeTo: this.route.parent });
   }
 
   ngOnInit(): void {
@@ -77,6 +77,8 @@ export class SignUpComponent implements OnInit {
         validator: ConfirmedValidator('password', 'cPassword'),
       }
     );
+
+
   }
 
   onSignUp() {

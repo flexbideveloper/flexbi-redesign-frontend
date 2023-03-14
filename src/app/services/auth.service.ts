@@ -22,6 +22,7 @@ import {
   ChangePassword,
   CheckPasswordRequest,
   CheckPasswordResponse,
+  IAuthTokenSetting,
   LoginResponse,
   SignInRequest,
   SignUpRequest,
@@ -33,12 +34,15 @@ import {
   IUsersResponse,
   IVisualResponse,
 } from '@app/core/store/interface/common.interface';
+import { getAuthSettings } from '@app/core/store';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+ 
   socialLogin = new BehaviorSubject(false);
+   getAuthValue: IAuthTokenSetting[];
   constructor(
     private http: HttpClient,
     protected store: Store,
@@ -162,9 +166,9 @@ export class AuthService {
     return this.http.post<CheckPasswordResponse>(url, { obj });
   }
 
-  registerUserByThirdParty(data): Observable<AppSocialUserResponse> {
+  registerUserByThirdParty(data): Observable<LoginResponse> {
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.CLIENT_PROFILE}`;
-    return this.http.post<AppSocialUserResponse>(url, data, {
+    return this.http.post<LoginResponse>(url, data, {
       params: { skipAuthorization: 'true' },
     });
   }
@@ -175,42 +179,8 @@ export class AuthService {
       .get<any>(url, {
         params: { skipAuthorization: 'true' },
       })
-      .pipe(
-        tap((data) => {
-          this.setSettingInSession(data);
-        })
-      );
   }
 
-  setSettingInSession(data: []) {
-    data.map((d: any) => {
-      if (d.AuthenticationFor.toUpperCase() === 'GOOGLE') {
-        sessionStorage.setItem(
-          'GOOGLE',
-          JSON.stringify({
-            ClientId: d.ClientId,
-          })
-        );
-      }
-      if (d.AuthenticationFor.toUpperCase() === 'MICRO') {
-        sessionStorage.setItem(
-          'MICRO',
-          JSON.stringify({
-            ClientId: d.ClientId,
-            RedirectURL: d.RedirectURL,
-          })
-        );
-      }
-      if (d.AuthenticationFor.toUpperCase() === 'CAPTCHAKEY') {
-        sessionStorage.setItem(
-          'CAPTCHAKEY',
-          JSON.stringify({
-            CaptchaKey: d.ClientId,
-          })
-        );
-      }
-    });
-  }
 
   getLoggedInUserDetails() {
     if (localStorage.getItem('loggedInUserDetails') != null) {
@@ -228,4 +198,13 @@ export class AuthService {
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.GET_VISUALS}/${id}`;
     return this.http.get<IVisualResponse>(url);
   }
+
+  get getAuthDetails() :IAuthTokenSetting[]{
+     this.store.select(getAuthSettings).subscribe(data =>  {
+      this.getAuthValue = data
+    });
+    return this.getAuthValue
+  }
+
+ 
 }

@@ -23,26 +23,25 @@ export const selectSignInCaptch = createSelector(
 
 export const getUserToken = createSelector(
   fromFeature.getAppState,
-  (state) =>  state.token
+  (state) => state.token
 );
-
-
 
 export const selectUserInfo = createSelector(
   fromFeature.getAppState,
-  (state) =>  state.data
+  (state) => state.data
 );
-
 
 export const isAdvisor = createSelector(
   fromFeature.getAppState,
-  (state) =>  state.isAdvisor
+  (state) => state.isAdvisor
 );
 
 export const selectOrgLists = createSelector(
   fromFeature.getAppState,
-  (state) =>  state.orgData
+  (state) => state.orgData
 );
 
-
-
+export const getAuthSettings = createSelector(
+  fromFeature.getAppState,
+  (state) => state.authSetting
+);

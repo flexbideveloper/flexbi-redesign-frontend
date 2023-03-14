@@ -6,6 +6,8 @@ import {
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { getAuthSettings, LoadAuthSetting } from '@app/core/store';
+import { Store } from '@ngrx/store';
 
 import {
   catchError,
@@ -13,12 +15,12 @@ import {
   Observable,
   of,
   Subscription,
+  tap,
   throwError,
 } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { environment } from 'src/environments/environment';
 
 export enum LoginTypeEnum {
   Admin = 'admin',
@@ -33,14 +35,14 @@ export class SignInComponent implements OnInit, OnDestroy {
   form: FormGroup;
   show: boolean = true;
   isLoggingIn: boolean;
-  captchaSiteKey =
-    sessionStorage.getItem('CAPTCHAKEY') &&
-    JSON.parse(sessionStorage.getItem('CAPTCHAKEY')).CaptchaKey;
+
   isCaptchaValidate: boolean = false;
   isNoRobotClick: boolean = false;
   user: SocialUser;
 
   appState$: Subscription;
+
+  authSetting$ = this.store.select(getAuthSettings);
 
   loginType: LoginTypeEnum;
   aFormGroup = this.fb.group({
@@ -53,7 +55,8 @@ export class SignInComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private socialAuthService: SocialAuthService,
     private notification: NotificationService,
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
+    private store: Store
   ) {}
 
   // On Forgotpassword link click
@@ -123,11 +126,9 @@ export class SignInComponent implements OnInit, OnDestroy {
           ),
         ],
       ],
-      gcmTonken: [
-        sessionStorage.getItem('CAPTCHAKEY') ||
-          JSON.parse(sessionStorage.getItem('CAPTCHAKEY')).CaptchaKey,
-      ],
+      gcmTonken: ['6LenPE8cAAAAAOUGB4hJOmIT9ieIumcIQfXM26Ln'],
     });
+
   }
 
   handleSuccess($event): void {
@@ -166,13 +167,11 @@ export class SignInComponent implements OnInit, OnDestroy {
   template: `<router-outlet></router-outlet>`,
 })
 export class AuthComponent implements OnInit, OnDestroy {
-  subscription = new Subscription();
-  constructor(private authService: AuthService) {}
+  constructor(private store: Store) {}
+
   ngOnInit(): void {
-    this.subscription = this.authService.allSettings().subscribe();
+    this.store.dispatch(new LoadAuthSetting());
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
+  ngOnDestroy(): void {}
 }

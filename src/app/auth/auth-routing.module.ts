@@ -41,6 +41,11 @@ const routes: Routes = [
           title: 'Reset Password',
         },
       },
+      {
+        path: '',
+        redirectTo: 'sign-in',
+        pathMatch:'full'
+      },
     ],
   },
 ];

@@ -128,34 +128,17 @@ export function MSALInstanceFactory(): IPublicClientApplication {
 }
 
 function getClientIdRedirectURL() {
-  if (JSON.parse(sessionStorage.getItem('MICRO')) !== null) {
     return {
-      clientId: JSON.parse(sessionStorage.getItem('MICRO')).ClientId,
-      redirectUri: JSON.parse(sessionStorage.getItem('MICRO')).RedirectURL,
+      clientId: '3f576ff9-29ee-45ec-8778-3bb4010113ff',
+      redirectUri: 'https://flexbireport.com.au',
     };
-  } else {
-    setTimeout(() => {
-      window.location.reload();
-    }, 2000);
-    return {
-      clientId: '',
-      redirectUri: '',
-    };
-  }
+  
 }
 
 function getGoogleProvider() {
-  if (JSON.parse(sessionStorage.getItem('GOOGLE')) !== null) {
-    return new GoogleLoginProvider(
-      JSON.parse(sessionStorage.getItem('GOOGLE')).ClientId
-    );
-  } else {
-    setTimeout(() => {
-      window.location.reload();
-    }, 2000);
-
-    return '';
-  }
+  return new GoogleLoginProvider(
+    '919671716592-ube4p7h32n1idc13sri4ki3susugq4a3.apps.googleusercontent.com'
+  );
 }
 
 @NgModule({

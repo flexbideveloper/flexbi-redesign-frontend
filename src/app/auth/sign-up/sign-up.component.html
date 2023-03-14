@@ -1,4 +1,4 @@
-<div class="bg-login">
+<div class="bg-login" *ngIf="{authSetting : (authSetting$ | async) || [] }as data ">
   <!--wrapper-->
   <div class="wrapper">
     <div
@@ -163,10 +163,10 @@
                         </div>
                       </div>
 
-                      <div class="col-12">
+                      <div class="col-12" *ngIf="data.authSetting.length">
                         <form [formGroup]="aFormGroup">
                           <ngx-recaptcha2
-                            [siteKey]="captchaSiteKey"
+                            [siteKey]="data.authSetting[1].ClientId"
                             (success)="handleSuccess($event)"
                             formControlName="recaptcha"
                           >

@@ -12,19 +12,18 @@ export interface IOrganisation {
 export interface LoginResponse {
   data: UserDetail;
   message: string;
- 
-  
+
   planData: UserPlanData[];
   status: number;
   token: string;
 
-  orgData : IOrganisation[];
-  isAdvisor : boolean
+  orgData: IOrganisation[];
+  isAdvisor: boolean;
 }
 
 export interface UserLoginResp {
-  data : UserDetail
-  planData : UserPlanData[]
+  data: UserDetail;
+  planData: UserPlanData[];
 }
 
 export interface UserDetail {
@@ -45,7 +44,7 @@ export interface UserDetail {
   gcmToken: string;
   id: number;
   id_FkClientProfile: number;
-  orgId:string | number
+  orgId: string | number;
 }
 
 export interface AdminLoginResponse {
@@ -149,4 +148,11 @@ export interface AppSocialUserResponse {
   token?: string;
   message?: string;
   data: UserDetail;
+}
+
+export interface IAuthTokenSetting {
+  AuthenticationFor: string;
+  ClientId: string;
+  RedirectURL: string;
+  id: number;
 }

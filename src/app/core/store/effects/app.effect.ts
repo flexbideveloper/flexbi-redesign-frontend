@@ -31,12 +31,9 @@ export class AppEffects {
     () => {
       return this.actions$.pipe(
         ofType<a.SetSocialUser>(a.SET_SOCIAL_USER),
-        tap((action) => {
-          this.router.navigateByUrl('subscriptions');
-        })
+          map(({payload}) => new a.OnLoginSuccess({userDetail : payload.userDetail}))
       );
     },
-    { dispatch: false }
   );
 
   logout$ = createEffect(
@@ -147,18 +144,35 @@ export class AppEffects {
                 id_FkUserProfile: response.data.id ? response.data.id : (response.data.id_FkClientProfile ? response.data.id_FkClientProfile : ""),
                 ClientUserId: response.data.id ? response.data.id : (response.data.id_FkClientProfile ? response.data.id_FkClientProfile : "")
               });
+
+
               sessionStorage.setItem(
                 'BearerToken',
                 JSON.stringify(response.token)
               );
               sessionStorage.setItem('identity', JSON.stringify(response.data));
-              return this.store.dispatch(new a.SetSocialUser(response.data));
+              return this.store.dispatch(new a.SetSocialUser({userDetail :response}));
             })
           );
         })
       );
     },
     { dispatch: false }
+  );
+
+  loadAuthSetting$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType<a.LoadAuthSetting>(a.LOAD_AUTH_SETTING),
+        switchMap(() => {
+          return this.authService.allSettings().pipe(
+            map((response) => 
+               new a.LoadAuthSettingSuccess({authSetting :response})
+            )
+          )
+        })
+      );
+    }
   );
 
   constructor(

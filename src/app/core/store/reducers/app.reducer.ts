@@ -1,4 +1,4 @@
-import { UserDetail, LoginResponse, IOrganisation } from 'src/app/interfaces/auth.interface';
+import { UserDetail, LoginResponse, IOrganisation, IAuthTokenSetting } from 'src/app/interfaces/auth.interface';
 import * as fromAppStore from '@app/core/store';
 
 export interface AppState {
@@ -11,6 +11,7 @@ export interface AppState {
   isCaptchSignUp: boolean;
   isAdvisor :boolean;
   orgData : IOrganisation[],
+  authSetting : IAuthTokenSetting[]
 }
 
 export const initialState: AppState = {
@@ -24,7 +25,8 @@ export const initialState: AppState = {
   isCaptchSignIn: false,
   isCaptchSignUp: false,
   isAdvisor :false,
-  orgData: []
+  orgData: [],
+  authSetting : []
 };
 
 export function reducer(
@@ -47,9 +49,10 @@ export function reducer(
       };
     }
     case fromAppStore.SET_SOCIAL_USER: {
+      const {userDetail} = action.payload
       return {
         ...state,
-        userDetail: action.payload,
+        ...userDetail
       };
     }
     case fromAppStore.REMOVE_USER: {
@@ -69,6 +72,12 @@ export function reducer(
           ...state.userDetail,
           CompanyName: action.payload.CompanyName,
         },
+      };
+    }
+    case fromAppStore.LOAD_AUTH_SETTING_SUCCESS: {
+      return {
+        ...state,
+        authSetting: action.payload.authSetting,
       };
     }
   }

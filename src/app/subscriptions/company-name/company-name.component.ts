@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { SubcriptionsService } from 'src/app/services/subscription.service';
 import * as fromStore from '@app/core/store';
+import { getAuthSettings } from '@app/core/store';
 
 export interface ConfirmAction {
   text: string;
@@ -22,13 +23,11 @@ export class CompanyNameComponent implements OnInit {
   signUpForm: FormGroup;
   show: boolean = true;
   cShow: boolean = true;
-  captchaSiteKey =
-    sessionStorage.getItem('CAPTCHAKEY') &&
-    JSON.parse(sessionStorage.getItem('CAPTCHAKEY')).CaptchaKey;
 
   aFormGroup = this.fb.group({
     recaptcha: ['', Validators.required],
   });
+  authSetting$ =  this.store.select(getAuthSettings);
   form: FormGroup;
   @Input() user_id: string;
 
