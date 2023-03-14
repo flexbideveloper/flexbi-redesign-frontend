@@ -35,6 +35,9 @@ export class NavigationService {
     }
 
     let redirectTo = PAGE_ROUTES.SUBSCRIPTIONS;
+   
+
+
 
     if (withRedirect) {
       this.router.navigateByUrl(redirectTo);

@@ -6,7 +6,7 @@ import {
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { getAuthSettings, LoadAuthSetting } from '@app/core/store';
+import { getAuthSettings, getUserToken, LoadAuthSetting } from '@app/core/store';
 import { Store } from '@ngrx/store';
 
 import {
@@ -43,6 +43,8 @@ export class SignInComponent implements OnInit, OnDestroy {
   appState$: Subscription;
 
   authSetting$ = this.store.select(getAuthSettings);
+  userLogined$ = this.store.select(getUserToken);
+
 
   loginType: LoginTypeEnum;
   aFormGroup = this.fb.group({
@@ -57,7 +59,14 @@ export class SignInComponent implements OnInit, OnDestroy {
     private notification: NotificationService,
     private navigationService: NavigationService,
     private store: Store
-  ) {}
+  ) {
+
+    this.userLogined$.subscribe(data => {
+      if(data){
+        this.navigationService.redirectToDashboard();
+      }
+    })
+  }
 
   // On Forgotpassword link click
   onForgotpassword() {
