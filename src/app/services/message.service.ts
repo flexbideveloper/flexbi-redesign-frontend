@@ -16,7 +16,7 @@ export interface IMessage {
   MessageDate: string;
   UserCount: number;
   CountLabel: string;
-  Adviser: 0 | 1;
+  IsAdvisor: boolean;
 }
 
 export interface IGetResponse<T> {

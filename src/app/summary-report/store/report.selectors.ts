@@ -25,6 +25,11 @@ export const selectMSGLoading = createSelector(
   (state) => state.messages.loading
 );
 
+export const selectIsMessageChanged = createSelector(
+  selectFeature,
+  (state) => state.messages.changed
+);
+
 export const selectMSGData = createSelector(
   selectFeature,
   (state) => {

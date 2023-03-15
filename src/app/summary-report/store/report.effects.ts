@@ -5,11 +5,10 @@ import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
   catchError,
-  exhaustMap,
   filter,
   map,
   mergeMap,
-  switchMap,
+  exhaustMap,
   withLatestFrom,
 } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
@@ -26,7 +25,7 @@ export class ReportEffects {
       ofType(a.init),
       withLatestFrom(this.store.select(s.selectSummaryLoading)),
       filter(([, isLoaded]) => !isLoaded),
-      switchMap(() => {
+      exhaustMap(() => {
         return [a.load(), a.loadMessage()];
       })
     )
@@ -41,7 +40,7 @@ export class ReportEffects {
         this.store.select(fromAppStore.selectOrgLists),
         this.store.select(s.getOrgId)
       ),
-      switchMap(([, { id_FkClientProfile }, isAdviser , orgLists , orgId]) =>
+      exhaustMap(([, { id_FkClientProfile }, isAdviser , orgLists , orgId]) =>
         this.reportService
           .getPageVisuals(isAdviser ? (orgId ? parseInt(orgId.toString()) : orgLists[0].orgId) : id_FkClientProfile)
           .pipe(
@@ -63,7 +62,7 @@ export class ReportEffects {
         this.store.select(fromAppStore.selectOrgLists),
         this.store.select(s.getOrgId)
       ),
-      switchMap(([, { id_FkClientProfile }, isAdviser , orgLists , orgId]) =>
+      exhaustMap(([, { id_FkClientProfile }, isAdviser , orgLists , orgId]) =>
         this.messageApiService.getConversionsMessage(isAdviser ? (orgId ? parseInt(orgId.toString()) : orgLists[0].orgId) : id_FkClientProfile).pipe(
           map(({ data }) => a.loadMessageSuccess({ data })),
           catchError((err) => {
@@ -80,7 +79,7 @@ export class ReportEffects {
       withLatestFrom(this.store.select(fromAppStore.selectUserInfo) ,   this.store.select(fromAppStore.isAdvisor),
       this.store.select(fromAppStore.selectOrgLists),
       this.store.select(s.getOrgId)),
-      switchMap(([{ message }, { id, id_FkClientProfile } , isAdviser , orgLists , orgId ]) =>
+      exhaustMap(([{ message }, { id, id_FkClientProfile } , isAdviser , orgLists , orgId ]) =>
         this.messageApiService
           .postConversion({
             id_FkClientProfile: isAdviser ? (orgId ? parseInt(orgId.toString()) : orgLists[0].orgId) : id_FkClientProfile,
@@ -107,7 +106,7 @@ export class ReportEffects {
         this.store.select(fromAppStore.selectOrgLists),
         this.store.select(s.getOrgId)
       ),
-      switchMap(([, { id_FkClientProfile }, isAdviser , orgLists , orgId]) =>
+      exhaustMap(([, { id_FkClientProfile }, isAdviser , orgLists , orgId]) =>
         this.authApiService.getUserLists(isAdviser ? (orgId ? parseInt(orgId.toString()) : orgLists[0].orgId) : id_FkClientProfile).pipe(
           map(({ data }) => a.loadUsersSuccess({ data })),
           catchError((err) => {
@@ -127,7 +126,7 @@ export class ReportEffects {
       this.store.select(fromAppStore.selectOrgLists),
       this.store.select(s.getOrgId)
     ),
-    switchMap(([, { id_FkClientProfile }, isAdviser , orgLists , orgId]) =>
+    exhaustMap(([, { id_FkClientProfile }, isAdviser , orgLists , orgId]) =>
       this.authApiService.getVisualsList(isAdviser ? (orgId ? parseInt(orgId.toString()) : orgLists[0].orgId) : id_FkClientProfile).pipe(
         map(({ data }) => a.loadVisualsSuccess({ data })),
         catchError((err) => {

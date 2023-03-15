@@ -11,6 +11,7 @@ import { IMessage, MessageService } from 'src/app/services/message.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as fromReportStore from 'src/app/summary-report/store';
+import { tap } from 'rxjs';
 
 export interface IGetMessages {
   [key: string]: IMessage[];
@@ -24,15 +25,16 @@ export interface IMesageDateFormate {
   selector: 'app-conversions',
   templateUrl: './conversions.component.html',
   styleUrls: ['./conversions.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConversionsComponent implements OnInit, AfterViewInit {
+  scrollHave: true;
   isLoading$ = this.store.select(fromReportStore.selectMSGLoading);
   messages$ = this.store.select(fromReportStore.selectMSGData);
+  isChanged$ = this.store.select(fromReportStore.selectIsMessageChanged);
 
   users$ = this.store.select(fromReportStore.selectUsers);
   visuals$ = this.store.select(fromReportStore.selectVisuals);
-  @ViewChild('scroll', { static: true }) scroll: any;
+  @ViewChild('scrollMe', { static: true }) scroll: any;
 
   messageForm: FormGroup;
   constructor(
@@ -48,10 +50,13 @@ export class ConversionsComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     $('.switcher-btn').on('click', function () {
       $('.switcher-wrapper').toggleClass('switcher-toggled');
+      var objDiv = document.getElementById('switcher-body');
+      objDiv.scrollTop = objDiv.scrollHeight;
     });
     $('.close-switcher').on('click', function () {
       $('.switcher-wrapper').removeClass('switcher-toggled');
     });
+
   }
 
   sendMesage() {
@@ -59,21 +64,21 @@ export class ConversionsComponent implements OnInit, AfterViewInit {
       return;
     }
     let message = this.messageForm.value.message;
+
     this.messageForm.get('message').setValue('');
     this.store.dispatch(fromReportStore.sendMessage({ message }));
-    setTimeout(() => {
-      this.scroll?.nativeElement.scrollTo(
-        0,
-        this.scroll.nativeElement.scrollHeight
-      );
-    }, 0);
   }
 
-  ngAfterViewInit() {
-    this.scroll?.nativeElement.scrollTo(
-      0,
-      this.scroll.nativeElement.scrollHeight
-    );
-    this.cdr.markForCheck();
+  ngAfterViewInit(): void {
+    var objDiv = document.getElementById('switcher-body');
+    objDiv.scrollTop = objDiv.scrollHeight;
+    this.isChanged$
+      .pipe(
+        tap((value: number) => {
+          var objDiv = document.getElementById('switcher-body');
+          objDiv.scrollTop = objDiv.scrollHeight;
+        })
+      )
+      .subscribe();
   }
 }

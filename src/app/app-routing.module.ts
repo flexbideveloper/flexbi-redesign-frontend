@@ -25,6 +25,7 @@ const routes: Routes = [
     data: { title: 'content Views' },
     children: CONTENT_ROUTES,
   },
+
 ];
 
 @NgModule({

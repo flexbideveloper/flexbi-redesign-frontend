@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ActivatedRoute, Route } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
@@ -11,6 +11,8 @@ import { CompanyNameComponent } from '../company-name/company-name.component';
 import { SubscriptionPlan } from './subscription.interface';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { IUser, IVisual } from 'src/app/shared/input-suggetion/containers/input-box/input-box.component';
+import { Store } from '@ngrx/store';
+import { isAdvisor } from '@app/core/store';
 @Component({
   selector: 'app-subscriptions',
   templateUrl: './subscriptions.component.html',
@@ -298,7 +300,9 @@ export class SubscriptionsComponent implements OnInit {
     private modalService: NgbModal,
     private activeRoute: ActivatedRoute,
     private notification: NotificationService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private store:Store,
+    private router:Router
   ) {
     if (
       this.activeRoute.snapshot.queryParamMap.get('isTranComplete') !== null &&
@@ -319,6 +323,9 @@ export class SubscriptionsComponent implements OnInit {
       this.getSubscriptionsPlans();
     }
     this.getActivePlan();
+
+    
+
   }
 
   ngOnInit(): void {}

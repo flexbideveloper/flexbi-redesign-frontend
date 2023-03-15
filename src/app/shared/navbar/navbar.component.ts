@@ -99,7 +99,6 @@ export class NavbarComponent implements OnInit {
 
   logout(): void {
     this.appStore.dispatch(new fromStore.Logout());
-    location.href = '';
     // this.socialAuthService.signOut();
     // this.setConfigurationService
     //   .checkSetConfigurationPageForLeaving()

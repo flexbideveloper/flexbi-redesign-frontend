@@ -1,7 +1,7 @@
 
   <div class="switcher-wrapper">
     <div class="switcher-btn"><i class="bx bx-comment-detail"></i></div>
-    <div class="switcher-body"  #scrollMe [scrollTop]="scrollMe?.scrollHeight">
+    <div class="switcher-body" id="switcher-body">
       <div class="d-flex align-items-center">
         <h5>Comments</h5>
         <button
@@ -27,22 +27,24 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="start-conversion">
-      <form class="row" [formGroup]="messageForm" (ngSubmit)="sendMesage()">
-        <div class="col-md-12 d-flex justify-content-center p-r-0">
-          <input-box
-            formControlName="message"
-            [userList]="users$ | async"
-            [visualList]="visuals$ | async"
-          ></input-box>
 
-          <div class="buttons">
-            <button type="submit" class="btn btn-primary float-right">
-              <i class="bx bx-send"></i>
-            </button>
+      <div class="start-conversion">
+        <form class="row" [formGroup]="messageForm" (ngSubmit)="sendMesage()">
+          <div class="col-md-12 d-flex justify-content-center p-r-0">
+            <input-box
+              formControlName="message"
+              [userList]="users$ | async"
+              [visualList]="visuals$ | async"
+            ></input-box>
+  
+            <div class="buttons">
+              <button type="submit" class="btn btn-primary float-right">
+                <i class="bx bx-send"></i>
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
+   
   </div>

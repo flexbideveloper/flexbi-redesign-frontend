@@ -15,6 +15,7 @@ export interface IReportState {
   messages: {
     data: IGetMessages;
     loading: boolean;
+    changed :number
   };
   users: {
     data: IUser[];
@@ -33,6 +34,7 @@ export const initialState: IReportState = {
   messages: {
     data: null,
     loading: false,
+    changed :0
   },
   users: {
     data: [],

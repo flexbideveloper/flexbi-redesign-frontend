@@ -1,5 +1,6 @@
 export const PAGE_ROUTES = {
   HOME: '/',
-  SUBSCRIPTIONS: 'subscriptions'
+  SUBSCRIPTIONS: 'subscriptions',
+  SUMMARY_REPORT: 'summaryreport'
 };
 

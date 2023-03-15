@@ -1,46 +1,45 @@
-.msg-container{
-    width:100%;
-    
+.msg-container {
+  width: 100%;
 }
-.switcher-body{
-    height: 90%;
+.switcher-body {
+  height: 95%;
 }
 
-input-box{
+input-box {
+  width: 100%;
+}
+
+.start-conversion {
+  position: absolute;
+  bottom: 0;
+  padding: 0.5rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  form {
     width: 100%;
-    padding-left: 12px;
-}
-
-.start-conversion{
-    padding: 0.5rem;
-    height: 10%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    form{
-        width: 100%;
-        textarea{
-            width: 80%;
-        }
-        .buttons{
-            width: 15%;
-            button{
-                float: right;
-            }
-        }
+    textarea {
+      width: 80%;
     }
+    .buttons {
+      width: 15%;
+      button {
+        float: right;
+      }
+    }
+  }
 }
 
-
-.no-message{
-    height: 50vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.no-message {
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.msg-body{
-   &__date-title{
+.msg-body {
+  &__date-title {
     text-align: center;
     color: #5a5a5a;
-   } 
+  }
 }

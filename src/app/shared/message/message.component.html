@@ -5,16 +5,16 @@
   <div class="message-body">
     <div
       class="message-body__title"
-      [class.message-body__title--adviser]="message?.Adviser"
+      [class.message-body__title--adviser]="message?.IsAdvisor"
     >
-      {{ message.UserName }} <span *ngIf="message?.Adviser">(Adviser)</span>
+      {{ message.UserName }} <span *ngIf="message?.IsAdvisor">(Adviser)</span>
       <!-- <span class="message-body__title--date">
         {{ message.MessageDateTime | date : "yyyy-MM-dd h:mm a" }}</span
       > -->
     </div>
     <div
       class="message-body__msg border-bottom"
-      [class.message-body__msg--adviser]="message?.Adviser"
+      [class.message-body__msg--adviser]="message?.IsAdvisor"
     >
       {{ message.Message }}
     </div>
@@ -36,7 +36,7 @@
       [attr.id]="'collapseBox' + id"
       class="accordion-collapse collapse"
     >
-      <div class="col-12 msg-body no-bg" *ngFor="let msg of innerMessages">
+      <div class="col-12 msg-body no-bg" *ngFor="let msg of innerMessages" [class.msg-body__adviser]="msg?.IsAdvisor">
         <div class="message-avatar">
           <app-avatar-photo [name]="msg.UserName"></app-avatar-photo>
         </div>
@@ -49,7 +49,7 @@
           </div>
           <div
             class="message-body__msg"
-            [class.message-body__msg--adviser]="msg?.Adviser"
+            
           >
             {{ msg.Message }}
           </div>

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { take } from 'rxjs';
+import { combineLatest, take, withLatestFrom } from 'rxjs';
 import * as fromStore from '@app/core/store';
-import { UserDetail } from '../interfaces/auth.interface';
+import { IOrganisation, UserDetail } from '../interfaces/auth.interface';
 import { PAGE_ROUTES } from './pages-routes.constant';
+import { isAdvisor } from '@app/core/store';
 
 @Injectable({
   providedIn: 'root',
@@ -21,23 +22,32 @@ export class NavigationService {
   }
 
   redirectToDashboard(): void {
-    this.store
-      .select(fromStore.getUserToken)
+    combineLatest(
+      this.store.select(fromStore.getUserToken),
+      this.store.select(fromStore.isAdvisor),
+      this.store.select(fromStore.selectOrgLists)
+    )
       .pipe(take(1))
-      .subscribe(userToken => {
-        this.getDefaultRedirectPage(userToken, true);
+      .subscribe(([userToken, isAdviser , orgLists]) => {
+        this.getDefaultRedirectPage(userToken, isAdviser, orgLists , true);
       });
   }
 
-  getDefaultRedirectPage(userToken: string, withRedirect?: boolean): string {
+  getDefaultRedirectPage(
+    userToken: string,
+    isAdviser: boolean,
+    orgLists:IOrganisation[],
+    withRedirect?: boolean
+  ): string {
     if (!userToken) {
       return '';
     }
-
-    let redirectTo = PAGE_ROUTES.SUBSCRIPTIONS;
-   
-
-
+    let redirectTo;
+    if (isAdviser && orgLists.length) {
+      redirectTo = PAGE_ROUTES.SUMMARY_REPORT;
+    } else {
+      redirectTo = PAGE_ROUTES.SUBSCRIPTIONS;
+    }
 
     if (withRedirect) {
       this.router.navigateByUrl(redirectTo);

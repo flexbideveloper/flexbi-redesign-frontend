@@ -8,7 +8,6 @@ import * as fromReportStore from 'src/app/summary-report/store';
   selector: 'app-message',
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss'],
-  changeDetection :ChangeDetectionStrategy.OnPush
 })
 export class MessageComponent implements OnInit {
   users$ = this.store.select(fromReportStore.selectUsers);

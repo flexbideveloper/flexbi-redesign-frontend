@@ -32,6 +32,7 @@ export const reportReducer = createReducer(
   }),
 
   on(a.loadMessage, (state) => {
+
     return {
       ...state,
       messages: {
@@ -42,12 +43,15 @@ export const reportReducer = createReducer(
   }),
 
   on(a.loadMessageSuccess, (state, { data }) => {
+    let changeValue =  state.messages.changed + 1
+
     return {
       ...state,
       messages: {
         ...state.messages,
         data,
         loading: false,
+        changed : changeValue
       },
     };
   }),
