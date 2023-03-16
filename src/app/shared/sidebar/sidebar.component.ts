@@ -127,7 +127,7 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     let userId = this.authService.getLoggedInUserDetails().ClientUserId;
   
-      this.subscriptionService.getActivePlan(userId).subscribe((data) => {
+     this.subscriptionService.getActivePlan(userId).subscribe((data) => {
         this.activePlanDetail = data.data[0];
         if (!!this.activePlanDetail) {
           this.subscriptionService.ifHaveActivePlan.next(true);
@@ -196,6 +196,8 @@ export class SidebarComponent implements OnInit {
                       submenu: child,
                     });
                     // check for pages and visuals
+
+                    debugger
                     if (res.isReportPagesPresent) {
                       this.menuItems.push({
                         path: 'summaryreport',
@@ -349,6 +351,7 @@ export class SidebarComponent implements OnInit {
                 });
             }
           } else {
+
             this.menuItems.push({
               path: 'subscriptions',
               title: 'Subscription Plans',

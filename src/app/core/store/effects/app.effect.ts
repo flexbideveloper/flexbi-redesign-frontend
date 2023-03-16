@@ -68,10 +68,10 @@ export class AppEffects {
             map((response) => {
               if (response.status === 200) {
                 this.notification.success(response.message);
+                this.router.navigateByUrl('auth/sign-in');
               } else {
                 this.notification.error(response.message);
               }
-              this.router.navigateByUrl('auth/sign-in');
               return new a.SignUpSuccess(response);
             })
           );
@@ -123,6 +123,8 @@ export class AppEffects {
     },
     { dispatch: false }
   );
+
+  
   registerSocialUserP$ = createEffect(() => {
     return this.actions$.pipe(
       ofType<a.RegisterSocialUser>(a.REGISTER_SOCIAL_USER),

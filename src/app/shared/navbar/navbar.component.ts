@@ -33,14 +33,14 @@ export class NavbarComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {
     let userId = this.authService.getLoggedInUserDetails()?.UserId;
-    if (userId && userId !== null) {
-      this.subscriptionService.getActivePlan(userId).subscribe((data) => {
-        this.activePlanDetail = data.data[0];
-        this.expStatus = this.getExpiryStatus(data.data[0]);
-        this.remDays = this.getRemainingDays(data.data[0]);
-        this.cdr.markForCheck();
-      });
-    }
+    // if (userId && userId !== null) {
+    //   this.subscriptionService.getActivePlan(userId).subscribe((data) => {
+    //     this.activePlanDetail = data.data[0];
+    //     this.expStatus = this.getExpiryStatus(data.data[0]);
+    //     this.remDays = this.getRemainingDays(data.data[0]);
+    //     this.cdr.markForCheck();
+    //   });
+    // }
   }
 
   toggleSidebar() {

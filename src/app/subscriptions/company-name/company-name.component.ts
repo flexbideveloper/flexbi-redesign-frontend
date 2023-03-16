@@ -80,24 +80,24 @@ export class CompanyNameComponent implements OnInit {
       this.subscription.addCompanyName(this.form.value).subscribe(
         (data: any) => {
           if (data.status === 200) {
-            const userDetails = this.authService.getLoggedInUserDetails();
-            userDetails.CompanyName = this.form.value.CompanyName;
-            userDetails.Email = this.form.value.Email;
-            userDetails.id_FkClientProfile = data.orgData.id;
-            this.authService.setLoggedInUserDetails(userDetails);
-            const ux =
-              (sessionStorage.getItem('identity') &&
-                JSON.parse(sessionStorage.getItem('identity'))) ||
-              null;
-            ux.CompanyName = this.form.value.CompanyName;
-            ux.id_FkClientProfile = userDetails.id_FkClientProfile;
-            sessionStorage.setItem('identity', JSON.stringify(ux));
-            // this.store.dispatch(new SetCompanyName(this.form.value.CompanyName));
-            this.store.dispatch(
-              new fromStore.SetCompanyNameSuccess({
-                CompanyName: this.form.value.CompanyName,
-              })
-            );
+            // const userDetails = this.authService.getLoggedInUserDetails();
+            // userDetails.CompanyName = this.form.value.CompanyName;
+            // userDetails.Email = this.form.value.Email;
+            // userDetails.id_FkClientProfile = data.orgData.id;
+            // this.authService.setLoggedInUserDetails(userDetails);
+            // const ux =
+            //   (sessionStorage.getItem('identity') &&
+            //     JSON.parse(sessionStorage.getItem('identity'))) ||
+            //   null;
+            // ux.CompanyName = this.form.value.CompanyName;
+            // ux.id_FkClientProfile = userDetails.id_FkClientProfile;
+            // sessionStorage.setItem('identity', JSON.stringify(ux));
+            // // this.store.dispatch(new SetCompanyName(this.form.value.CompanyName));
+            // this.store.dispatch(
+            //   new fromStore.SetCompanyNameSuccess({
+            //     CompanyName: this.form.value.CompanyName,
+            //   })
+            // );
             this.modal.dismiss({
               status: 200,
               orgData: data.orgData
