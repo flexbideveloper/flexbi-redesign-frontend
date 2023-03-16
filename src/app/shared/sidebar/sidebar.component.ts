@@ -126,7 +126,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     let userId = this.authService.getLoggedInUserDetails().ClientUserId;
-    userId &&
+  
       this.subscriptionService.getActivePlan(userId).subscribe((data) => {
         this.activePlanDetail = data.data[0];
         if (!!this.activePlanDetail) {
@@ -161,6 +161,8 @@ export class SidebarComponent implements OnInit {
                 )
                 .subscribe(async (res: any) => {
                   reportsList = res.data || [];
+
+                  debugger
                   if (reportsList.length > 0) {
                     let child = [];
                     reportsList.map((r: any) => {

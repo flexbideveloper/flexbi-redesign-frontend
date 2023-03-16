@@ -177,6 +177,45 @@ export class InputBoxComponent
     this.onInputFocus.emit();
   }
 
+  keyDown(event: KeyboardEvent):void{
+    if (event.charCode === 64) {
+      this.userDropdownShow = true;
+    }else{
+      this.userDropdownShow = false;
+    }
+
+    if (event.charCode === 35) {
+      this.visualDropdownShow = true;
+    }else{
+      this.visualDropdownShow = false;
+    }
+
+    if (event.charCode === 0 ) {
+      this.visualDropdownShow = false;
+      this.visualDropdownShow = false;
+    }
+
+
+    let data  = this.dataInput.split(' ');
+
+
+    debugger
+    if(data.length > 0){
+      if(data[data.length - 1].lastIndexOf('@')  >= 0   ){
+        this.userDropdownShow = true;
+      }
+  
+      if(data[data.length - 1].lastIndexOf('#') >= 0 ){
+        this.visualDropdownShow = true;
+      }
+    }else{
+              this.userDropdownShow = false;
+      this.visualDropdownShow = false;
+    }
+
+  
+  }
+
   onInputChange(value: string): void {
     this.dataInput = value;
     this.dataInputChange.emit(value);
@@ -185,7 +224,13 @@ export class InputBoxComponent
     this.errorRequiredFunc(value);
   }
 
+  escPress(){
+    this.userDropdownShow = false;
+    this.visualDropdownShow = false;
+  }
+
   keyPress(event: KeyboardEvent) {
+
     if (event.charCode === 64) {
       this.userDropdownShow = true;
     }else{
