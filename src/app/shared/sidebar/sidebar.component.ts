@@ -74,25 +74,25 @@ export class SidebarComponent implements OnInit {
       }
     });
 
-    this.isAdviser$
-      .pipe(
-        tap((data) => {
-          if(data){
-            this.menuItems.push({
-              path: 'summaryreport',
-              title: 'Summary Report',
-              icon: 'bx bxs-report',
-              class: '',
-              badge: '',
-              badgeClass: '',
-              isExternalLink: false,
-              submenu: [],
-            });
-          }
+    // this.isAdviser$
+    //   .pipe(
+    //     tap((data) => {
+    //       if(data){
+    //         this.menuItems.push({
+    //           path: 'summaryreport',
+    //           title: 'Summary Report',
+    //           icon: 'bx bxs-report',
+    //           class: '',
+    //           badge: '',
+    //           badgeClass: '',
+    //           isExternalLink: false,
+    //           submenu: [],
+    //         });
+    //       }
       
-        })
-      )
-      .subscribe();
+    //     })
+    //   )
+    //   .subscribe();
   }
 
   toggleSidebar() {
@@ -185,7 +185,7 @@ export class SidebarComponent implements OnInit {
                         submenu: [],
                       });
                     });
-                    this.menuItems.push({
+                    !this.isAdviser$ && this.menuItems.push({
                       path: '',
                       title: 'Reports',
                       icon: 'bx bx-file',

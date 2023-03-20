@@ -13,6 +13,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { IUser, IVisual } from 'src/app/shared/input-suggetion/containers/input-box/input-box.component';
 import { Store } from '@ngrx/store';
 import { isAdvisor } from '@app/core/store';
+import * as fromAppStore from '@app/core/store';
 @Component({
   selector: 'app-subscriptions',
   templateUrl: './subscriptions.component.html',
@@ -294,6 +295,10 @@ export class SubscriptionsComponent implements OnInit {
   public subDetails: any = null;
   public isPlanActivated: any = false;
   public isTrialActivated: any = false;
+
+  public orglist: any = this.store.select(fromAppStore.selectOrgLists);
+  public isAdvisor: any = this.store.select(fromAppStore.isAdvisor);
+
   constructor(
     private subscriptionService: SubcriptionsService,
     private authService: AuthService,
@@ -322,10 +327,7 @@ export class SubscriptionsComponent implements OnInit {
     } else {
       this.getSubscriptionsPlans();
     }
-    this.getActivePlan();
-
-    
-
+    !this.isAdvisor && this.getActivePlan();
   }
 
   ngOnInit(): void {}
@@ -394,16 +396,28 @@ export class SubscriptionsComponent implements OnInit {
       modal.result.then(
         (data: any) => {
           console.log('Success');
-          if (data && data.status === 200 && data.orgData && data.orgData.id) {
-            this.updateUserDetails(data);
-            this.activateFreeTrialPlanMethod(data.orgData.id);
+          if (data && data.status === 200) {
+            if (data.orgData && data.orgData.id) {
+              this.updateUserDetails(data);
+              this.activateFreeTrialPlanMethod(data.orgData.id);
+              this.isAdvisor=false;
+            } else if (data.markedAsAdvisor){
+              // show marked as advisor message
+              this.isAdvisor=true;
+            }
           }
         },
         (data: any) => {
           console.log('Success');
-          if (data && data.status === 200 && data.orgData && data.orgData.id) {
-            this.updateUserDetails(data);
-            this.activateFreeTrialPlanMethod(data.orgData.id);
+          if (data && data.status === 200) {
+            if (data.orgData && data.orgData.id) {
+              this.updateUserDetails(data);
+              this.activateFreeTrialPlanMethod(data.orgData.id);
+              this.isAdvisor=false;
+            } else if (data.markedAsAdvisor){
+              // show marked as advisor message
+              this.isAdvisor=true;
+            }
           }
         }
       );
@@ -472,28 +486,40 @@ export class SubscriptionsComponent implements OnInit {
       modal.result.then(
         (data: any) => {
           console.log('Success');
-          if (data && data.status === 200 && data.orgData && data.orgData.id) {
-            this.updateUserDetails(data);
-            this.activateNewPlan(
-              plan,
-              userId,
-              data.orgData.id,
-              CompanyName,
-              id_FkClientProfile
-            );
+          if (data && data.status === 200) {
+            if (data.orgData && data.orgData.id) {
+              this.updateUserDetails(data);
+              this.activateNewPlan(
+                plan,
+                userId,
+                data.orgData.id,
+                CompanyName,
+                id_FkClientProfile
+              );
+              this.isAdvisor=false;
+            } else {
+              // marked as advisor
+              this.isAdvisor=true;
+            }
           }
         },
         (data: any) => {
           console.log('Success');
-          if (data && data.status === 200 && data.orgData && data.orgData.id) {
-            this.updateUserDetails(data);
-            this.activateNewPlan(
-              plan,
-              userId,
-              data.orgData.id,
-              CompanyName,
-              id_FkClientProfile
-            );
+          if (data && data.status === 200) {
+            if (data.orgData && data.orgData.id) {
+              this.updateUserDetails(data);
+              this.activateNewPlan(
+                plan,
+                userId,
+                data.orgData.id,
+                CompanyName,
+                id_FkClientProfile
+              );
+              this.isAdvisor=false;
+            } else {
+              // marked as advisor
+              this.isAdvisor=true;
+            }
           }
         }
       );

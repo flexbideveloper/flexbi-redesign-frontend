@@ -124,7 +124,8 @@ export class CompanyNameComponent implements OnInit {
             this.notification.success("Your request is submitted successfully.")
           }
           this.modal.dismiss({
-            status: 200
+            status: 200,
+            markedAsAdvisor: true
           });
           setTimeout(() => {
             window.location.reload();
