@@ -139,7 +139,7 @@ export class AppEffects {
           this.notification.error(response.message);
         }
         this.authService.setLoggedInUserDetails({
-          UserId: response.data.id_FkClientProfile
+          OrgId: response.data.id_FkClientProfile
             ? response.data.id_FkClientProfile
             : response.data.id,
           UserName: response.data.UserName,
@@ -147,19 +147,11 @@ export class AppEffects {
           Email: response.data.Email,
           UserRole: 'USER',
           UserRoleId: 100,
-          id_FkClientProfile: response.data.id_FkClientProfile
-            ? response.data.id_FkClientProfile
-            : response.data.id,
-          id_FkUserProfile: response.data.id
+          userProfileId: response.data.id
             ? response.data.id
             : response.data.id_FkClientProfile
             ? response.data.id_FkClientProfile
-            : '',
-          ClientUserId: response.data.id
-            ? response.data.id
-            : response.data.id_FkClientProfile
-            ? response.data.id_FkClientProfile
-            : '',
+            : ''
         });
         sessionStorage.setItem('BearerToken', JSON.stringify(response.token));
         sessionStorage.setItem('identity', JSON.stringify(response.data));

@@ -43,7 +43,7 @@ export class ReportService {
   // }
 
   getXeroAuthLink(): Observable<string> {
-    let userId = this.authService.getLoggedInUserDetails().UserId;
+    let userId = this.authService.getLoggedInUserDetails().OrgId;
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.XERO_AUTH_URL_GET}${userId}`;
     return this.http.get<string>(url);
   }

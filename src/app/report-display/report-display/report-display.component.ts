@@ -60,7 +60,7 @@ export class ReportDisplayComponent implements OnInit {
       reportId: this.activeRoute.snapshot.params['reportId'],
       workspaceId: this.activeRoute.snapshot.params['workspaceId'],
       xeroReport: this.activeRoute.snapshot.params['xeroReport'],
-      userId: this.authService.getLoggedInUserDetails().UserId,
+      userId: this.authService.getLoggedInUserDetails().OrgId,
     };
     if (
       reportPayload.workspaceId &&
@@ -137,7 +137,7 @@ export class ReportDisplayComponent implements OnInit {
   }
 
   getActivePlan() {
-    let userId = this.authService.getLoggedInUserDetails().UserId;
+    let userId = this.authService.getLoggedInUserDetails().OrgId;
     this.subscriptionService.getActivePlan(userId).subscribe((data) => {
       this.activePlanDetail = data.data[0];
       if (this.activePlanDetail.id_FkSubscriptionPlan === 1) {

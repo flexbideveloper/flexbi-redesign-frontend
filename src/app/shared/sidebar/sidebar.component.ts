@@ -125,7 +125,7 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    let userId = this.authService.getLoggedInUserDetails().ClientUserId;
+    let userId = this.authService.getLoggedInUserDetails().OrgId;
   
      this.subscriptionService.getActivePlan(userId).subscribe((data) => {
         this.activePlanDetail = data.data[0];
@@ -157,7 +157,7 @@ export class SidebarComponent implements OnInit {
               let visualsList: any = [];
               this.reportService
                 .getAllReportsListByCustomerAndWorkspace(
-                  this.authService.getLoggedInUserDetails().UserId
+                  this.authService.getLoggedInUserDetails().OrgId
                 )
                 .subscribe(async (res: any) => {
                   reportsList = res.data || [];

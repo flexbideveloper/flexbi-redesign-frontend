@@ -75,7 +75,7 @@ export class CompanyNameComponent implements OnInit {
         return;
       }
       if (this.form.value.userId === null) {
-        this.form.value.userId = this.authService.getLoggedInUserDetails().id ? this.authService.getLoggedInUserDetails().id : (this.authService.getLoggedInUserDetails().ClientUserId ? this.authService.getLoggedInUserDetails().ClientUserId : this.authService.getLoggedInUserDetails().UserId);
+        this.form.value.userId = this.authService.getLoggedInUserDetails().id ? this.authService.getLoggedInUserDetails().id : (this.authService.getLoggedInUserDetails().userProfileId ? this.authService.getLoggedInUserDetails().userProfileId : this.authService.getLoggedInUserDetails().OrgId);
       }
       this.subscription.addCompanyName(this.form.value).subscribe(
         (data: any) => {
@@ -83,14 +83,14 @@ export class CompanyNameComponent implements OnInit {
             // const userDetails = this.authService.getLoggedInUserDetails();
             // userDetails.CompanyName = this.form.value.CompanyName;
             // userDetails.Email = this.form.value.Email;
-            // userDetails.id_FkClientProfile = data.orgData.id;
+            // userDetails.OrgId = data.orgData.id;
             // this.authService.setLoggedInUserDetails(userDetails);
             // const ux =
             //   (sessionStorage.getItem('identity') &&
             //     JSON.parse(sessionStorage.getItem('identity'))) ||
             //   null;
             // ux.CompanyName = this.form.value.CompanyName;
-            // ux.id_FkClientProfile = userDetails.id_FkClientProfile;
+            // ux.OrgId = userDetails.id_FkClientProfile;
             // sessionStorage.setItem('identity', JSON.stringify(ux));
             // // this.store.dispatch(new SetCompanyName(this.form.value.CompanyName));
             // this.store.dispatch(

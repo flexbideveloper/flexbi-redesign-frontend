@@ -50,7 +50,7 @@ export class MessageService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   getConversions(): Observable<IGetResponse<IGetResponse<IMessage[]>>> {
-    let userId = this.authService.getLoggedInUserDetails().UserId;
+    let userId = this.authService.getLoggedInUserDetails().OrgId;
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.CONVERSIONS}${userId}`;
     return this.http.get<IGetResponse<IGetResponse<IMessage[]>>>(url);
   }
@@ -71,9 +71,9 @@ export class MessageService {
     request: IReqMessagById
   ): Observable<IGetResponseByID<IMessage>> {
     const payload: IReqConversion = {
-      id_FkUserProfile: this.authService.getLoggedInUserDetails().ClientUserId,
+      id_FkUserProfile: this.authService.getLoggedInUserDetails().userProfileId,
       id_FkClientProfile:
-        this.authService.getLoggedInUserDetails().id_FkClientProfile,
+        this.authService.getLoggedInUserDetails().OrgId,
       ...request,
     };
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.CONVERSIONS}`;
@@ -82,7 +82,7 @@ export class MessageService {
 
   isAdviser(): Observable<IGetResponse<any>> {
     const id_FkUserProfile =
-      this.authService.getLoggedInUserDetails().ClientUserId;
+      this.authService.getLoggedInUserDetails().userProfileId;
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.IS_ADVISER_ACTIVE}${id_FkUserProfile}`;
     return this.http.get<IGetResponse<any>>(url, {});
   }

@@ -94,7 +94,7 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
   getSubscriptionDetails() {
     this.loading = true;
     this.isDataFetchSuccess = false;
-    const userId = this.authService.getLoggedInUserDetails().UserId;
+    const userId = this.authService.getLoggedInUserDetails().OrgId;
     userId && this.subscription.getActivePlan(userId).subscribe(
       (res: any) => {
         this.isDataFetchSuccess = true;
@@ -119,7 +119,7 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
   }
 
   checkDataLoadProcess() {
-    const userId = this.authService.getLoggedInUserDetails().UserId;
+    const userId = this.authService.getLoggedInUserDetails().OrgId;
     this.subscription.checkDataLoadProcess(userId).subscribe(
       (res: any) => {
         if (res && res.status === 200) {
@@ -144,7 +144,7 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
 
   getXeroAccessTokenDetails() {
     this.loading = true;
-    const userId = this.authService.getLoggedInUserDetails().UserId;
+    const userId = this.authService.getLoggedInUserDetails().OrgId;
     this.isTokenPrsent = false;
     this.subscription.getXeroAccessTokenDetails(userId).subscribe(
       (res: any) => {
@@ -166,7 +166,7 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
   }
 
   getDataLoadSteps() {
-    const userId = this.authService.getLoggedInUserDetails().UserId;
+    const userId = this.authService.getLoggedInUserDetails().OrgId;
 
     // if (this.showXeroDataLoadProcess) {
     this.subscription.getDataLoadSteps(userId).subscribe(
@@ -283,7 +283,7 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
   showReport() {
     this.reportService
       .getAllReportsListByCustomerAndWorkspace(
-        this.authService.getLoggedInUserDetails().UserId
+        this.authService.getLoggedInUserDetails().OrgId
       )
       .subscribe((res: any) => {
         this.reportsList = res.data || [];

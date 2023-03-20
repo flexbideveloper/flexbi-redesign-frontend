@@ -316,7 +316,7 @@ export class SubscriptionsComponent implements OnInit {
       this.getTheTransactionStatus(
         this.isTranComplete,
         this.AccessCode,
-        this.authService.getLoggedInUserDetails().UserId,
+        this.authService.getLoggedInUserDetails().OrgId,
         planId
       );
     } else {
@@ -345,7 +345,7 @@ export class SubscriptionsComponent implements OnInit {
     let userId =
       user_id && user_id !== null
         ? user_id
-        : this.authService.getLoggedInUserDetails().UserId;
+        : this.authService.getLoggedInUserDetails().OrgId;
     if (userId && userId !== null) {
       this.subscriptionService.getActivePlan(userId).subscribe((data) => {
         this.activePlanDetail = data.data[0];
@@ -363,9 +363,9 @@ export class SubscriptionsComponent implements OnInit {
         .getUserApprovedOrNot(
           this.authService.getLoggedInUserDetails().id
             ? this.authService.getLoggedInUserDetails().id
-            : this.authService.getLoggedInUserDetails().ClientUserId
-            ? this.authService.getLoggedInUserDetails().ClientUserId
-            : this.authService.getLoggedInUserDetails().UserId
+            : this.authService.getLoggedInUserDetails().userProfileId
+            ? this.authService.getLoggedInUserDetails().userProfileId
+            : this.authService.getLoggedInUserDetails().OrgId
         )
         .subscribe((data) => {
           this.approvalPending = data?.data?.IsApproved === 0 ? true : false;
@@ -374,7 +374,7 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   activateFreeTrail() {
-    const userId = this.authService.getLoggedInUserDetails().UserId;
+    const userId = this.authService.getLoggedInUserDetails().OrgId;
     let CompanyName = this.authService.getLoggedInUserDetails().CompanyName;
     // check for company name
 
@@ -388,9 +388,9 @@ export class SubscriptionsComponent implements OnInit {
       modal.componentInstance.user_id =
         this.authService.getLoggedInUserDetails().id
           ? this.authService.getLoggedInUserDetails().id
-          : this.authService.getLoggedInUserDetails().ClientUserId
-          ? this.authService.getLoggedInUserDetails().ClientUserId
-          : this.authService.getLoggedInUserDetails().UserId;
+          : this.authService.getLoggedInUserDetails().userProfileId
+          ? this.authService.getLoggedInUserDetails().userProfileId
+          : this.authService.getLoggedInUserDetails().OrgId;
       modal.result.then(
         (data: any) => {
           console.log('Success');
@@ -439,10 +439,10 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   activatePlan(plan) {
-    const userId = this.authService.getLoggedInUserDetails().UserId;
-    const orgId = this.authService.getLoggedInUserDetails().UserId;
+    const userId = this.authService.getLoggedInUserDetails().OrgId;
+    const orgId = this.authService.getLoggedInUserDetails().OrgId;
     let CompanyName = this.authService.getLoggedInUserDetails().CompanyName; // check for company name
-    let id_FkClientProfile = this.authService.getLoggedInUserDetails().UserId;
+    let id_FkClientProfile = this.authService.getLoggedInUserDetails().OrgId;
 
     // show company name accept dialog
     if (
@@ -466,9 +466,9 @@ export class SubscriptionsComponent implements OnInit {
       modal.componentInstance.user_id =
         this.authService.getLoggedInUserDetails().id
           ? this.authService.getLoggedInUserDetails().id
-          : this.authService.getLoggedInUserDetails().ClientUserId
-          ? this.authService.getLoggedInUserDetails().ClientUserId
-          : this.authService.getLoggedInUserDetails().UserId;
+          : this.authService.getLoggedInUserDetails().userProfileId
+          ? this.authService.getLoggedInUserDetails().userProfileId
+          : this.authService.getLoggedInUserDetails().OrgId;
       modal.result.then(
         (data: any) => {
           console.log('Success');
@@ -502,14 +502,14 @@ export class SubscriptionsComponent implements OnInit {
 
   updateUserDetails(data) {
     let logInUser = this.authService.getLoggedInUserDetails();
-    logInUser.UserId = data.orgData.id;
+    logInUser.OrgId = data.orgData.id;
     this.authService.setLoggedInUserDetails(logInUser);
     const ux =
       (sessionStorage.getItem('identity') &&
         JSON.parse(sessionStorage.getItem('identity'))) ||
       null;
     ux.CompanyName = data.orgData.CompanyName;
-    ux.id_FkClientProfile = data.orgData.id;
+    ux.OrgId = data.orgData.id;
     ux.id = data.orgData.id;
     sessionStorage.setItem('identity', JSON.stringify(ux));
   }

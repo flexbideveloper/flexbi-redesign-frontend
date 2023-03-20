@@ -90,11 +90,10 @@ export class AuthService {
               JSON.stringify(response.token)
             );
             this.setLoggedInUserDetails({
-              UserId: response.data.id_FkClientProfile,
-              ClientUserId: response.data.id,
+              OrgId: response.data.id_FkClientProfile,
+              userProfileId: response.data.id,
               UserName: response.data.UserName,
               CompanyName: response.data.CompanyName,
-              id_FkClientProfile: response.data.id_FkClientProfile,
               Email: response.data.Email,
               UserRole: 'USER',
               UserRoleId: 100,
