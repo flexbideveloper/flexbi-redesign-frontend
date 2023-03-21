@@ -11,7 +11,6 @@ export interface IUser {
   IsAdvisor: 0 | 1;
 }
 
-
 import {
   Component,
   Input,
@@ -50,7 +49,7 @@ export class InputBoxComponent
   public uiTypeValue;
   public initialId = uuidv4();
   prefixUser = '@';
-  prefixVisual = '#'
+  prefixVisual = '#';
   @Output() dataInputChange = new EventEmitter<string>();
   @Output() onInputBlur = new EventEmitter();
   @Output() onInputFocus = new EventEmitter();
@@ -129,7 +128,9 @@ export class InputBoxComponent
     this.onChange = fn;
   }
 
-  onTouched() {}
+  onTouched() {
+    debugger;
+  }
 
   registerOnTouched(fn) {
     this.onTouched = fn;
@@ -171,49 +172,60 @@ export class InputBoxComponent
   }
 
   onFocus(): void {
+    let str = this.dataInput;
+    let lastChar = str.charAt(str.length - 1);
+    if (lastChar === '@') {
+      this.userDropdownShow = true;
+    } else {
+      this.userDropdownShow = false;
+    }
+    if (lastChar === '#') {
+      this.visualDropdownShow = true;
+    } else {
+      this.visualDropdownShow = false;
+    }
     this.focusOut = false;
-    // this.userDropdownShow = false;
-    // this.visualDropdownShow = false;
+
     this.onInputFocus.emit();
   }
 
-  keyDown(event: KeyboardEvent):void{
-    if (event.charCode === 64) {
-      this.userDropdownShow = true;
-    }else{
-      this.userDropdownShow = false;
-    }
+  keyDown(event: KeyboardEvent): void {
+    // if (event.charCode === 64) {
+    //   this.userDropdownShow = true;
+    // } else {
+    //   this.userDropdownShow = false;
+    // }
 
-    if (event.charCode === 35) {
-      this.visualDropdownShow = true;
-    }else{
+    // if (event.charCode === 35) {
+    //   this.visualDropdownShow = true;
+    // } else {
+    //   this.visualDropdownShow = false;
+    // }
+
+    if (event.charCode === 0) {
+      this.visualDropdownShow = false;
       this.visualDropdownShow = false;
     }
 
-    if (event.charCode === 0 ) {
-      this.visualDropdownShow = false;
-      this.visualDropdownShow = false;
-    }
+    let data = this.dataInput.split(' ');
 
-
-    let data  = this.dataInput.split(' ');
-
-
-    debugger
-    if(data.length > 0){
-      if(data[data.length - 1].lastIndexOf('@')  >= 0   ){
+    if (data.length >= 0) {
+      let lastWord = data[data.length - 1];
+      if (lastWord.length > 1 && lastWord.lastIndexOf('@') >= 0) {
         this.userDropdownShow = true;
+      } else {
+        this.userDropdownShow = false;
       }
-  
-      if(data[data.length - 1].lastIndexOf('#') >= 0 ){
+
+      if (lastWord.length > 1 && lastWord.lastIndexOf('#') >= 0) {
         this.visualDropdownShow = true;
+      } else {
+        this.visualDropdownShow = false;
       }
-    }else{
-              this.userDropdownShow = false;
+    } else {
+      this.userDropdownShow = false;
       this.visualDropdownShow = false;
     }
-
-  
   }
 
   onInputChange(value: string): void {
@@ -224,28 +236,27 @@ export class InputBoxComponent
     this.errorRequiredFunc(value);
   }
 
-  escPress(){
+  escPress() {
     this.userDropdownShow = false;
     this.visualDropdownShow = false;
   }
 
   keyPress(event: KeyboardEvent) {
-
     if (event.charCode === 64) {
       this.userDropdownShow = true;
-    }else{
+    } else {
       this.userDropdownShow = false;
     }
 
     if (event.charCode === 35) {
       this.visualDropdownShow = true;
-    }else{
+    } else {
       this.visualDropdownShow = false;
     }
   }
 
   selectUser(user: IUser) {
-    let value =  user.UserName;
+    let value = user.UserName;
     this.dataInput = this.dataInput + value + ' ';
     this.userDropdownShow = false;
     this.dataInputChange.emit(this.dataInput);
@@ -256,7 +267,7 @@ export class InputBoxComponent
 
   selectVisual(visual: IVisual) {
     this.visualDropdownShow = false;
-    let value =  visual.VisualDisplayName;
+    let value = visual.VisualDisplayName;
     this.dataInput = this.dataInput + value + ' ';
     this.userDropdownShow = false;
     this.dataInputChange.emit(this.dataInput);

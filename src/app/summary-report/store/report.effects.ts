@@ -24,7 +24,7 @@ export class ReportEffects {
       ofType(a.init),
       withLatestFrom(this.store.select(s.selectSummaryLoading)),
       filter(([, isLoaded]) => !isLoaded),
-      exhaustMap(() => [a.load(), a.loadMessage()])
+      exhaustMap(() => [a.load(), a.loadMessage() ,a.loadUsers(),a.loadVisuals()])
     )
   );
 
