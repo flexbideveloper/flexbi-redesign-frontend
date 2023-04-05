@@ -82,7 +82,7 @@ export class AuthService {
         params: { skipAuthorization: 'true' },
       })
       .pipe(
-        mergeMap((response) => {
+        mergeMap((response: any) => {
           if (response && response.status === 200) {
             sessionStorage.setItem('identity', JSON.stringify(response.data));
             sessionStorage.setItem(
@@ -97,6 +97,8 @@ export class AuthService {
               Email: response.data.Email,
               UserRole: 'USER',
               UserRoleId: 100,
+              IsAdvisor: response.data.IsAdvisor && response.data.IsAdvisor === 1 ? true : false,
+              IsApproved:  response.data.IsApproved && response.data.IsApproved === 1 ? true : false
             });
 
             this.store.dispatch(new fromStore.OnLogin(response));

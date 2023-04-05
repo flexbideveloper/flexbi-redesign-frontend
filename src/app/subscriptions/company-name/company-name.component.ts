@@ -127,9 +127,9 @@ export class CompanyNameComponent implements OnInit {
             status: 200,
             markedAsAdvisor: true
           });
-          setTimeout(() => {
-            window.location.reload();
-          },1000);
+          // setTimeout(() => {
+          //   window.location.reload();
+          // },1000);
         },
         (res: any) => {
           this.notification.error(res.message);
@@ -148,11 +148,12 @@ export class CompanyNameComponent implements OnInit {
             this.notification.success("Your request is submitted successfully.")
           }
           this.modal.dismiss({
-            status: 200
+            status: 200,
+            requestedForOldOrg: true
           });
-          setTimeout(() => {
-            window.location.reload();
-          },1000);
+          // setTimeout(() => {
+          //   window.location.reload();
+          // },1000);
         },
         (res: any) => {
           this.notification.error(res.message);

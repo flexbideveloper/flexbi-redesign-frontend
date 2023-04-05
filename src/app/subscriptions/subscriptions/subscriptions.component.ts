@@ -297,7 +297,7 @@ export class SubscriptionsComponent implements OnInit {
   public isTrialActivated: any = false;
 
   public orglist: any = this.store.select(fromAppStore.selectOrgLists);
-  public isAdvisor: any = this.store.select(fromAppStore.isAdvisor);
+  public isAdvisor: any = false;
 
   constructor(
     private subscriptionService: SubcriptionsService,
@@ -327,7 +327,9 @@ export class SubscriptionsComponent implements OnInit {
     } else {
       this.getSubscriptionsPlans();
     }
-    !this.isAdvisor && this.getActivePlan();
+    this.isAdvisor = this.authService.getLoggedInUserDetails().IsAdvisor ? this.authService.getLoggedInUserDetails().IsAdvisor : false;
+    this.approvalPending = this.authService.getLoggedInUserDetails().IsApproved ? this.authService.getLoggedInUserDetails().IsApproved : false;
+    (this.isAdvisor === 0 || this.isAdvisor === false) && this.authService.getLoggedInUserDetails().OrgId !== null && this.getActivePlan();
   }
 
   ngOnInit(): void {}
@@ -354,7 +356,7 @@ export class SubscriptionsComponent implements OnInit {
         if (!!this.activePlanDetail) {
           this.subscriptionService.ifHaveActivePlan.next(true);
         }
-        if (this.activePlanDetail.id_FkSubscriptionPlan === 1) {
+        if (this.activePlanDetail?.planId === 1) {
           this.isTrialActivated = true;
         }
       });
@@ -398,12 +400,23 @@ export class SubscriptionsComponent implements OnInit {
           console.log('Success');
           if (data && data.status === 200) {
             if (data.orgData && data.orgData.id) {
+              data.IsAdvisor = false;
               this.updateUserDetails(data);
               this.activateFreeTrialPlanMethod(data.orgData.id);
               this.isAdvisor=false;
             } else if (data.markedAsAdvisor){
               // show marked as advisor message
               this.isAdvisor=true;
+              let logInUser = this.authService.getLoggedInUserDetails();
+              logInUser.isAdvisor = true;
+              this.updateUserDetails(logInUser);
+            } else if (data.requestedForOldOrg) {
+              this.approvalPending = true;
+              this.isAdvisor=false;
+              let logInUser = this.authService.getLoggedInUserDetails();
+              logInUser.IsAdvisor = false;
+              logInUser.IsApproved = true;
+              this.updateUserDetails(logInUser);
             }
           }
         },
@@ -411,12 +424,23 @@ export class SubscriptionsComponent implements OnInit {
           console.log('Success');
           if (data && data.status === 200) {
             if (data.orgData && data.orgData.id) {
+              data.IsAdvisor = false;
               this.updateUserDetails(data);
               this.activateFreeTrialPlanMethod(data.orgData.id);
               this.isAdvisor=false;
             } else if (data.markedAsAdvisor){
               // show marked as advisor message
               this.isAdvisor=true;
+              let logInUser = this.authService.getLoggedInUserDetails();
+              logInUser.IsAdvisor = true;
+              this.updateUserDetails(logInUser);
+            } else if (data.requestedForOldOrg) {
+              this.approvalPending = true;
+              this.isAdvisor=false;
+              let logInUser = this.authService.getLoggedInUserDetails();
+              logInUser.IsAdvisor = false;
+              logInUser.IsApproved = true;
+              this.updateUserDetails(logInUser);
             }
           }
         }
@@ -488,6 +512,7 @@ export class SubscriptionsComponent implements OnInit {
           console.log('Success');
           if (data && data.status === 200) {
             if (data.orgData && data.orgData.id) {
+              data.IsAdvisor = false;
               this.updateUserDetails(data);
               this.activateNewPlan(
                 plan,
@@ -497,9 +522,19 @@ export class SubscriptionsComponent implements OnInit {
                 id_FkClientProfile
               );
               this.isAdvisor=false;
-            } else {
+            } else if (data.markedAsAdvisor){
               // marked as advisor
               this.isAdvisor=true;
+              let logInUser = this.authService.getLoggedInUserDetails();
+              logInUser.IsAdvisor = true;
+              this.updateUserDetails(logInUser);
+            } else if (data.requestedForOldOrg) {
+              this.approvalPending = true;
+              this.isAdvisor=false;
+              let logInUser = this.authService.getLoggedInUserDetails();
+              logInUser.IsAdvisor = false;
+              logInUser.IsApproved = true;
+              this.updateUserDetails(logInUser);
             }
           }
         },
@@ -507,6 +542,7 @@ export class SubscriptionsComponent implements OnInit {
           console.log('Success');
           if (data && data.status === 200) {
             if (data.orgData && data.orgData.id) {
+              data.IsAdvisor = false;
               this.updateUserDetails(data);
               this.activateNewPlan(
                 plan,
@@ -516,9 +552,19 @@ export class SubscriptionsComponent implements OnInit {
                 id_FkClientProfile
               );
               this.isAdvisor=false;
-            } else {
+            } else if (data.markedAsAdvisor){
               // marked as advisor
               this.isAdvisor=true;
+              let logInUser = this.authService.getLoggedInUserDetails();
+              logInUser.isAdvisor = true;
+              this.updateUserDetails(logInUser);
+            } else if (data.requestedForOldOrg) {
+              this.approvalPending = true;
+              this.isAdvisor=false;
+              let logInUser = this.authService.getLoggedInUserDetails();
+              logInUser.IsAdvisor = false;
+              logInUser.IsApproved = true;
+              this.updateUserDetails(logInUser);
             }
           }
         }
@@ -528,15 +574,19 @@ export class SubscriptionsComponent implements OnInit {
 
   updateUserDetails(data) {
     let logInUser = this.authService.getLoggedInUserDetails();
-    logInUser.OrgId = data.orgData.id;
+    logInUser.OrgId = data?.orgData?.id || null;
+    logInUser.IsAdvisor = data.IsAdvisor ? data.IsAdvisor : false;
+    logInUser.IsApproved = data.IsApproved ? data.IsApproved : false;
     this.authService.setLoggedInUserDetails(logInUser);
     const ux =
       (sessionStorage.getItem('identity') &&
         JSON.parse(sessionStorage.getItem('identity'))) ||
       null;
-    ux.CompanyName = data.orgData.CompanyName;
-    ux.OrgId = data.orgData.id;
-    ux.id = data.orgData.id;
+    ux.CompanyName = data?.orgData?.CompanyName || null;
+    ux.OrgId = data?.orgData?.id || null;
+    ux.id = data?.orgData?.id || null;
+    ux.IsAdvisor = data.IsAdvisor ? data.IsAdvisor : false;
+    ux.IsApproved = data.IsApproved ? data.IsApproved : false;
     sessionStorage.setItem('identity', JSON.stringify(ux));
   }
 

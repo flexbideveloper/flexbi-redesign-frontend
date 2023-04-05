@@ -127,7 +127,7 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     let userId = this.authService.getLoggedInUserDetails().OrgId;
   
-     this.subscriptionService.getActivePlan(userId).subscribe((data) => {
+    userId && this.subscriptionService.getActivePlan(userId).subscribe((data) => {
         this.activePlanDetail = data.data[0];
         if (!!this.activePlanDetail) {
           this.subscriptionService.ifHaveActivePlan.next(true);
