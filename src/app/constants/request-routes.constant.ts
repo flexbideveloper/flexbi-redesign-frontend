@@ -27,10 +27,13 @@ export const REQUEST_ROUTES = {
 
   XERO_AUTH_URL_GET: 'xerotokenaccess/authLink/',
 
+  WFM_AUTH_URL_GET: 'xerotokenaccess/authLinkForMax/',
+
   REPORT_ALLOCATION_LIST: 'clientReportAllocation/reportList',
 
   GET_REPORT: 'clientReportAllocation/getEmbedReport',
   GET_LOGS_STATUS: 'subscriptionsallocation/getJobsDetails/',
+  GET_WFM_LOGS_STATUS: 'subscriptionsallocation/getWFMJobsDetails/',
   PAGE_VISUALS: 'pageVisuals',
 
   CONVERSIONS : 'clientUserMessages/',

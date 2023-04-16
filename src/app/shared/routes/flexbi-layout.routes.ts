@@ -16,6 +16,13 @@ export const FLEX_BI_ROUTES: Routes = [
       ),
   },
   {
+    path: 'wfm-data-accounts',
+    loadChildren: () =>
+      import('../../wfm-integration/wfm-integration.module').then(
+        (m) => m.WFMIntegrationModule
+      ),
+  },
+  {
     path: 'subscriptions',
     loadChildren: () =>
       import('../../subscriptions/subscriptions.module').then(

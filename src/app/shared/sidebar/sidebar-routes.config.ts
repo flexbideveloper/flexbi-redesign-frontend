@@ -891,6 +891,16 @@ export const FLEXBI_ROUTES: RouteInfo[] = [
     submenu: [],
   },
   {
+    path: '/wfm-data-accounts',
+    title: 'WFM Integration',
+    icon: 'bx bx-repeat',
+    class: '',
+    badge: '',
+    badgeClass: '',
+    isExternalLink: false,
+    submenu: [],
+  },
+  {
     path: '/subscriptions',
     title: 'Subscriptions',
     icon: 'bx bx-diamond',

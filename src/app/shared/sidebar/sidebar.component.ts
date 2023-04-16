@@ -196,9 +196,27 @@ export class SidebarComponent implements OnInit {
                       submenu: child,
                     });
                     // check for pages and visuals
-
-                    debugger
                     if (res.isReportPagesPresent) {
+                      this.menuItems.push({
+                        path: 'wfm-data-accounts',
+                        title: 'WFM Integration',
+                        icon: 'bx bx-repeat',
+                        class: '',
+                        badge: '',
+                        badgeClass: '',
+                        isExternalLink: false,
+                        submenu: [],
+                      });
+                      this.menuItems.push({
+                        path: 'subscriptions',
+                        title: 'Subscription Plans',
+                        icon: 'bx bx-diamond',
+                        class: '',
+                        badge: '',
+                        badgeClass: '',
+                        isExternalLink: false,
+                        submenu: [],
+                      });
                       this.menuItems.push({
                         path: 'summaryreport',
                         title: 'Summary Report',
@@ -308,17 +326,29 @@ export class SidebarComponent implements OnInit {
                           console.log('Error');
                         });
                       }
+                    } else {
+                      this.menuItems.push({
+                        path: 'wfm-data-accounts',
+                        title: 'WFM Integration',
+                        icon: 'bx bx-repeat',
+                        class: '',
+                        badge: '',
+                        badgeClass: '',
+                        isExternalLink: false,
+                        submenu: [],
+                      });
+                      this.menuItems.push({
+                        path: 'subscriptions',
+                        title: 'Subscription Plans',
+                        icon: 'bx bx-diamond',
+                        class: '',
+                        badge: '',
+                        badgeClass: '',
+                        isExternalLink: false,
+                        submenu: [],
+                      });
                     }
-                    this.menuItems.push({
-                      path: 'subscriptions',
-                      title: 'Subscription Plans',
-                      icon: 'bx bx-diamond',
-                      class: '',
-                      badge: '',
-                      badgeClass: '',
-                      isExternalLink: false,
-                      submenu: [],
-                    });
+                    
 
                     if (window.location.href.indexOf('data-accounts') >= 0) {
                       this.router.navigate([this.menuItems[0].submenu[0].path]);
@@ -327,6 +357,16 @@ export class SidebarComponent implements OnInit {
                     this.menuItems.push({
                       path: 'data-accounts',
                       title: 'Xero Integration',
+                      icon: 'bx bx-repeat',
+                      class: '',
+                      badge: '',
+                      badgeClass: '',
+                      isExternalLink: false,
+                      submenu: [],
+                    });
+                    this.menuItems.push({
+                      path: 'wfm-data-accounts',
+                      title: 'WFM Integration',
                       icon: 'bx bx-repeat',
                       class: '',
                       badge: '',

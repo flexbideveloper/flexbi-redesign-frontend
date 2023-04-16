@@ -57,6 +57,11 @@ export class SubcriptionsService {
     return this.http.get<any>(url);
   }
 
+  getWFMDataLoadSteps(userId: string): Observable<any> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.GET_WFM_LOGS_STATUS}${userId}`;
+    return this.http.get<any>(url);
+  }
+
   activateFreeTrail(userId: string): Observable<any> {
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.SUBSCRIPTION_ACTIVE_FREE}${userId}`;
     return this.http.get<any>(url);

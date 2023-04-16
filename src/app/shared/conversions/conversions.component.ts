@@ -43,7 +43,7 @@ export class ConversionsComponent implements OnInit, AfterViewInit {
     private cdr: ChangeDetectorRef
   ) {
     this.messageForm = this.fb.group({
-      message: ['fdsfsdf@@fd @@@dfs   df@@  @@gfhfg @hgfh @', Validators.required],
+      message: ['', Validators.required],
     });
   }
 

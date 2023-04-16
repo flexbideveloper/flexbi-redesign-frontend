@@ -1,0 +1,102 @@
+<!--breadcrumb-->
+<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+  <div class="breadcrumb-title pe-3">WFM Integration</div>
+</div>
+
+<div class="xero-status">
+  <div class="card status-bar">
+    <div class="title">Please wait to complete below all the steps</div>
+
+    <div class="step-holder">
+      <div
+        class="step"
+        class="{{ getMyStatusClass(2) }}"
+        [class.running]="stepperIndex + 1 === 2"
+      >
+        <div class="label">
+          <img
+            src="../../../assets/data-load/1.png"
+            alt="WFM Authentication"
+          />
+          <span> WFM Authentication </span>
+        </div>
+
+        <div class="scale">
+          <span> 1 </span>
+        </div>
+
+        <div class="action-btn">
+          <button
+            class="btn btn-flexbi"
+            [disabled]="stepperIndex > 1"
+            (click)="getWFMBtnLink()"
+          >
+            Authenticate to WFM
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="step"
+        class="{{ getMyStatusClass(3) }}"
+        [class.running]="stepperIndex + 1 === 3"
+      >
+        <div class="label">
+          <img src="../../../assets/data-load/2.png" alt="WFm Data Load" />
+          <span> WFM Data Load </span>
+        </div>
+        <div class="scale">
+          <span> 2 </span>
+        </div>
+      </div>
+
+      <div
+        class="step"
+        class="{{ getMyStatusClass(4) }}"
+        [class.running]="stepperIndex + 1 === 4"
+      >
+        <div class="label">
+          <img src="../../../assets/data-load/4.png" alt="WFM Data Upload" />
+          <span> WFM Data Upload </span>
+        </div>
+        <div class="scale">
+          <span> 3 </span>
+        </div>
+      </div>
+
+      <div
+        class="step"
+        class="{{ getMyStatusClass(5) }} "
+        [class.running]="stepperIndex + 1 === 5"
+      >
+        <div class="label">
+          <img src="../../../assets/data-load/5.png" alt="Process Completed" />
+          <span> Process Completed </span>
+        </div>
+        <div class="scale">
+          <span> 4 </span>
+        </div>
+
+        <!-- <div class="action-btn">
+          <button
+            (click)="showReport()"
+            [disabled]="!showReportActive && stepperIndex < 4"
+            class="btn btn-flexbi"
+          >
+            Show Dashbaord
+          </button>
+        </div> -->
+      </div>
+    </div>
+
+    <div class="error" *ngIf="showError">{{ errorText }}</div>
+  </div>
+</div>
+
+<!-- XERO authentication 
+XERO DATA LOAD
+Dashbaord Creation
+DATASET Refersh 
+Process Completed
+-->
+<!-- => click redirect show report page -->
