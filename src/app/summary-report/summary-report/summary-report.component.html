@@ -35,7 +35,7 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="data.isLoading && data.orglist.length">
+  <div class="row" *ngIf="data.isLoading">
     <div class="col-12 center">
       <div class="" role="status">
         <img
@@ -47,7 +47,7 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="!data.isLoading && data.orglist.length">
+  <div class="row" *ngIf="!data.isLoading">
     <!-- Visuals -->
     <div class="col-12 section-label">
       <div class="title">Customer Analysis</div>

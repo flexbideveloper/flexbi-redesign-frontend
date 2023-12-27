@@ -161,8 +161,6 @@ export class SidebarComponent implements OnInit {
                 )
                 .subscribe(async (res: any) => {
                   reportsList = res.data || [];
-
-                  debugger
                   if (reportsList.length > 0) {
                     let child = [];
                     reportsList.map((r: any) => {
@@ -185,7 +183,7 @@ export class SidebarComponent implements OnInit {
                         submenu: [],
                       });
                     });
-                    !this.isAdviser$ && this.menuItems.push({
+                    !(JSON.parse(sessionStorage.getItem("identity")).IsAdvisor) && this.menuItems.push({
                       path: '',
                       title: 'Reports',
                       icon: 'bx bx-file',
@@ -350,7 +348,7 @@ export class SidebarComponent implements OnInit {
                     }
                     
 
-                    if (window.location.href.indexOf('data-accounts') >= 0) {
+                    if (!window.location.href.includes("wfm-data-accounts") && window.location.href.indexOf('data-accounts') >= 0) {
                       this.router.navigate([this.menuItems[0].submenu[0].path]);
                     }
                   } else {

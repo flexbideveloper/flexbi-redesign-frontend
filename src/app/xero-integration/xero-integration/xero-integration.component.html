@@ -28,7 +28,7 @@
         <div class="action-btn">
           <button
             class="btn btn-flexbi"
-            [disabled]="stepperIndex > 1"
+            [disabled]="stepperIndex > 1 || anotherDataLoadIsInProgress"
             (click)="getXeroBtnLink()"
           >
             Authenticate to Xero

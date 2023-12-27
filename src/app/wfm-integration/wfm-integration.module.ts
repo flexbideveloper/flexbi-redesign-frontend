@@ -5,7 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { SubscriptionsRoutingModule } from './wfm-integration-routing.module';
 import { ModalModule } from 'ngb-modal';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule  } from '@angular/forms';
 import { WFMIntegrationComponent } from './wfm-integration/wfm-integration.component';
 
 @NgModule({
@@ -16,6 +16,7 @@ import { WFMIntegrationComponent } from './wfm-integration/wfm-integration.compo
     NgbModule,
     ModalModule,
     ReactiveFormsModule,
+    FormsModule,
   ],
 })
 export class WFMIntegrationModule {}

@@ -37,18 +37,28 @@ export class SubcriptionsService {
     return this.http.get<SubscriptionResponse>(url);
   }
 
+  getTenantList(userId: string): Observable<any> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.GET_TENANTS_LIST}${userId}`;
+    return this.http.get<any>(url);
+  }
+
+  checkForTenantDataLoad(tenantId: string, userId: string): Observable<any> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.CHECK_FOR_TENANT_DATA}${userId}/${tenantId}`;
+    return this.http.get<any>(url);
+  }
+
   getUserApprovedOrNot(userProfileId: string): Observable<any> {
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.USER_APPROVED_OR_NOT}${userProfileId}`;
     return this.http.get<any>(url);
   }
 
-  checkDataLoadProcess(userId: string): Observable<DataLoadProcess> {
-    const url = `${environment.serviceUrl}${REQUEST_ROUTES.DATA_LOAD_PROCESS}${userId}`;
+  checkDataLoadProcess(userId: string, tenantId: string, type: string): Observable<DataLoadProcess> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.DATA_LOAD_PROCESS}${userId}/${tenantId}/${type}`;
     return this.http.get<DataLoadProcess>(url);
   }
 
-  getXeroAccessTokenDetails(userId: string): Observable<any> {
-    const url = `${environment.serviceUrl}${REQUEST_ROUTES.ACCESS_TOKEN}${userId}`;
+  getXeroAccessTokenDetails(userId: string, type: string): Observable<any> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.ACCESS_TOKEN}${userId}/${type}`;
     return this.http.get<any>(url);
   }
 
@@ -57,8 +67,8 @@ export class SubcriptionsService {
     return this.http.get<any>(url);
   }
 
-  getWFMDataLoadSteps(userId: string): Observable<any> {
-    const url = `${environment.serviceUrl}${REQUEST_ROUTES.GET_WFM_LOGS_STATUS}${userId}`;
+  getWFMDataLoadSteps(userId: string, tenantId: string): Observable<any> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.GET_WFM_LOGS_STATUS}${userId}/${tenantId}`;
     return this.http.get<any>(url);
   }
 
@@ -115,5 +125,15 @@ export class SubcriptionsService {
   }): Observable<any> {
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.SUBSCRIPTION_STATUS}`;
     return this.http.post<any>(url, data);
+  }
+
+  checkForOtherLoading(data: any): Observable<any> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.CHECK_FOR_DATA_LOAD_IS_IN_PROGRESS}${data.userId}/${data.type}`;
+    return this.http.get<any>(url);
+  }
+
+  revertAfterTransactionFail(data: any): Observable<any> {
+    const url = `${environment.serviceUrl}${REQUEST_ROUTES.REVERT_AFTER_TRAN_FAIL}${data.OrgId}`;
+    return this.http.get<any>(url);
   }
 }

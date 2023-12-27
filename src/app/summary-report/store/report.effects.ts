@@ -39,13 +39,7 @@ export class ReportEffects {
       ),
       exhaustMap(([, { id_FkClientProfile }, isAdviser, orgLists, orgId]) =>
         this.reportService
-          .getPageVisuals(
-            isAdviser
-              ? orgId
-                ? parseInt(orgId.toString())
-                : orgLists[0].orgId
-              : id_FkClientProfile
-          )
+          .getPageVisuals(isAdviser ? orgId ? parseInt(orgId.toString()) : orgLists[0].orgId : id_FkClientProfile)
           .pipe(
             map((data) => a.loadSuccess({ data })),
             catchError((err) => of(a.loadFail({ error: err })))

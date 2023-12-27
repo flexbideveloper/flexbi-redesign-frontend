@@ -65,6 +65,9 @@ export class ReportService {
   }
 
   getPageVisuals(id:string | number): Observable<IReportPageVisuals> {
+    if (id === null || id === undefined) {
+      id = JSON.parse(localStorage.getItem("loggedInUserDetails")).OrgId;
+    }
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.PAGE_VISUALS}/${id}`;
     return this.http.get<IReportPageVisuals>(url);
   }

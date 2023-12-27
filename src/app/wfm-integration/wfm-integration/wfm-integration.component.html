@@ -1,9 +1,50 @@
 <!--breadcrumb-->
-<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-  <div class="breadcrumb-title pe-3">WFM Integration</div>
+<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3" style="justify-content: space-between;">
+  <div class="breadcrumb-title pe-3" style="width: 65%;border-right: none;">WFM Integration</div>
+
+  
+  <div>
+    <button
+            class="btn btn-flexbi"
+            [disabled]="(stepperIndex > 1 && !allDataLoadComplete) || anotherDataLoadIsInProgress"
+            (click)="getWFMBtnLink()"
+          >
+            Authenticate to WFM
+          </button>
+  </div>
 </div>
 
-<div class="xero-status">
+<hr>
+
+<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+  <div>
+    <!-- <form [formGroup]="form"> -->
+      <select *ngIf="tenantList && tenantList.length > 0" class="form-control form-select" [(ngModel)]="selectedTenantId" (change)="onSearch($event)">
+        <option [ngValue]="null" disabled >Select Tenant</option>
+        <option [ngValue]="tenant.TenantId" *ngFor="let tenant of tenantList">
+          {{ tenant.TenantName }}
+        </option>
+      </select>
+      <span style="width: 180px;display: block;" *ngIf="!tenantList || tenantList.length <=0">&nbsp;&nbsp;</span>
+    <!-- </form> -->
+  </div>
+  <div class="font-22 text-primary" *ngIf="tenantList && tenantList.length > 0" style="margin-left: 20px;">
+    <button class="btn btn-flexbi" (click)="refreshStepperFromUI()"><i class="fadeIn animated bx bx-refresh"></i></button>
+  </div>
+</div>
+
+<div *ngIf="!selectedTenantId && tenantList && tenantList.length > 0" style="text-align: center; margin-top: 40px">
+  <label style="font-size: 18px; color: maroon"
+    >Please select Tenant.</label
+  >
+</div>
+
+<div *ngIf="!tenantList || tenantList.length <=0" style="text-align: center; margin-top: 40px">
+  <label style="font-size: 18px; color: maroon;display: block;">Please Authenticate to WFM to load the data.</label>
+  <label style="color: blue;cursor: pointer;" (click)="getWFMBtnLink()">Authenticate to WFM</label>
+</div>
+
+<div class="xero-status" *ngIf="selectedTenantId">
   <div class="card status-bar">
     <div class="title">Please wait to complete below all the steps</div>
 
@@ -26,13 +67,14 @@
         </div>
 
         <div class="action-btn">
-          <button
+          &nbsp;&nbsp;
+          <!-- <button
             class="btn btn-flexbi"
-            [disabled]="stepperIndex > 1"
+            [disabled]="stepperIndex > 1 && !allDataLoadComplete"
             (click)="getWFMBtnLink()"
           >
             Authenticate to WFM
-          </button>
+          </button> -->
         </div>
       </div>
 
@@ -90,6 +132,7 @@
     </div>
 
     <div class="error" *ngIf="showError">{{ errorText }}</div>
+    <div class="success" *ngIf="allDataLoadComplete">Data load process completed successfully.</div>
   </div>
 </div>
 

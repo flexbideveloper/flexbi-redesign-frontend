@@ -54,6 +54,7 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
   active: string = 'auth';
 
   sub: Subscription;
+  anotherDataLoadIsInProgress: any = false;
 
   constructor(
     private xeroAppService: ReportService,
@@ -67,11 +68,32 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
 
     const source = interval(5000);
     this.sub = source.subscribe((val) => this.refreshStepper());
+    setTimeout(() => {
+      const newsource1 = interval(5000);
+      const newsub1 = newsource1.subscribe((val) => this.checkForOtherLoading());
+    }, 500);
   }
 
   ngOnInit(): void {}
 
   getReport() {}
+
+  checkForOtherLoading(): any {
+    if (this.stepperIndex < 1) {
+      // disable button check
+      this.subscription.checkForOtherLoading({
+        userId: this.authService.getLoggedInUserDetails().OrgId,
+        type: "WFM"
+      }).subscribe((res: any)=> {
+        if (res && res.status === 200) {
+          return res.isDataLoading;
+        }
+        return false;
+      })
+    } else {
+      return false;
+    }
+  }
 
   getXeroBtnLink() {
     if (this.stepperIndex === 1 && !this.isTokenPrsent) {
@@ -120,7 +142,7 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
 
   checkDataLoadProcess() {
     const userId = this.authService.getLoggedInUserDetails().OrgId;
-    this.subscription.checkDataLoadProcess(userId).subscribe(
+    this.subscription.checkDataLoadProcess(userId, null, 'XERO').subscribe(
       (res: any) => {
         if (res && res.status === 200) {
           if (res.isErrorInDataLoad) {
@@ -146,7 +168,7 @@ export class XeroIntegrationComponent implements OnInit, OnDestroy {
     this.loading = true;
     const userId = this.authService.getLoggedInUserDetails().OrgId;
     this.isTokenPrsent = false;
-    this.subscription.getXeroAccessTokenDetails(userId).subscribe(
+    this.subscription.getXeroAccessTokenDetails(userId, "XERO").subscribe(
       (res: any) => {
         if (res && res.isTokenPrsent) {
           this.isTokenPrsent = res.isTokenPrsent;

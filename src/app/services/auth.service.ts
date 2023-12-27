@@ -192,11 +192,17 @@ export class AuthService {
   }
 
   getUserLists(id: string | number): Observable<IUsersResponse> {
+    if (id === null || id === undefined) {
+      id = JSON.parse(localStorage.getItem("loggedInUserDetails")).OrgId;
+    }
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.GET_USERS}/${id}`;
     return this.http.get<IUsersResponse>(url);
   }
 
   getVisualsList(id: string | number): Observable<IVisualResponse> {
+    if (id === null || id === undefined) {
+      id = JSON.parse(localStorage.getItem("loggedInUserDetails")).OrgId;
+    }
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.GET_VISUALS}/${id}`;
     return this.http.get<IVisualResponse>(url);
   }

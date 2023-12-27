@@ -51,12 +51,18 @@ export class MessageService {
 
   getConversions(): Observable<IGetResponse<IGetResponse<IMessage[]>>> {
     let userId = this.authService.getLoggedInUserDetails().OrgId;
+    if (userId === null || userId === undefined) {
+      userId = JSON.parse(localStorage.getItem("loggedInUserDetails")).OrgId;
+    }
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.CONVERSIONS}${userId}`;
     return this.http.get<IGetResponse<IGetResponse<IMessage[]>>>(url);
   }
 
   postConversion(payload: IReqConversion): Observable<IGetResponse<IMessage>> {
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.CONVERSIONS}`;
+    if (payload && payload.id_FkClientProfile === null || payload.id_FkClientProfile === undefined) {
+      payload.id_FkClientProfile = JSON.parse(localStorage.getItem("loggedInUserDetails")).OrgId;
+    }
     return this.http.post<IGetResponse<IMessage>>(url, payload);
   }
 
@@ -73,7 +79,7 @@ export class MessageService {
     const payload: IReqConversion = {
       id_FkUserProfile: this.authService.getLoggedInUserDetails().userProfileId,
       id_FkClientProfile:
-        this.authService.getLoggedInUserDetails().OrgId,
+        !this.authService.getLoggedInUserDetails().OrgId ? JSON.parse(localStorage.getItem("loggedInUserDetails")).OrgId : this.authService.getLoggedInUserDetails().OrgId,
       ...request,
     };
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.CONVERSIONS}`;
@@ -90,6 +96,9 @@ export class MessageService {
   getConversionsMessage(
     id: string | number
   ): Observable<IGetResponse<IMessage[]>> {
+    if (id === null || id === undefined) {
+      id = JSON.parse(localStorage.getItem("loggedInUserDetails")).OrgId;
+    }
     const url = `${environment.serviceUrl}${REQUEST_ROUTES.CONVERSIONS}${id}`;
     return this.http.get<IGetResponse<IMessage[]>>(url);
   }

@@ -130,8 +130,8 @@ export function MSALInstanceFactory(): IPublicClientApplication {
 
 function getClientIdRedirectURL() {
     return {
-      clientId: '3f576ff9-29ee-45ec-8778-3bb4010113ff',
-      redirectUri: 'https://flexbireport.com.au',
+      clientId: '727c40bf-26ac-4ffc-94cf-632809e55280',
+      redirectUri: 'https://flexbireport.com/',
     };
 }
 
@@ -214,8 +214,8 @@ export class AppModule {
 
   getData(){
     return {
-      clientId: '3f576ff9-29ee-45ec-8778-3bb4010113ff',
-      redirectUri: 'https://flexbireport.com.au',
+      clientId: '727c40bf-26ac-4ffc-94cf-632809e55280',
+      redirectUri: 'https://flexbireport.com/'
     };
   }
 }

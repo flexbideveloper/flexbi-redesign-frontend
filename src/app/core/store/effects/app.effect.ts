@@ -167,10 +167,9 @@ export class AppEffects {
         return this.authService
           .allSettings()
           .pipe(
-            map(
-              (response) =>
-                new a.LoadAuthSettingSuccess({ authSetting: response })
-            )
+            map((response) => {
+              return new a.LoadAuthSettingSuccess({ authSetting: response });
+            })
           );
       })
     );

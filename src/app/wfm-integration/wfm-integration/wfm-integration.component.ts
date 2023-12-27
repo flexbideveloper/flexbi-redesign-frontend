@@ -1,17 +1,24 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ReportService } from 'src/app/services/report.service';
 import { SubcriptionsService } from 'src/app/services/subscription.service';
-import { interval, Subscription } from 'rxjs';
+import { interval, Subscription, BehaviorSubject, combineLatest, tap } from 'rxjs';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  FormsModule
+} from '@angular/forms';
 
 @Component({
   selector: 'app-wfm-integration',
   templateUrl: './wfm-integration.component.html',
   styleUrls: ['./wfm-integration.component.scss'],
 })
-export class WFMIntegrationComponent implements OnInit, OnDestroy {
+export class WFMIntegrationComponent implements OnInit {
   loading: boolean = true;
   customerList: any = [];
   dumyCustomerList: any = [];
@@ -49,11 +56,21 @@ export class WFMIntegrationComponent implements OnInit, OnDestroy {
   isAccountExpired: any = true;
 
   dataLoadingSteps: any = null;
+  tenantList: any = null;
 
   showError: boolean = false;
   active: string = 'auth';
 
   sub: Subscription;
+  form: FormGroup;
+  selectionChanged$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+
+  allDataLoadComplete: any = false;
+  failedDataLoad: any = false;
+  dataLoadNotStarted: any = false;
+  source = interval(5000);
+  selectedTenantId: any = null;
+  anotherDataLoadIsInProgress: any = false;
 
   constructor(
     private xeroAppService: ReportService,
@@ -61,25 +78,98 @@ export class WFMIntegrationComponent implements OnInit, OnDestroy {
     public authService: AuthService,
     public subscription: SubcriptionsService,
     public router: Router,
-    public reportService: ReportService
+    public reportService: ReportService,
+    private fb: FormBuilder
   ) {
+    // this.form = this.fb.group({
+    //   TenantId: [null, Validators.required],
+    // });
+    this.getTenantList();
     this.getSubscriptionDetails();
-
-    const source = interval(5000);
-    this.sub = source.subscribe((val) => this.refreshStepper());
+    setTimeout(() => {
+      const newsource1 = interval(5000);
+      const newsub1 = newsource1.subscribe((val) => this.checkForOtherLoading());
+    }, 500);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // this.getTenantId.valueChanges
+    //   .pipe(
+    //     tap((id: any) => {
+    //       this.onSearch(id);
+    //     })
+    //   )
+    //   .subscribe();
+    // this.sub = this.source.subscribe((val) => this.refreshStepper());
+    this.refreshStepper()
+  }
 
   getReport() {}
 
+  checkForOtherLoading(): any {
+    
+    // disable button check
+    this.subscription.checkForOtherLoading({
+      userId: this.authService.getLoggedInUserDetails().OrgId,
+      type: "XERO"
+    }).subscribe((res: any)=> { 
+      if (res && res.status === 200) {
+        this.anotherDataLoadIsInProgress = res.isDataLoading;
+      }
+      return false;
+    })
+    
+  }
+
+  onSearch(event:any): void {
+    this.resetDataLoadSteps();
+    console.log(event.target.value);
+    const orgId = this.authService.getLoggedInUserDetails().OrgId;
+    this.subscription.checkForTenantDataLoad(this.selectedTenantId, orgId).subscribe(
+      (res: any) => {
+        if (res && res.status === 200) {
+          this.allDataLoadComplete = res.allDataLoadComplete;
+          this.failedDataLoad = res.failedDataLoad;
+          this.dataLoadNotStarted = res.dataLoadNotStarted;
+        } else {
+          this.allDataLoadComplete = res.allDataLoadComplete;
+          this.failedDataLoad = res.failedDataLoad;
+          this.dataLoadNotStarted = res.dataLoadNotStarted;
+        }
+        this.selectedTenantId !== null && this.checkDataLoadProcess();
+      });
+  }
+
+  getTenantList() {
+    const orgId = this.authService.getLoggedInUserDetails().OrgId;
+    orgId && this.subscription.getTenantList(orgId).subscribe(
+      (res: any) => {
+        if (res && res.status === 200 && res.data.length > 0) {
+          this.tenantList = res.data;
+          // if(this.selectedTenantId === null)
+          //   this.selectedTenantId = this.tenantList[0].TenantId;
+        }
+    });
+  }
+
+  refreshStepperFromUI() {
+    this.sub && this.sub !== null && this.sub.unsubscribe();
+    setTimeout(() => {
+      const newsource = interval(5000);
+      const newsub = newsource.subscribe((val) => this.refreshStepper());
+    }, 500);
+  }
+
   getWFMBtnLink() {
-    if (this.stepperIndex === 1 && !this.isTokenPrsent) {
+    this.sub && this.sub !== null && this.sub.unsubscribe();
+    if (this.allDataLoadComplete || this.stepperIndex === 1 && !this.isTokenPrsent) {
       this.xeroAppService.getWFMBtnLink().subscribe(
         (res: any) => {
+          
           window.open(res.url, 'wfmauth');
           // this.showXeroDataLoadProcess = true;
           this.loading = false;
+          this.refreshStepperFromUI();
         },
         (res: any) => {
           this.loading = false;
@@ -103,7 +193,7 @@ export class WFMIntegrationComponent implements OnInit, OnDestroy {
           // check for plan
           if (this.getExpiryStatus() !== 'EXPIRED') {
             this.isAccountExpired = false;
-            this.checkDataLoadProcess();
+            this.getTenantList();
           }
         } else {
           this.subDetails = null;
@@ -120,13 +210,17 @@ export class WFMIntegrationComponent implements OnInit, OnDestroy {
 
   checkDataLoadProcess() {
     const userId = this.authService.getLoggedInUserDetails().OrgId;
-    this.subscription.checkDataLoadProcess(userId).subscribe(
+    this.subscription.checkDataLoadProcess(userId, this.selectedTenantId, "WFM").subscribe(
       (res: any) => {
         if (res && res.status === 200) {
           if (res.isErrorInDataLoad) {
             // call the data load process and steps
             this.showXeroDataLoadProcess = true;
-            this.refreshStepper();
+             
+          this.failedDataLoad 
+          this.dataLoadNotStarted
+            if (!this.allDataLoadComplete && !this.failedDataLoad && !this.dataLoadNotStarted)
+              this.refreshStepperFromUI()
           } else {
             // check for access toekn details
             this.getXeroAccessTokenDetails();
@@ -146,13 +240,13 @@ export class WFMIntegrationComponent implements OnInit, OnDestroy {
     this.loading = true;
     const userId = this.authService.getLoggedInUserDetails().OrgId;
     this.isTokenPrsent = false;
-    this.subscription.getXeroAccessTokenDetails(userId).subscribe(
+    this.subscription.getXeroAccessTokenDetails(userId, "WFM").subscribe(
       (res: any) => {
         if (res && res.isTokenPrsent) {
           this.isTokenPrsent = res.isTokenPrsent;
           // this.router.navigate(['subscriptions']);
           // this.getTenants();
-          this.getDataLoadSteps();
+          this.selectedTenantId !== null && this.getDataLoadSteps();
         } else {
           this.isTokenPrsent = false;
         }
@@ -169,7 +263,7 @@ export class WFMIntegrationComponent implements OnInit, OnDestroy {
     const userId = this.authService.getLoggedInUserDetails().OrgId;
 
     // if (this.showXeroDataLoadProcess) {
-    this.subscription.getWFMDataLoadSteps(userId).subscribe(
+    this.subscription.getWFMDataLoadSteps(userId, this.selectedTenantId).subscribe(
       (res: any) => {
         if (res && res.status === 200) {
           this.dataLoadingSteps = res.data ? res.data : null;
@@ -188,7 +282,33 @@ export class WFMIntegrationComponent implements OnInit, OnDestroy {
     // }
   }
 
-  checkStepsAndPassStepper(dataStatus: any) {
+  resetDataLoadSteps() {
+    const dataStatus = {
+      "WFM-AUTH": {
+        isCompleted: false,
+        isError: false,
+        error: "",
+      },
+      "WFM-DATA-LOAD": {
+        isCompleted: false,
+        isError: false,
+        error: "",
+      },
+      "WFM-DATA-UPLOAD": {
+        isCompleted: false,
+        isError: false,
+        error: "",
+      },
+      "INITIAL-LOAD-COMPLETE": {
+        isCompleted: false,
+        isError: false,
+        error: "",
+      }
+    }
+    this.checkStepsAndPassStepper(dataStatus);
+  }
+
+    checkStepsAndPassStepper(dataStatus: any) {
     if (dataStatus['WFM-AUTH']) {
       if (dataStatus['WFM-AUTH'].isCompleted) {
         this.stepperIndex = 2;
@@ -196,6 +316,9 @@ export class WFMIntegrationComponent implements OnInit, OnDestroy {
         this.showError = true;
         this.errorText = dataStatus['WFM-AUTH'].error;
         this.active == 'load';
+        this.allDataLoadComplete = false;
+        this.failedDataLoad = true;
+        this.dataLoadNotStarted = false;
       }
     }
 
@@ -206,29 +329,42 @@ export class WFMIntegrationComponent implements OnInit, OnDestroy {
         this.showError = true;
         this.errorText = dataStatus['WFM-DATA-LOAD'].error;
         this.active == 'creation';
+        this.allDataLoadComplete = false;
+        this.failedDataLoad = true;
+        this.dataLoadNotStarted = false;
       }
     }
 
     if (dataStatus['WFM-DATA-UPLOAD']) {
       if (dataStatus['WFM-DATA-UPLOAD'].isCompleted) {
-        this.stepperIndex = 3;
+        this.stepperIndex = 4;
       } else if (dataStatus['WFM-DATA-UPLOAD'].isError) {
         this.showError = true;
         this.errorText = dataStatus['WFM-DATA-UPLOAD'].error;
         this.active == 'creation';
+        this.allDataLoadComplete = false;
+        this.failedDataLoad = true;
+        this.dataLoadNotStarted = false;
       }
     }
 
     if (dataStatus['INITIAL-LOAD-COMPLETE']) {
       if (dataStatus['INITIAL-LOAD-COMPLETE'].isCompleted) {
-        this.stepperIndex = 6;
+        this.stepperIndex = 5;
         this.showReportActive = true;
+        this.allDataLoadComplete = true;
+        this.failedDataLoad = false;
+        this.dataLoadNotStarted = false;
+        this.getTenantList();
         // window.location.reload();
         this.sub.unsubscribe();
       } else if (dataStatus['INITIAL-LOAD-COMPLETE'].isError) {
         this.showError = true;
         this.errorText = dataStatus['INITIAL-LOAD-COMPLETE'].error;
         this.active == 'final';
+        this.allDataLoadComplete = false;
+        this.failedDataLoad = true;
+        this.dataLoadNotStarted = false;
       }
     }
   }
@@ -256,7 +392,8 @@ export class WFMIntegrationComponent implements OnInit, OnDestroy {
   refreshStepper() {
     if (this.isTokenPrsent) {
     }
-    this.getDataLoadSteps();
+    this.selectedTenantId !== null && this.getDataLoadSteps();
+    this.getTenantList();
   }
 
   getExpiryStatus() {
@@ -270,34 +407,7 @@ export class WFMIntegrationComponent implements OnInit, OnDestroy {
     }
   }
 
-  showReport() {
-    this.reportService
-      .getAllReportsListByCustomerAndWorkspace(
-        this.authService.getLoggedInUserDetails().OrgId
-      )
-      .subscribe((res: any) => {
-        this.reportsList = res.data || [];
-        if (this.reportsList.length > 0) {
-          // this.router.navigate([
-          //   'report/' +
-          //     this.reportsList[0].RptID +
-          //     '/' +
-          //     this.reportsList[0].WorkspID +
-          //     '/' +
-          //     (this.reportsList[0].xeroReport &&
-          //     this.reportsList[0].xeroReport === true
-          //       ? true
-          //       : false),
-          // ]);
-          this.router.navigate(['/summaryreport'])
-        }
-      });
-    setTimeout(() => {
-      window.location.reload();
-    }, 500);
-  }
-
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
+  get getTenantId(): AbstractControl {
+    return this.form.get('TenantId') as AbstractControl;
   }
 }

@@ -635,6 +635,15 @@ export class SubscriptionsComponent implements OnInit {
             };
             this.getActivePlan();
             this.getSubscriptionsPlans();
+            // transaction is failed remove org data
+            // this.subscriptionService.revertAfterTransactionFail({
+            //   orgId: userId
+            // }).subscribe(
+            // (res: any) => {
+            //   if (res.status === 200) {
+            //     console.log("Changes reverted after Org delete.");
+            //   }
+            // });
           }
           // this.loading = false;
         },

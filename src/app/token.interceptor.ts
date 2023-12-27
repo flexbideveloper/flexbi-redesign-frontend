@@ -21,12 +21,20 @@ export class TokenInterceptor implements HttpInterceptor {
           request = request.clone({
             setHeaders: {
               Authorization: `Bearer ${accessToken}`,
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "PUT, GET, HEAD, POST, PATCH, DELETE, CONNECT, OPTIONS",
+              "Access-Control-Allow-Headers": "Content-Type"
             },
           });
           return next.handle(request);
         } else {
           request = request.clone({
             params: request.params.delete('skipAuthorization', 'true'),
+            setHeaders: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "PUT, GET, HEAD, POST, PATCH, DELETE, CONNECT, OPTIONS",
+              "Access-Control-Allow-Headers": "Content-Type"
+            },
           });
           // next() without changing req
           return next.handle(request);

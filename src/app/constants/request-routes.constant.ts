@@ -20,6 +20,8 @@ export const REQUEST_ROUTES = {
   SUBSCRIPTION_STATUS: 'subscriptionsallocation/verifyTransaction',
   SUBSCRIPTION_ACTIVE_GET: 'subscriptionsallocation/getActivePlan/',
   USER_APPROVED_OR_NOT: 'subscriptionsallocation/isUserApproved/',
+  CHECK_FOR_DATA_LOAD_IS_IN_PROGRESS: 'subscriptionsallocation/checkForOtherDataLoadIsInProgress/',
+  REVERT_AFTER_TRAN_FAIL: 'subscriptionsallocation/revertAfterTranFail/',
 
   DATA_LOAD_PROCESS: 'subscriptionsallocation/checkDataLoadProcess/',
 
@@ -46,4 +48,7 @@ export const REQUEST_ROUTES = {
   GET_USERS: 'clientUsersList',
   
   GET_VISUALS: 'visualsList/',
+
+  GET_TENANTS_LIST: 'subscriptionsallocation/tenantlist/',
+  CHECK_FOR_TENANT_DATA: 'subscriptionsallocation/checkForTenantData/'
 };
